@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import LeaderLink from "../../components/LeaderLink.astro";
+import EntryCard from "../../components/EntryCard.astro";
 
 const entries = await getCollection("career");
 const sorted = entries.sort(
@@ -12,24 +12,25 @@ const sorted = entries.sort(
 <BaseLayout title="Career — Rahul Paul">
 	<section class="career-index">
 		<h1 class="career-index__title">Career</h1>
-		<ul class="career-index__list">
+		<div class="career-index__grid">
 			{
 				sorted.map((entry) => (
-					<li class="career-index__item">
-						<LeaderLink href={`/career/${entry.id}`}>
-							<span class="career-index__role">{entry.data.title}</span>
-							<span class="career-index__org">{entry.data.organization}</span>
-						</LeaderLink>
-					</li>
+					<EntryCard
+						href={`/career/${entry.id}`}
+						organization={entry.data.organization}
+						title={entry.data.title}
+						summary={entry.data.summary}
+						topMetric={entry.data.metrics[0]}
+					/>
 				))
 			}
-		</ul>
+		</div>
 	</section>
 </BaseLayout>
 
 <style>
 	.career-index {
-		max-width: 48rem;
+		max-width: 64rem;
 		margin: 0 auto;
 		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
 	}
@@ -40,26 +41,9 @@ const sorted = entries.sort(
 		font-weight: var(--font-weight-bold);
 	}
 
-	.career-index__list {
-		display: flex;
-		flex-direction: column;
+	.career-index__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 		gap: var(--space-6);
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.career-index__role {
-		font-size: var(--font-body);
-		font-weight: var(--font-weight-semibold);
-	}
-
-	.career-index__org {
-		margin-top: var(--space-1);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-caption);
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--color-rod-secondary);
 	}
 </style>

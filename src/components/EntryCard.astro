@@ -1,0 +1,107 @@
+---
+interface TopMetric {
+	value: string;
+	whatItMeasured: string;
+}
+
+interface Props {
+	href: string;
+	organization: string;
+	title: string;
+	summary: string;
+	topMetric?: TopMetric;
+	ctaLabel?: string;
+}
+
+const { href, organization, title, summary, topMetric, ctaLabel = "View details" } = Astro.props;
+---
+
+<a class="entry-card" href={href}>
+	<span class="entry-card__org">{organization}</span>
+	<h3 class="entry-card__title">{title}</h3>
+	<p class="entry-card__summary">{summary}</p>
+	{
+		topMetric && (
+			<span class="entry-card__metric">
+				<strong>{topMetric.value}</strong> {topMetric.whatItMeasured}
+			</span>
+		)
+	}
+	<span class="entry-card__cta">{ctaLabel} →</span>
+</a>
+
+<style>
+	/* Rounded white card on the concrete ground — the one deliberate
+	   departure from the fully-flat rod/leader-line grammar, scoped to
+	   list surfaces where scan-density matters more than diagram purity. */
+	.entry-card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+		padding: var(--space-5);
+		background: var(--color-card);
+		border: 1px solid var(--color-card-border);
+		border-radius: var(--radius-md);
+		text-decoration: none;
+		color: var(--color-foreground);
+		transition: border-color var(--duration-normal), transform var(--duration-normal);
+	}
+
+	.entry-card:hover {
+		border-color: var(--color-cord-tension);
+		transform: translateY(-2px);
+	}
+
+	.entry-card__org {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-rod-secondary);
+	}
+
+	.entry-card__title {
+		margin: 0;
+		font-size: var(--font-body);
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--leading-snug);
+	}
+
+	.entry-card__summary {
+		margin: 0;
+		font-size: var(--font-body-sm);
+		color: var(--color-muted-foreground);
+		line-height: var(--leading-relaxed);
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.entry-card__metric {
+		font-size: var(--font-caption);
+		color: var(--color-foreground);
+	}
+
+	.entry-card__metric strong {
+		color: var(--color-cord-tension);
+	}
+
+	.entry-card__cta {
+		margin-top: var(--space-2);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.02em;
+		font-weight: var(--font-weight-semibold);
+		color: var(--color-primary-foreground);
+		background: var(--color-primary);
+		border-radius: var(--radius-pill);
+		padding: var(--space-1) var(--space-4);
+		align-self: flex-start;
+		transition: background var(--duration-normal);
+	}
+
+	.entry-card:hover .entry-card__cta {
+		background: var(--color-primary-hover);
+	}
+</style>

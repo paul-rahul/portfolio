@@ -4,8 +4,11 @@
   contract, src/layouts/BaseLayout.astro surface brief) — every fact on the
   site visibly hangs in tension, traceable by a leader line to what's
   holding it up. Matte carbon-black rods and hairline leader lines on a
-  pale concrete ground; one red tension cord as the only saturated accent,
-  reserved for what's currently load-bearing.
+  pale concrete ground; one red tension cord as the accent, used generously
+  wherever it does real work (links, filled CTAs, badges). List/card
+  surfaces (Career, Internships, Built, home highlights) are rounded white
+  cards on the concrete ground — the one deliberate departure from the
+  original fully-flat system, added 2026-09-20 per reviewed reference.
 */
 
 :root {
@@ -27,6 +30,7 @@
   --color-rod-slack: #8a8983;
   --color-concrete: #ece9e2;
   --color-concrete-dark: #d8d4c9;
+  --color-paper: #fffdfa;
   --color-cord: #c81e1e;
   --color-cord-dim: #8f1717;
 
@@ -76,6 +80,7 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
+  --radius-pill: 999px;
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -87,8 +92,9 @@
   --color-background: var(--color-concrete);
   --color-foreground: var(--color-rod);
 
-  --color-card: var(--color-concrete);
+  --color-card: var(--color-paper);
   --color-card-foreground: var(--color-rod);
+  --color-card-border: var(--color-rod-slack);
 
   --color-border: var(--color-rod);
 
