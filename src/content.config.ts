@@ -42,4 +42,11 @@ const built = defineCollection({
 	}),
 });
 
-export const collections = { career, internships, built };
+const about = defineCollection({
+	loader: glob({ pattern: "*.md", base: "./src/content" }),
+	schema: z.object({
+		tagline: z.string(),
+	}),
+});
+
+export const collections = { career, internships, built, about };

@@ -1,7 +1,50 @@
 ---
+import { getCollection, render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const [entry] = await getCollection("about");
+const { Content } = await render(entry);
 ---
 
 <BaseLayout title="About — Rahul Paul">
-	<h1>About</h1>
+	<article class="about voice-personal">
+		<p class="about__tagline">{entry.data.tagline}</p>
+		<div class="about__body">
+			<Content />
+		</div>
+	</article>
 </BaseLayout>
+
+<style>
+	/*
+	  voice-personal is the architectural marker for the one page where
+	  personality/wit is allowed (see design-system voice-boundary tokens
+	  in tokens.css) — a distinct tonal treatment, not just different copy.
+	*/
+	.about {
+		max-width: 40rem;
+		margin: 0 auto;
+		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
+	}
+
+	.about__tagline {
+		margin: 0 0 var(--space-8);
+		font-size: var(--font-heading);
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--leading-snug);
+		color: var(--color-voice-personal-accent);
+	}
+
+	.about__body {
+		font-size: var(--font-body);
+		line-height: var(--leading-relaxed);
+	}
+
+	.about__body :global(p) {
+		margin: 0 0 var(--space-6);
+	}
+
+	.about__body :global(p:last-child) {
+		margin-bottom: 0;
+	}
+</style>
