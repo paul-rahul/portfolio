@@ -2,12 +2,13 @@
 interface Props {
 	href: string;
 	rel?: string;
+	class?: string;
 }
 
-const { href, rel } = Astro.props;
+const { href, rel, class: className } = Astro.props;
 ---
 
-<a class="leader-link" href={href} rel={rel}>
+<a class:list={["leader-link", className]} href={href} rel={rel}>
 	<span class="leader-link__leader" aria-hidden="true" />
 	<slot />
 </a>

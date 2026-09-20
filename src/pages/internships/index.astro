@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EntryCard from "../../components/EntryCard.astro";
+
+const entries = await getCollection("internships");
+const sorted = entries.sort(
+	(a, b) => Date.parse(b.data.dateRange.start) - Date.parse(a.data.dateRange.start),
+);
+---
+
+<BaseLayout title="Internships — Rahul Paul">
+	<section class="internships-index">
+		<h1 class="internships-index__title">Internships</h1>
+		<div class="internships-index__grid">
+			{
+				sorted.map((entry) => (
+					<EntryCard
+						href={`/internships/${entry.id}`}
+						organization={entry.data.organization}
+						title={entry.data.title}
+						summary={entry.data.summary}
+						topMetric={entry.data.metrics[0]}
+					/>
+				))
+			}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.internships-index {
+		max-width: 64rem;
+		margin: 0 auto;
+		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
+	}
+
+	.internships-index__title {
+		margin: 0 0 var(--space-8);
+		font-size: var(--font-heading-xl);
+		font-weight: var(--font-weight-bold);
+	}
+
+	.internships-index__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+		gap: var(--space-6);
+	}
+</style>
