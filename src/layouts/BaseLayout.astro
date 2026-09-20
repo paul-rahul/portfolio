@@ -1,18 +1,11 @@
 ---
+import Nav from "../components/Nav.astro";
+
 interface Props {
 	title: string;
 }
 
 const { title } = Astro.props;
-
-const navItems = [
-	{ label: "Career", href: "/career" },
-	{ label: "Internships", href: "/internships" },
-	{ label: "Built", href: "/built" },
-	{ label: "About", href: "/about" },
-	{ label: "Resume", href: "/resume" },
-	{ label: "Contact", href: "/contact" },
-];
 ---
 
 <html lang="en">
@@ -42,93 +35,10 @@ const navItems = [
 				font-size: var(--font-body);
 				line-height: var(--leading-normal);
 			}
-
-			/* Top rod: a single taut horizontal member. Nav labels are anchor
-			   nodes pinned where rod and cord meet — not a conventional navbar
-			   with a background fill and rounded pills. */
-			.rod-nav {
-				position: sticky;
-				top: 0;
-				z-index: 10;
-				background: var(--color-background);
-			}
-
-			.rod-nav__rail {
-				position: relative;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				gap: var(--space-10);
-				max-width: 72rem;
-				margin: 0 auto;
-				padding: var(--space-5) var(--spacing-page-x);
-			}
-
-			/* The rod itself, running the full width behind the nodes */
-			.rod-nav__rail::before {
-				content: "";
-				position: absolute;
-				left: var(--spacing-page-x);
-				right: var(--spacing-page-x);
-				top: 50%;
-				height: 2px;
-				background: var(--color-rod-primary);
-				transform: translateY(-50%);
-			}
-
-			.rod-nav__node {
-				position: relative;
-				background: var(--color-background);
-				padding: 0 var(--space-2);
-			}
-
-			.rod-nav__link {
-				position: relative;
-				display: block;
-				font-family: var(--font-family-mono);
-				font-size: var(--font-caption);
-				letter-spacing: 0.04em;
-				text-transform: uppercase;
-				color: var(--color-foreground);
-				text-decoration: none;
-			}
-
-			/* Each node is a small filled dot sitting on the rod */
-			.rod-nav__link::before {
-				content: "";
-				position: absolute;
-				left: 50%;
-				bottom: calc(-1 * var(--space-5) + 1px);
-				width: 6px;
-				height: 6px;
-				border-radius: 50%;
-				background: var(--color-rod-primary);
-				transform: translateX(-50%);
-			}
-
-			.rod-nav__link:hover {
-				color: var(--color-cord-tension);
-			}
-
-			.rod-nav__link:hover::before {
-				background: var(--color-cord-tension);
-			}
 		</style>
 	</head>
 	<body>
-		<nav class="rod-nav" aria-label="Primary">
-			<div class="rod-nav__rail">
-				{
-					navItems.map((item) => (
-						<span class="rod-nav__node">
-							<a class="rod-nav__link" href={item.href}>
-								{item.label}
-							</a>
-						</span>
-					))
-				}
-			</div>
-		</nav>
+		<Nav />
 		<main>
 			<slot />
 		</main>
