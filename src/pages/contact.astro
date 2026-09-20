@@ -1,7 +1,98 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const links = [
+	{
+		label: "Email",
+		value: "rahul.paul118@gmail.com",
+		href: "mailto:rahul.paul118@gmail.com",
+	},
+	{
+		label: "LinkedIn",
+		value: "linkedin.com/in/paul-rahul",
+		href: "https://www.linkedin.com/in/paul-rahul/",
+	},
+];
 ---
 
 <BaseLayout title="Contact — Rahul Paul">
-	<h1>Contact</h1>
+	<section class="contact">
+		<h1 class="contact__title">Contact</h1>
+		<ul class="contact__list">
+			{
+				links.map((link) => (
+					<li class="contact__item">
+						<a
+							class="contact__link"
+							href={link.href}
+							rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+						>
+							<span class="contact__leader" aria-hidden="true" />
+							<span class="contact__label">{link.label}</span>
+							<span class="contact__value">{link.value}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
 </BaseLayout>
+
+<style>
+	.contact {
+		max-width: 48rem;
+		margin: 0 auto;
+		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
+	}
+
+	.contact__title {
+		margin: 0 0 var(--space-12);
+		font-size: var(--font-heading-xl);
+		font-weight: var(--font-weight-bold);
+	}
+
+	.contact__list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-8);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.contact__link {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding-left: var(--space-5);
+		text-decoration: none;
+		color: var(--color-foreground);
+	}
+
+	.contact__leader {
+		position: absolute;
+		left: 0;
+		top: 0.35em;
+		bottom: 0.35em;
+		width: 1px;
+		background: var(--color-rod-secondary);
+	}
+
+	.contact__link:hover .contact__leader {
+		background: var(--color-cord-tension);
+	}
+
+	.contact__label {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-rod-secondary);
+	}
+
+	.contact__value {
+		margin-top: var(--space-1);
+		font-size: var(--font-heading);
+		font-weight: var(--font-weight-semibold);
+	}
+</style>
