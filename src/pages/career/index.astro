@@ -1,7 +1,87 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const entries = await getCollection("career");
+const sorted = entries.sort(
+	(a, b) => Date.parse(b.data.dateRange.start) - Date.parse(a.data.dateRange.start),
+);
 ---
 
 <BaseLayout title="Career — Rahul Paul">
-	<h1>Career</h1>
+	<section class="career-index">
+		<h1 class="career-index__title">Career</h1>
+		<ul class="career-index__list">
+			{
+				sorted.map((entry) => (
+					<li class="career-index__item">
+						<a class="career-index__link" href={`/career/${entry.id}`}>
+							<span class="career-index__leader" aria-hidden="true" />
+							<span class="career-index__role">{entry.data.title}</span>
+							<span class="career-index__org">{entry.data.organization}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
 </BaseLayout>
+
+<style>
+	.career-index {
+		max-width: 48rem;
+		margin: 0 auto;
+		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
+	}
+
+	.career-index__title {
+		margin: 0 0 var(--space-8);
+		font-size: var(--font-heading-xl);
+		font-weight: var(--font-weight-bold);
+	}
+
+	.career-index__list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-6);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.career-index__link {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding-left: var(--space-5);
+		text-decoration: none;
+		color: var(--color-foreground);
+	}
+
+	.career-index__leader {
+		position: absolute;
+		left: 0;
+		top: 0.35em;
+		bottom: 0.35em;
+		width: 1px;
+		background: var(--color-rod-secondary);
+	}
+
+	.career-index__link:hover .career-index__leader {
+		background: var(--color-cord-tension);
+	}
+
+	.career-index__role {
+		font-size: var(--font-body);
+		font-weight: var(--font-weight-semibold);
+	}
+
+	.career-index__org {
+		margin-top: var(--space-1);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-rod-secondary);
+	}
+</style>
