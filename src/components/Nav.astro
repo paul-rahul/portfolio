@@ -45,6 +45,18 @@ const navItems = [
 		padding: var(--space-5) var(--spacing-page-x);
 	}
 
+	/* Below the six-item rail's natural width, let it scroll horizontally
+	   rather than overflow the whole page — the rod stays taut, it just
+	   runs past the viewport edge instead of dragging layout with it. */
+	@media (max-width: 40rem) {
+		.rod-nav__rail {
+			justify-content: flex-start;
+			gap: var(--space-6);
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+		}
+	}
+
 	/* The rod itself, running the full width behind the nodes */
 	.rod-nav__rail::before {
 		content: "";

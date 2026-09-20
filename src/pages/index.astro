@@ -1,7 +1,8 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import QuickFactStrip from "../components/QuickFactStrip.astro";
-import LeaderLink from "../components/LeaderLink.astro";
+import EntryCard from "../components/EntryCard.astro";
 
 const quickFacts = [
 	{ label: "Background", value: "~6 yrs, ML engineering → product" },
@@ -10,18 +11,11 @@ const quickFacts = [
 	{ label: "Status", value: "Open to full-time, 2027", pill: true },
 ];
 
-const highlights = [
-	{
-		org: "Dream11",
-		headline: "$8M in the first 60 days, in-app ad launch",
-		href: "/career/dream11",
-	},
-	{
-		org: "Media.net",
-		headline: "$80M revenue, AI-based bid price optimizer",
-		href: "/career/medianet-sde",
-	},
-];
+const highlightIds = ["dream11", "medianet-sde"];
+const career = await getCollection("career");
+const highlights = highlightIds
+	.map((id) => career.find((entry) => entry.id === id))
+	.filter((entry): entry is NonNullable<typeof entry> => entry !== undefined);
 ---
 
 <BaseLayout title="Rahul Paul">
@@ -46,18 +40,19 @@ const highlights = [
 	</section>
 
 	<section class="highlights" aria-label="Highlights">
-		<ul class="highlights__list">
+		<div class="highlights__grid">
 			{
-				highlights.map((highlight) => (
-					<li class="highlights__item">
-						<LeaderLink href={highlight.href}>
-							<span class="highlights__org">{highlight.org}</span>
-							<span class="highlights__headline">{highlight.headline}</span>
-						</LeaderLink>
-					</li>
+				highlights.map((entry) => (
+					<EntryCard
+						href={`/career/${entry.id}`}
+						organization={entry.data.organization}
+						title={entry.data.title}
+						summary={entry.data.summary}
+						topMetric={entry.data.metrics[0]}
+					/>
 				))
 			}
-		</ul>
+		</div>
 	</section>
 </BaseLayout>
 
@@ -142,31 +137,14 @@ const highlights = [
 	}
 
 	.highlights {
-		max-width: 48rem;
+		max-width: 56rem;
 		margin: 0 auto;
 		padding: 0 var(--spacing-page-x) var(--space-24);
 	}
 
-	.highlights__list {
-		display: flex;
-		flex-direction: column;
+	.highlights__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 		gap: var(--space-6);
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.highlights__org {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-caption);
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--color-rod-secondary);
-	}
-
-	.highlights__headline {
-		margin-top: var(--space-1);
-		font-size: var(--font-body);
-		font-weight: var(--font-weight-semibold);
 	}
 </style>
