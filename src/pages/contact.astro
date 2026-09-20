@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import LeaderLink from "../components/LeaderLink.astro";
 
 const links = [
 	{
@@ -22,15 +23,13 @@ const links = [
 			{
 				links.map((link) => (
 					<li class="contact__item">
-						<a
-							class="contact__link"
+						<LeaderLink
 							href={link.href}
 							rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
 						>
-							<span class="contact__leader" aria-hidden="true" />
 							<span class="contact__label">{link.label}</span>
 							<span class="contact__value">{link.value}</span>
-						</a>
+						</LeaderLink>
 					</li>
 				))
 			}
@@ -58,28 +57,6 @@ const links = [
 		margin: 0;
 		padding: 0;
 		list-style: none;
-	}
-
-	.contact__link {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		padding-left: var(--space-5);
-		text-decoration: none;
-		color: var(--color-foreground);
-	}
-
-	.contact__leader {
-		position: absolute;
-		left: 0;
-		top: 0.35em;
-		bottom: 0.35em;
-		width: 1px;
-		background: var(--color-rod-secondary);
-	}
-
-	.contact__link:hover .contact__leader {
-		background: var(--color-cord-tension);
 	}
 
 	.contact__label {

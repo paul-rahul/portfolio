@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import LeaderLink from "../components/LeaderLink.astro";
 
 const career = await getCollection("career");
 const internships = await getCollection("internships");
@@ -40,8 +41,7 @@ const dateLabel = (dateRange: { start: string; end: string }) =>
 			{
 				entries.map((entry) => (
 					<li class="resume__item">
-						<a class="resume__link" href={entry.href}>
-							<span class="resume__leader" aria-hidden="true" />
+						<LeaderLink href={entry.href}>
 							<span class="resume__meta">
 								{entry.data.organization} · {dateLabel(entry.data.dateRange)}
 							</span>
@@ -56,7 +56,7 @@ const dateLabel = (dateRange: { start: string; end: string }) =>
 									</li>
 								))}
 							</ul>
-						</a>
+						</LeaderLink>
 					</li>
 				))
 			}
@@ -116,28 +116,6 @@ const dateLabel = (dateRange: { start: string; end: string }) =>
 		margin: 0;
 		padding: 0;
 		list-style: none;
-	}
-
-	.resume__link {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		padding-left: var(--space-5);
-		text-decoration: none;
-		color: var(--color-foreground);
-	}
-
-	.resume__leader {
-		position: absolute;
-		left: 0;
-		top: 0.35em;
-		bottom: 0.35em;
-		width: 1px;
-		background: var(--color-rod-secondary);
-	}
-
-	.resume__link:hover .resume__leader {
-		background: var(--color-cord-tension);
 	}
 
 	.resume__meta {
