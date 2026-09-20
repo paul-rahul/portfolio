@@ -1,7 +1,177 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const career = await getCollection("career");
+const internships = await getCollection("internships");
+
+const entries = [...career, ...internships]
+	.map((entry) => ({
+		...entry,
+		href:
+			entry.collection === "career"
+				? `/career/${entry.id}`
+				: `/internships/${entry.id}`,
+	}))
+	.sort(
+		(a, b) =>
+			Date.parse(b.data.dateRange.start) - Date.parse(a.data.dateRange.start),
+	);
+
+const dateLabel = (dateRange: { start: string; end: string }) =>
+	dateRange.end === "present"
+		? `${dateRange.start} — present`
+		: `${dateRange.start} — ${dateRange.end}`;
 ---
 
 <BaseLayout title="Resume — Rahul Paul">
-	<h1>Resume</h1>
+	<section class="resume">
+		<header class="resume__header">
+			<h1 class="resume__title">Resume</h1>
+			<div class="resume__download">
+				<span class="resume__download-disabled" aria-disabled="true">
+					Download PDF
+				</span>
+				<span class="resume__download-note">Coming soon</span>
+			</div>
+		</header>
+
+		<ol class="resume__list">
+			{
+				entries.map((entry) => (
+					<li class="resume__item">
+						<a class="resume__link" href={entry.href}>
+							<span class="resume__leader" aria-hidden="true" />
+							<span class="resume__meta">
+								{entry.data.organization} · {dateLabel(entry.data.dateRange)}
+							</span>
+							<span class="resume__role">{entry.data.title}</span>
+							<ul class="resume__metrics">
+								{entry.data.metrics.slice(0, 2).map((metric) => (
+									<li class="resume__metric">
+										<span class="resume__metric-value">{metric.value}</span>{" "}
+										<span class="resume__metric-what">
+											{metric.whatItMeasured}
+										</span>
+									</li>
+								))}
+							</ul>
+						</a>
+					</li>
+				))
+			}
+		</ol>
+	</section>
 </BaseLayout>
+
+<style>
+	.resume {
+		max-width: 48rem;
+		margin: 0 auto;
+		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
+	}
+
+	.resume__header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: var(--space-4);
+		margin: 0 0 var(--space-12);
+	}
+
+	.resume__title {
+		margin: 0;
+		font-size: var(--font-heading-xl);
+		font-weight: var(--font-weight-bold);
+	}
+
+	.resume__download {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-2);
+	}
+
+	.resume__download-disabled {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-muted-foreground);
+		border: 1px solid var(--color-rod-secondary);
+		padding: var(--space-2) var(--space-4);
+		cursor: not-allowed;
+	}
+
+	.resume__download-note {
+		font-size: var(--font-caption);
+		font-style: italic;
+		color: var(--color-muted-foreground);
+	}
+
+	.resume__list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-10);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.resume__link {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding-left: var(--space-5);
+		text-decoration: none;
+		color: var(--color-foreground);
+	}
+
+	.resume__leader {
+		position: absolute;
+		left: 0;
+		top: 0.35em;
+		bottom: 0.35em;
+		width: 1px;
+		background: var(--color-rod-secondary);
+	}
+
+	.resume__link:hover .resume__leader {
+		background: var(--color-cord-tension);
+	}
+
+	.resume__meta {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-rod-secondary);
+	}
+
+	.resume__role {
+		margin-top: var(--space-1);
+		font-size: var(--font-body);
+		font-weight: var(--font-weight-semibold);
+	}
+
+	.resume__metrics {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2) var(--space-6);
+		margin: var(--space-3) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.resume__metric {
+		font-size: var(--font-body-sm);
+	}
+
+	.resume__metric-value {
+		font-weight: var(--font-weight-semibold);
+	}
+
+	.resume__metric-what {
+		color: var(--color-muted-foreground);
+	}
+</style>
