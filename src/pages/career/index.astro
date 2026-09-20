@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import LeaderLink from "../../components/LeaderLink.astro";
 
 const entries = await getCollection("career");
 const sorted = entries.sort(
@@ -15,11 +16,10 @@ const sorted = entries.sort(
 			{
 				sorted.map((entry) => (
 					<li class="career-index__item">
-						<a class="career-index__link" href={`/career/${entry.id}`}>
-							<span class="career-index__leader" aria-hidden="true" />
+						<LeaderLink href={`/career/${entry.id}`}>
 							<span class="career-index__role">{entry.data.title}</span>
 							<span class="career-index__org">{entry.data.organization}</span>
-						</a>
+						</LeaderLink>
 					</li>
 				))
 			}
@@ -47,28 +47,6 @@ const sorted = entries.sort(
 		margin: 0;
 		padding: 0;
 		list-style: none;
-	}
-
-	.career-index__link {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		padding-left: var(--space-5);
-		text-decoration: none;
-		color: var(--color-foreground);
-	}
-
-	.career-index__leader {
-		position: absolute;
-		left: 0;
-		top: 0.35em;
-		bottom: 0.35em;
-		width: 1px;
-		background: var(--color-rod-secondary);
-	}
-
-	.career-index__link:hover .career-index__leader {
-		background: var(--color-cord-tension);
 	}
 
 	.career-index__role {

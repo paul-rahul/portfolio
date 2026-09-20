@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import QuickFactStrip from "../components/QuickFactStrip.astro";
+import LeaderLink from "../components/LeaderLink.astro";
 
 const quickFacts = [
 	{ label: "Background", value: "~6 yrs, ML engineering → product" },
@@ -49,11 +50,10 @@ const highlights = [
 			{
 				highlights.map((highlight) => (
 					<li class="highlights__item">
-						<a class="highlights__link" href={highlight.href}>
-							<span class="highlights__leader" aria-hidden="true" />
+						<LeaderLink href={highlight.href}>
 							<span class="highlights__org">{highlight.org}</span>
 							<span class="highlights__headline">{highlight.headline}</span>
-						</a>
+						</LeaderLink>
 					</li>
 				))
 			}
@@ -154,28 +154,6 @@ const highlights = [
 		margin: 0;
 		padding: 0;
 		list-style: none;
-	}
-
-	.highlights__link {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		padding-left: var(--space-5);
-		text-decoration: none;
-		color: var(--color-foreground);
-	}
-
-	.highlights__leader {
-		position: absolute;
-		left: 0;
-		top: 0.35em;
-		bottom: 0.35em;
-		width: 1px;
-		background: var(--color-rod-secondary);
-	}
-
-	.highlights__link:hover .highlights__leader {
-		background: var(--color-cord-tension);
 	}
 
 	.highlights__org {
