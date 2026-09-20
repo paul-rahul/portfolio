@@ -1,11 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import QuickFactStrip from "../components/QuickFactStrip.astro";
 
 const quickFacts = [
 	{ label: "Background", value: "~6 yrs, ML engineering → product" },
 	{ label: "Focus", value: "Post-MBA product management" },
-	{ label: "Program", value: "MBA candidate, UT Austin McCombs" },
-	{ label: "Status", value: "Open to full-time, 2027" },
+	{ label: "Based in", value: "Austin, TX" },
+	{ label: "Status", value: "Open to full-time, 2027", pill: true },
+];
+
+const highlights = [
+	{
+		org: "Dream11",
+		headline: "$8M in the first 60 days, in-app ad launch",
+		href: "/career/dream11",
+	},
+	{
+		org: "Media.net",
+		headline: "$80M revenue, AI-based bid price optimizer",
+		href: "/career/medianet-sde",
+	},
 ];
 ---
 
@@ -27,13 +41,19 @@ const quickFacts = [
 	</section>
 
 	<section class="facts" aria-label="Quick facts">
-		<ul class="facts__strip">
+		<QuickFactStrip facts={quickFacts} />
+	</section>
+
+	<section class="highlights" aria-label="Highlights">
+		<ul class="highlights__list">
 			{
-				quickFacts.map((fact) => (
-					<li class="facts__item">
-						<span class="facts__leader" aria-hidden="true" />
-						<span class="facts__label">{fact.label}</span>
-						<span class="facts__value">{fact.value}</span>
+				highlights.map((highlight) => (
+					<li class="highlights__item">
+						<a class="highlights__link" href={highlight.href}>
+							<span class="highlights__leader" aria-hidden="true" />
+							<span class="highlights__org">{highlight.org}</span>
+							<span class="highlights__headline">{highlight.headline}</span>
+						</a>
 					</li>
 				))
 			}
@@ -51,9 +71,9 @@ const quickFacts = [
 		justify-content: center;
 	}
 
-	/* Two rods lean in from the corners without touching; two cords in
+	/* Two rods lean in from corners without touching; two cords in
 	   visible tension hold the load between them. Nothing here touches
-	   the text mass directly — the tension is what suspends it. */
+	   the text mass directly — tension suspends it. */
 	.hero__rig {
 		position: absolute;
 		inset: 0;
@@ -104,7 +124,7 @@ const quickFacts = [
 		position: relative;
 		z-index: 1;
 		text-align: center;
-		max-width: 34rem;
+		max-width: 36rem;
 	}
 
 	.hero__name {
@@ -121,39 +141,44 @@ const quickFacts = [
 		line-height: var(--leading-relaxed);
 	}
 
-	/* Quick facts: each one an instrument readout hanging off its own
-	   leader line, monospace label as if annotated at a measured node. */
-	.facts__strip {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: var(--space-8);
-		max-width: 60rem;
+	.highlights {
+		max-width: 48rem;
 		margin: 0 auto;
-		padding: 0 var(--spacing-page-x) var(--space-20);
+		padding: 0 var(--spacing-page-x) var(--space-24);
+	}
+
+	.highlights__list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-6);
+		margin: 0;
+		padding: 0;
 		list-style: none;
 	}
 
-	.facts__item {
+	.highlights__link {
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		padding-top: var(--space-4);
-		min-width: 9rem;
+		padding-left: var(--space-5);
+		text-decoration: none;
+		color: var(--color-foreground);
 	}
 
-	.facts__leader {
+	.highlights__leader {
 		position: absolute;
-		top: 0;
-		left: 50%;
+		left: 0;
+		top: 0.35em;
+		bottom: 0.35em;
 		width: 1px;
-		height: var(--space-4);
 		background: var(--color-rod-secondary);
-		transform: translateX(-50%);
 	}
 
-	.facts__label {
+	.highlights__link:hover .highlights__leader {
+		background: var(--color-cord-tension);
+	}
+
+	.highlights__org {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-caption);
 		letter-spacing: 0.04em;
@@ -161,9 +186,9 @@ const quickFacts = [
 		color: var(--color-rod-secondary);
 	}
 
-	.facts__value {
+	.highlights__headline {
 		margin-top: var(--space-1);
-		font-size: var(--font-body-sm);
-		text-align: center;
+		font-size: var(--font-body);
+		font-weight: var(--font-weight-semibold);
 	}
 </style>
