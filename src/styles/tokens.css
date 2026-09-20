@@ -1,0 +1,142 @@
+/*
+  Design tokens: primitive → semantic → component (see design-system skill).
+  Visual world: tensegrity engineering diagram (impeccable direction
+  contract, src/layouts/BaseLayout.astro surface brief) — every fact on the
+  site visibly hangs in tension, traceable by a leader line to what's
+  holding it up. Matte carbon-black rods and hairline leader lines on a
+  pale concrete ground; one red tension cord as the only saturated accent,
+  reserved for what's currently load-bearing.
+*/
+
+:root {
+  /* ---------- Primitive: color ---------- */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+
+  /* Tensegrity world primitives */
+  --color-rod: #1a1a18;
+  --color-rod-slack: #8a8983;
+  --color-concrete: #ece9e2;
+  --color-concrete-dark: #d8d4c9;
+  --color-cord: #c81e1e;
+  --color-cord-dim: #8f1717;
+
+  --color-accent-500: #c81e1e;
+  --color-accent-600: #a81717;
+  --color-accent-700: #8f1717;
+
+  /* ---------- Primitive: spacing (4px base unit) ---------- */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* ---------- Primitive: typography ---------- */
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-mono: "SF Mono", ui-monospace, "Roboto Mono", Menlo, Consolas, monospace;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ---------- Primitive: radius / shadow / motion ---------- */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+
+  /* ---------- Semantic: page ---------- */
+  --color-background: var(--color-concrete);
+  --color-foreground: var(--color-rod);
+
+  --color-card: var(--color-concrete);
+  --color-card-foreground: var(--color-rod);
+
+  --color-border: var(--color-rod);
+
+  /* Rod / cord — the load-bearing structure itself, not decoration */
+  --color-rod-primary: var(--color-rod);
+  --color-rod-secondary: var(--color-rod-slack);
+  --color-cord-tension: var(--color-cord);
+
+  /* ---------- Semantic: interactive ---------- */
+  --color-primary: var(--color-accent-600);
+  --color-primary-hover: var(--color-accent-700);
+  --color-primary-foreground: white;
+
+  --color-muted: var(--color-concrete-dark);
+  --color-muted-foreground: var(--color-rod-slack);
+
+  --color-ring: var(--color-accent-500);
+
+  /* ---------- Semantic: typography roles ---------- */
+  --font-heading: var(--font-size-2xl);
+  --font-heading-lg: var(--font-size-3xl);
+  --font-heading-xl: var(--font-size-4xl);
+
+  --font-body: var(--font-size-base);
+  --font-body-sm: var(--font-size-sm);
+
+  --font-label: var(--font-size-sm);
+  --font-caption: var(--font-size-xs);
+
+  /* ---------- Semantic: layout ---------- */
+  --spacing-section: var(--space-16);
+  --spacing-section-sm: var(--space-8);
+  --spacing-page-x: var(--space-4);
+
+  /*
+    Voice-boundary tokens: Career/Resume are metric-first/credential-forward,
+    About is the one page where personality/wit is allowed (see
+    portfolio_content_menu_and_voice memory). Marked as distinct tokens so
+    layouts can opt into a warmer tonal treatment without redefining colors
+    ad hoc per page.
+  */
+  --color-voice-credential-accent: var(--color-accent-600);
+  --color-voice-personal-accent: var(--color-accent-500);
+
+  /*
+    The tensegrity world is fixed-light regardless of OS theme — declaring
+    this explicitly stops Chrome's forced-dark heuristic from inverting an
+    unstyled-looking page and repainting our own tokens.
+  */
+  color-scheme: light;
+}

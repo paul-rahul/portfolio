@@ -1,0 +1,169 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const quickFacts = [
+	{ label: "Background", value: "~6 yrs, ML engineering → product" },
+	{ label: "Focus", value: "Post-MBA product management" },
+	{ label: "Program", value: "MBA candidate, UT Austin McCombs" },
+	{ label: "Status", value: "Open to full-time, 2027" },
+];
+---
+
+<BaseLayout title="Rahul Paul">
+	<section class="hero">
+		<div class="hero__rig" aria-hidden="true">
+			<span class="hero__rod hero__rod--left"></span>
+			<span class="hero__rod hero__rod--right"></span>
+			<span class="hero__cord hero__cord--left"></span>
+			<span class="hero__cord hero__cord--right"></span>
+		</div>
+		<div class="hero__load">
+			<h1 class="hero__name">Rahul Paul</h1>
+			<p class="hero__positioning">
+				Product manager carrying ~6 years across ML engineering and product,
+				building toward full-time PM roles after McCombs.
+			</p>
+		</div>
+	</section>
+
+	<section class="facts" aria-label="Quick facts">
+		<ul class="facts__strip">
+			{
+				quickFacts.map((fact) => (
+					<li class="facts__item">
+						<span class="facts__leader" aria-hidden="true" />
+						<span class="facts__label">{fact.label}</span>
+						<span class="facts__value">{fact.value}</span>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</BaseLayout>
+
+<style>
+	.hero {
+		position: relative;
+		max-width: 72rem;
+		margin: 0 auto;
+		padding: var(--space-24) var(--spacing-page-x) var(--space-16);
+		display: flex;
+		justify-content: center;
+	}
+
+	/* Two rods lean in from the corners without touching; two cords in
+	   visible tension hold the load between them. Nothing here touches
+	   the text mass directly — the tension is what suspends it. */
+	.hero__rig {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.hero__rod {
+		position: absolute;
+		top: var(--space-12);
+		width: 2px;
+		height: 40%;
+		background: var(--color-rod-primary);
+	}
+
+	.hero__rod--left {
+		left: 12%;
+		transform: rotate(8deg);
+		transform-origin: top;
+	}
+
+	.hero__rod--right {
+		right: 12%;
+		transform: rotate(-8deg);
+		transform-origin: top;
+	}
+
+	.hero__cord {
+		position: absolute;
+		top: calc(var(--space-12) + 40%);
+		width: 1px;
+		height: 30%;
+		background: var(--color-cord-tension);
+	}
+
+	.hero__cord--left {
+		left: 12%;
+		transform: rotate(-14deg);
+		transform-origin: top;
+	}
+
+	.hero__cord--right {
+		right: 12%;
+		transform: rotate(14deg);
+		transform-origin: top;
+	}
+
+	.hero__load {
+		position: relative;
+		z-index: 1;
+		text-align: center;
+		max-width: 34rem;
+	}
+
+	.hero__name {
+		margin: 0 0 var(--space-3);
+		font-size: var(--font-heading-xl);
+		font-weight: var(--font-weight-bold);
+		line-height: var(--leading-tight);
+	}
+
+	.hero__positioning {
+		margin: 0;
+		font-size: var(--font-body-sm);
+		color: var(--color-muted-foreground);
+		line-height: var(--leading-relaxed);
+	}
+
+	/* Quick facts: each one an instrument readout hanging off its own
+	   leader line, monospace label as if annotated at a measured node. */
+	.facts__strip {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-8);
+		max-width: 60rem;
+		margin: 0 auto;
+		padding: 0 var(--spacing-page-x) var(--space-20);
+		list-style: none;
+	}
+
+	.facts__item {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: var(--space-4);
+		min-width: 9rem;
+	}
+
+	.facts__leader {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		width: 1px;
+		height: var(--space-4);
+		background: var(--color-rod-secondary);
+		transform: translateX(-50%);
+	}
+
+	.facts__label {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-rod-secondary);
+	}
+
+	.facts__value {
+		margin-top: var(--space-1);
+		font-size: var(--font-body-sm);
+		text-align: center;
+	}
+</style>
