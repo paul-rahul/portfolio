@@ -1,25 +1,39 @@
 ---
 const navItems = [
 	{ label: "Career", href: "/career" },
-	{ label: "Internships", href: "/internships/cisco" },
+	{ label: "Internships", href: "/internships" },
 	{ label: "Built", href: "/built" },
 	{ label: "About", href: "/about" },
 	{ label: "Resume", href: "/resume" },
 	{ label: "Contact", href: "/contact" },
 ];
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => href !== "/" && (path === href || path.startsWith(`${href}/`));
 ---
 
 <nav class="rod-nav" aria-label="Primary">
 	<div class="rod-nav__rail">
-		{
-			navItems.map((item) => (
-				<span class="rod-nav__node">
-					<a class="rod-nav__link" href={item.href}>
-						{item.label}
-					</a>
-				</span>
-			))
-		}
+		<span class="rod-nav__node rod-nav__node--brand">
+			<a class="rod-nav__link rod-nav__link--brand" href="/">
+				Rahul Paul
+			</a>
+		</span>
+		<span class="rod-nav__group">
+			{
+				navItems.map((item) => (
+					<span class="rod-nav__node">
+						<a
+							class="rod-nav__link"
+							href={item.href}
+							aria-current={isActive(item.href) ? "page" : undefined}
+						>
+							{item.label}
+						</a>
+					</span>
+				))
+			}
+		</span>
 	</div>
 </nav>
 
@@ -38,11 +52,17 @@ const navItems = [
 		position: relative;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: space-between;
 		gap: var(--space-10);
 		max-width: 72rem;
 		margin: 0 auto;
 		padding: var(--space-5) var(--spacing-page-x);
+	}
+
+	.rod-nav__group {
+		display: flex;
+		align-items: center;
+		gap: var(--space-10);
 	}
 
 	/* Below the six-item rail's natural width, let it scroll horizontally
@@ -54,6 +74,10 @@ const navItems = [
 			gap: var(--space-6);
 			overflow-x: auto;
 			-webkit-overflow-scrolling: touch;
+		}
+
+		.rod-nav__group {
+			gap: var(--space-6);
 		}
 	}
 
@@ -99,11 +123,23 @@ const navItems = [
 		transform: translateX(-50%);
 	}
 
-	.rod-nav__link:hover {
+	.rod-nav__link:hover,
+	.rod-nav__link[aria-current="page"] {
 		color: var(--color-cord-tension);
 	}
 
-	.rod-nav__link:hover::before {
+	.rod-nav__link:hover::before,
+	.rod-nav__link[aria-current="page"]::before {
 		background: var(--color-cord-tension);
+	}
+
+	/* Brand/wordmark node: same rod-anchored dot, but set in the body
+	   typeface at weight to read as identity, not a nav destination. */
+	.rod-nav__link--brand {
+		font-family: var(--font-family-base);
+		font-size: var(--font-body-sm);
+		font-weight: var(--font-weight-semibold);
+		letter-spacing: normal;
+		text-transform: none;
 	}
 </style>

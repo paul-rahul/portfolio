@@ -3,12 +3,22 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import QuickFactStrip from "../components/QuickFactStrip.astro";
 import EntryCard from "../components/EntryCard.astro";
+import LeaderLink from "../components/LeaderLink.astro";
 
 const quickFacts = [
 	{ label: "Background", value: "~6 yrs, ML engineering → product" },
 	{ label: "Focus", value: "Post-MBA product management" },
 	{ label: "Based in", value: "Austin, TX" },
-	{ label: "Status", value: "Open to full-time, 2027", pill: true },
+	{ label: "Status", value: "Open to full-time · Grad 2027", pill: true },
+];
+
+const sectionPreviews = [
+	{ label: "Career", href: "/career", promise: "Quantified history across five roles" },
+	{ label: "Internships", href: "/internships", promise: "MBA summer internship, in detail" },
+	{ label: "Built", href: "/built", promise: "Independent projects — none posted yet" },
+	{ label: "About", href: "/about", promise: "Background outside the resume" },
+	{ label: "Resume", href: "/resume", promise: "Single-document summary" },
+	{ label: "Contact", href: "/contact", promise: "Email and LinkedIn" },
 ];
 
 const highlightIds = ["dream11", "medianet-sde"];
@@ -29,7 +39,7 @@ const highlights = highlightIds
 		<div class="hero__load">
 			<h1 class="hero__name">Rahul Paul</h1>
 			<p class="hero__positioning">
-				Product manager carrying ~6 years across ML engineering and product,
+				Product manager with ~6 years across ML engineering and product,
 				building toward full-time PM roles after McCombs.
 			</p>
 		</div>
@@ -39,7 +49,8 @@ const highlights = highlightIds
 		<QuickFactStrip facts={quickFacts} />
 	</section>
 
-	<section class="highlights" aria-label="Highlights">
+	<section class="highlights">
+		<h2 class="highlights__title">Highlights</h2>
 		<div class="highlights__grid">
 			{
 				highlights.map((entry) => (
@@ -53,6 +64,25 @@ const highlights = highlightIds
 				))
 			}
 		</div>
+		<LeaderLink href="/career" class="highlights__more">
+			Full career history →
+		</LeaderLink>
+	</section>
+
+	<section class="site-map">
+		<h2 class="site-map__title">Elsewhere on this site</h2>
+		<ul class="site-map__list">
+			{
+				sectionPreviews.map((item) => (
+					<li>
+						<LeaderLink href={item.href} class="site-map__link">
+							<span class="site-map__label">{item.label}</span>
+							<span class="site-map__promise">{item.promise}</span>
+						</LeaderLink>
+					</li>
+				))
+			}
+		</ul>
 	</section>
 </BaseLayout>
 
@@ -139,12 +169,63 @@ const highlights = highlightIds
 	.highlights {
 		max-width: 56rem;
 		margin: 0 auto;
-		padding: 0 var(--spacing-page-x) var(--space-24);
+		padding: 0 var(--spacing-page-x) var(--space-16);
+	}
+
+	.highlights__title {
+		margin: 0 0 var(--space-6);
+		font-size: var(--font-heading);
+		font-weight: var(--font-weight-bold);
 	}
 
 	.highlights__grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 		gap: var(--space-6);
+	}
+
+	.highlights__more {
+		margin-top: var(--space-6);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.02em;
+	}
+
+	.site-map {
+		max-width: 56rem;
+		margin: 0 auto;
+		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
+		border-top: 1px solid var(--color-card-border);
+	}
+
+	.site-map__title {
+		margin: 0 0 var(--space-6);
+		font-size: var(--font-heading);
+		font-weight: var(--font-weight-bold);
+	}
+
+	.site-map__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: var(--space-6);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.site-map__link {
+		gap: var(--space-1);
+	}
+
+	.site-map__label {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-caption);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.site-map__promise {
+		font-size: var(--font-body-sm);
+		color: var(--color-muted-foreground);
 	}
 </style>

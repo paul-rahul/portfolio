@@ -28,6 +28,10 @@
   /* Tensegrity world primitives */
   --color-rod: #1a1a18;
   --color-rod-slack: #8a8983;
+  /* Darker than rod-slack on purpose: rod-slack is a decorative line
+     color (leader lines, borders) with no contrast requirement; this is
+     for text that must clear WCAG AA (4.5:1) against concrete/paper. */
+  --color-rod-slack-text: #605f58;
   --color-concrete: #ece9e2;
   --color-concrete-dark: #d8d4c9;
   --color-paper: #fffdfa;
@@ -109,7 +113,7 @@
   --color-primary-foreground: white;
 
   --color-muted: var(--color-concrete-dark);
-  --color-muted-foreground: var(--color-rod-slack);
+  --color-muted-foreground: var(--color-rod-slack-text);
 
   --color-ring: var(--color-accent-500);
 
