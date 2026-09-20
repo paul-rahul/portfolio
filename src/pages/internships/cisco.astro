@@ -1,7 +1,18 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import CareerEntry from "../../layouts/CareerEntry.astro";
+
+const [entry] = await getCollection("internships");
+const { Content } = await render(entry);
 ---
 
-<BaseLayout title="Cisco Internship — Rahul Paul">
-	<h1>Cisco Internship</h1>
-</BaseLayout>
+<CareerEntry
+	title={entry.data.title}
+	organization={entry.data.organization}
+	dateRange={entry.data.dateRange}
+	attribution={entry.data.attribution}
+	metrics={entry.data.metrics}
+	summary={entry.data.summary}
+>
+	<Content />
+</CareerEntry>
