@@ -1,155 +1,30 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import LeaderLink from "../components/LeaderLink.astro";
-
-const career = await getCollection("career");
-const internships = await getCollection("internships");
-
-const entries = [...career, ...internships]
-	.map((entry) => ({
-		...entry,
-		href:
-			entry.collection === "career"
-				? `/career/${entry.id}`
-				: `/internships/${entry.id}`,
-	}))
-	.sort(
-		(a, b) =>
-			Date.parse(b.data.dateRange.start) - Date.parse(a.data.dateRange.start),
-	);
-
-const dateLabel = (dateRange: { start: string; end: string }) =>
-	dateRange.end === "present"
-		? `${dateRange.start} — present`
-		: `${dateRange.start} — ${dateRange.end}`;
 ---
 
-<BaseLayout title="Resume — Rahul Paul">
-	<section class="resume">
-		<header class="resume__header">
-			<h1 class="resume__title">Resume</h1>
-			<div class="resume__download">
-				<span class="resume__download-disabled" aria-disabled="true">
-					Download PDF
-				</span>
-				<span class="resume__download-note">Coming soon</span>
+<BaseLayout title="Résumé | Rahul Paul">
+	<main class="wrap">
+		<section class="page-hero">
+			<span class="page-chip">Résumé</span>
+			<h1>The one-page version.</h1>
+			<p class="lede">A concise view of my product, AI and engineering experience.</p>
+		</section>
+		<section class="resume-card">
+			<div>
+				<h2>Rahul Paul</h2>
+				<p>Product leader and former ML engineer with experience across advertising technology, consumer products, AI platforms and go-to-market.</p>
+				<div class="mini-tags"><span>Product strategy</span><span>ML products</span><span>Experimentation</span><span>GTM</span></div>
 			</div>
-		</header>
-
-		<ol class="resume__list">
-			{
-				entries.map((entry) => (
-					<li class="resume__item">
-						<LeaderLink href={entry.href}>
-							<span class="resume__meta">
-								{entry.data.organization} · {dateLabel(entry.data.dateRange)}
-							</span>
-							<span class="resume__role">{entry.data.title}</span>
-							<ul class="resume__metrics">
-								{entry.data.metrics.slice(0, 2).map((metric) => (
-									<li class="resume__metric">
-										<span class="resume__metric-value">{metric.value}</span>{" "}
-										<span class="resume__metric-what">
-											{metric.whatItMeasured}
-										</span>
-									</li>
-								))}
-							</ul>
-						</LeaderLink>
-					</li>
-				))
-			}
-		</ol>
-	</section>
+			<div class="actions">
+				<a class="button primary" href="/Rahul_Paul_Resume.pdf" download>
+					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12" /><polyline points="7 10 12 15 17 10" /><path d="M5 21h14" /></svg>
+					Download PDF
+				</a>
+				<a class="button ghost" href="/Rahul_Paul_Resume.pdf" target="_blank">
+					Open
+					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+				</a>
+			</div>
+		</section>
+	</main>
 </BaseLayout>
-
-<style>
-	.resume {
-		max-width: 48rem;
-		margin: 0 auto;
-		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
-	}
-
-	.resume__header {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		gap: var(--space-4);
-		margin: 0 0 var(--space-12);
-	}
-
-	.resume__title {
-		margin: 0;
-		font-size: var(--font-heading-xl);
-		font-weight: var(--font-weight-bold);
-	}
-
-	.resume__download {
-		display: flex;
-		align-items: baseline;
-		gap: var(--space-2);
-	}
-
-	.resume__download-disabled {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-caption);
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--color-muted-foreground);
-		border: 1px solid var(--color-rod-secondary);
-		padding: var(--space-2) var(--space-4);
-		cursor: not-allowed;
-	}
-
-	.resume__download-note {
-		font-size: var(--font-caption);
-		font-style: italic;
-		color: var(--color-muted-foreground);
-	}
-
-	.resume__list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-10);
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.resume__meta {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-caption);
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--color-rod-secondary);
-	}
-
-	.resume__role {
-		margin-top: var(--space-1);
-		font-size: var(--font-body);
-		font-weight: var(--font-weight-semibold);
-	}
-
-	.resume__metrics {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2) var(--space-6);
-		margin: var(--space-3) 0 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.resume__metric {
-		font-size: var(--font-body-sm);
-	}
-
-	.resume__metric-value {
-		font-weight: var(--font-weight-semibold);
-	}
-
-	.resume__metric-what {
-		color: var(--color-muted-foreground);
-	}
-</style>

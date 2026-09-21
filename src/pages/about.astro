@@ -1,50 +1,34 @@
 ---
-import { getCollection, render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const [entry] = await getCollection("about");
-const { Content } = await render(entry);
 ---
 
-<BaseLayout title="About — Rahul Paul">
-	<article class="about voice-personal">
-		<p class="about__tagline">{entry.data.tagline}</p>
-		<div class="about__body">
-			<Content />
-		</div>
-	</article>
+<BaseLayout title="About | Rahul Paul">
+	<main class="wrap">
+		<section class="page-hero">
+			<span class="page-chip">About</span>
+			<h1>Technical enough to go deep. Curious enough to ask why.</h1>
+			<p class="lede">I've moved from building models to deciding which problems deserve a product—and I'm currently sharpening that judgment at Texas McCombs.</p>
+		</section>
+		<section class="editorial-grid">
+			<article class="editorial-card large">
+				<p class="kicker">The through-line</p>
+				<h2 class="editorial-title">I like messy problems with a measurable finish line.</h2>
+				<p>My background spans consumer electronics, ad tech, government technology, fantasy sports and AI. The category changes. The work stays familiar: understand the system, find the constraint, and bring people together around a clear outcome.</p>
+			</article>
+			<article class="editorial-card peach-card">
+				<span class="hand-note">currently → Austin, TX</span>
+				<h2>Texas McCombs</h2>
+				<p>MBA candidate focused on Brand and Product Management, graduating May 2027.</p>
+			</article>
+			<article class="editorial-card mint-card">
+				<h2>Off the clock</h2>
+				<p>Competitive enough for badminton. Curious enough to always have a book open. Unapologetically invested in reality TV.</p>
+				<div class="mini-tags"><span>Badminton</span><span>Reading</span><span>Reality TV</span></div>
+			</article>
+			<article class="editorial-card sky-card">
+				<h2>How I tend to work</h2>
+				<div class="mini-tags"><span>Start with the user</span><span>Interrogate the metric</span><span>Translate the technical</span><span>Ship, learn, sharpen</span></div>
+			</article>
+		</section>
+	</main>
 </BaseLayout>
-
-<style>
-	/*
-	  voice-personal is the architectural marker for the one page where
-	  personality/wit is allowed (see design-system voice-boundary tokens
-	  in tokens.css) — a distinct tonal treatment, not just different copy.
-	*/
-	.about {
-		max-width: 40rem;
-		margin: 0 auto;
-		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
-	}
-
-	.about__tagline {
-		margin: 0 0 var(--space-8);
-		font-size: var(--font-heading);
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--leading-snug);
-		color: var(--color-voice-personal-accent);
-	}
-
-	.about__body {
-		font-size: var(--font-body);
-		line-height: var(--leading-relaxed);
-	}
-
-	.about__body :global(p) {
-		margin: 0 0 var(--space-6);
-	}
-
-	.about__body :global(p:last-child) {
-		margin-bottom: 0;
-	}
-</style>

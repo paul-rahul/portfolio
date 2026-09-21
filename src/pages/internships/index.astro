@@ -1,49 +1,22 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import EntryCard from "../../components/EntryCard.astro";
-
-const entries = await getCollection("internships");
-const sorted = entries.sort(
-	(a, b) => Date.parse(b.data.dateRange.start) - Date.parse(a.data.dateRange.start),
-);
 ---
 
-<BaseLayout title="Internships — Rahul Paul">
-	<section class="internships-index">
-		<h1 class="internships-index__title">Internships</h1>
-		<div class="internships-index__grid">
-			{
-				sorted.map((entry) => (
-					<EntryCard
-						href={`/internships/${entry.id}`}
-						organization={entry.data.organization}
-						title={entry.data.title}
-						summary={entry.data.summary}
-						topMetric={entry.data.metrics[0]}
-					/>
-				))
-			}
-		</div>
-	</section>
+<BaseLayout title="Internships | Rahul Paul">
+	<main class="wrap">
+		<section class="page-hero">
+			<span class="page-chip">Internships</span>
+			<h1>A summer translating AI capability into market clarity.</h1>
+			<p class="lede">Cisco · Product Marketing MBA Intern · June — August 2026</p>
+		</section>
+		<article class="feature-card">
+			<img src="/experiments-clay.jpg" alt="Clay illustration representing product experimentation" />
+			<div class="feature-copy">
+				<p class="kicker">Cisco</p>
+				<h2>Making AI easier to validate, explain and launch.</h2>
+				<p>Built a translation-validation proof of concept, shaped a six-month roadmap with broad stakeholder input, and developed launch messaging for AI sales enablement.</p>
+				<div class="metrics"><span><b>15%</b> token reduction</span><span><b>50</b> stakeholders</span><span><b>6 mo.</b> roadmap</span></div>
+			</div>
+		</article>
+	</main>
 </BaseLayout>
-
-<style>
-	.internships-index {
-		max-width: 64rem;
-		margin: 0 auto;
-		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
-	}
-
-	.internships-index__title {
-		margin: 0 0 var(--space-8);
-		font-size: var(--font-heading-xl);
-		font-weight: var(--font-weight-bold);
-	}
-
-	.internships-index__grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-		gap: var(--space-6);
-	}
-</style>
