@@ -1,14 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
 ---
 
 <BaseLayout title="About | Rahul Paul">
 	<main class="wrap">
-		<section class="page-hero">
-			<span class="page-chip">About</span>
-			<h1>Technical enough to go deep. Curious enough to ask why.</h1>
-			<p class="lede">I've moved from building models to deciding which problems deserve a product—and I'm currently sharpening that judgment at Texas McCombs.</p>
-		</section>
+		<PageHero
+			chip="About"
+			title="Technical enough to go deep. Curious enough to ask why."
+			lede="I've moved from building models to deciding which problems deserve a product—and I'm currently sharpening that judgment at Texas McCombs."
+		/>
 		<section class="editorial-grid">
 			<article class="editorial-card large">
 				<p class="kicker">The through-line</p>

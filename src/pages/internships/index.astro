@@ -1,14 +1,15 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
 ---
 
 <BaseLayout title="Internships | Rahul Paul">
 	<main class="wrap">
-		<section class="page-hero">
-			<span class="page-chip">Internships</span>
-			<h1>A summer translating AI capability into market clarity.</h1>
-			<p class="lede">Cisco · Product Marketing MBA Intern · June — August 2026</p>
-		</section>
+		<PageHero
+			chip="Internships"
+			title="A summer translating AI capability into market clarity."
+			lede="Cisco · Product Marketing MBA Intern · June — August 2026"
+		/>
 		<article class="feature-card">
 			<img src="/experiments-clay.jpg" alt="Clay illustration representing product experimentation" />
 			<div class="feature-copy">

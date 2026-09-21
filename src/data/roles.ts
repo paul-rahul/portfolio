@@ -1,0 +1,105 @@
+export interface Role {
+	id: string;
+	company: string;
+	title: string;
+	period: string;
+	summary: string;
+	metrics: [string, string][];
+	outcomes: string[];
+	color: string;
+}
+
+export const roles: Role[] = [
+	{
+		id: "dream11",
+		company: "Dream11",
+		title: "Product Manager, ML Applications",
+		period: "Feb — Aug 2025",
+		summary:
+			"Owned two ML-backed product bets: a new in-app advertising surface and an internal platform that made model workflows easier for operators to use.",
+		metrics: [
+			["$8M", "Revenue · first 60 days"],
+			["$20M", "Retention lift"],
+			["100+", "Daily platform users"],
+		],
+		outcomes: [
+			"Launched in-app advertising as a new monetization line, aligning product, data science, engineering and commercial teams.",
+			"Built a separate ML application platform used by 100+ daily users and delivering approximately $500K in annual savings.",
+			"Translated model behavior into operator-facing workflows, adoption metrics and a roadmap teams could execute.",
+		],
+		color: "#e9dcff",
+	},
+	{
+		id: "medianet",
+		company: "Media.net",
+		title: "Associate Product Manager",
+		period: "Jul 2023 — Jul 2024",
+		summary: "Turned experimentation and traffic intelligence into repeatable product systems for advertising teams.",
+		metrics: [
+			["$35M", "Traffic optimizer revenue"],
+			["70%", "Cost reduction"],
+			["30", "Experiments · 6 months"],
+		],
+		outcomes: [
+			"Shipped a B2B traffic optimizer that generated $35M in revenue while reducing costs by 70%.",
+			"Launched an experimentation platform with role-based access controls, supporting 30 experiments in six months.",
+			"Supported APAC go-to-market with customer and market insight grounded in product performance.",
+		],
+		color: "#d9f5de",
+	},
+	{
+		id: "medianet-sde",
+		company: "Media.net",
+		title: "Software Development Engineer",
+		period: "Jul 2021 — Jul 2023",
+		summary: "Built the ML and data foundation that later informed how I lead products.",
+		metrics: [
+			["$80M", "Revenue · 12 months"],
+			["TB/day", "HDFS pipelines"],
+			["ML", "Bid prediction"],
+		],
+		outcomes: [
+			"Developed a bid-prediction model powering an advertising pricing optimizer that generated $80M over 12 months.",
+			"Built and operated large-scale data pipelines processing terabytes per day in HDFS.",
+			"Worked close to the model, infrastructure and business logic—experience I now use to set realistic product direction.",
+		],
+		color: "#dcecff",
+	},
+	{
+		id: "samagra",
+		company: "Samagra",
+		title: "Product & GTM",
+		period: "2021",
+		summary:
+			"Used buyer research and go-to-market strategy to shape adoption for an LLM platform serving government and enterprise contexts.",
+		metrics: [
+			["$700K", "New ARR"],
+			["B2B", "Buyer research"],
+			["LLM", "Platform GTM"],
+		],
+		outcomes: [
+			"Led buyer and market research to clarify high-value use cases and decision criteria.",
+			"Developed go-to-market direction that contributed to $700K in new ARR.",
+			"Bridged technical platform capabilities with the language, proof points and workflows buyers needed.",
+		],
+		color: "#ffd9c4",
+	},
+	{
+		id: "samsung",
+		company: "Samsung Research",
+		title: "ML Engineer",
+		period: "2018 — 2021",
+		summary: "Applied computer vision and color science to flagship mobile experiences at global scale.",
+		metrics: [
+			["25M+", "Flagship devices"],
+			["$1B", "Device-line sales"],
+			["CV", "Night Mode"],
+		],
+		outcomes: [
+			"Contributed to Night Mode work on a device line associated with $1B in sales.",
+			"Developed color-tuning capabilities shipped across 25M+ flagship devices.",
+			"Learned to balance research quality, hardware constraints and the expectations of a mass-market product.",
+		],
+		color: "#ffe788",
+	},
+];

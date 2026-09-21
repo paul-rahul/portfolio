@@ -1,107 +1,16 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-
-const roles = [
-	{
-		id: "dream11",
-		company: "Dream11",
-		title: "Product Manager, ML Applications",
-		period: "Feb — Aug 2025",
-		summary: "Owned two ML-backed product bets: a new in-app advertising surface and an internal platform that made model workflows easier for operators to use.",
-		metrics: [
-			["$8M", "Revenue · first 60 days"],
-			["$20M", "Retention lift"],
-			["100+", "Daily platform users"],
-		],
-		outcomes: [
-			"Launched in-app advertising as a new monetization line, aligning product, data science, engineering and commercial teams.",
-			"Built a separate ML application platform used by 100+ daily users and delivering approximately $500K in annual savings.",
-			"Translated model behavior into operator-facing workflows, adoption metrics and a roadmap teams could execute.",
-		],
-		color: "#e9dcff",
-	},
-	{
-		id: "medianet",
-		company: "Media.net",
-		title: "Associate Product Manager",
-		period: "Jul 2023 — Jul 2024",
-		summary: "Turned experimentation and traffic intelligence into repeatable product systems for advertising teams.",
-		metrics: [
-			["$35M", "Traffic optimizer revenue"],
-			["70%", "Cost reduction"],
-			["30", "Experiments · 6 months"],
-		],
-		outcomes: [
-			"Shipped a B2B traffic optimizer that generated $35M in revenue while reducing costs by 70%.",
-			"Launched an experimentation platform with role-based access controls, supporting 30 experiments in six months.",
-			"Supported APAC go-to-market with customer and market insight grounded in product performance.",
-		],
-		color: "#d9f5de",
-	},
-	{
-		id: "medianet-sde",
-		company: "Media.net",
-		title: "Software Development Engineer",
-		period: "Jul 2021 — Jul 2023",
-		summary: "Built the ML and data foundation that later informed how I lead products.",
-		metrics: [
-			["$80M", "Revenue · 12 months"],
-			["TB/day", "HDFS pipelines"],
-			["ML", "Bid prediction"],
-		],
-		outcomes: [
-			"Developed a bid-prediction model powering an advertising pricing optimizer that generated $80M over 12 months.",
-			"Built and operated large-scale data pipelines processing terabytes per day in HDFS.",
-			"Worked close to the model, infrastructure and business logic—experience I now use to set realistic product direction.",
-		],
-		color: "#dcecff",
-	},
-	{
-		id: "samagra",
-		company: "Samagra",
-		title: "Product & GTM",
-		period: "2021",
-		summary: "Used buyer research and go-to-market strategy to shape adoption for an LLM platform serving government and enterprise contexts.",
-		metrics: [
-			["$700K", "New ARR"],
-			["B2B", "Buyer research"],
-			["LLM", "Platform GTM"],
-		],
-		outcomes: [
-			"Led buyer and market research to clarify high-value use cases and decision criteria.",
-			"Developed go-to-market direction that contributed to $700K in new ARR.",
-			"Bridged technical platform capabilities with the language, proof points and workflows buyers needed.",
-		],
-		color: "#ffd9c4",
-	},
-	{
-		id: "samsung",
-		company: "Samsung Research",
-		title: "ML Engineer",
-		period: "2018 — 2021",
-		summary: "Applied computer vision and color science to flagship mobile experiences at global scale.",
-		metrics: [
-			["25M+", "Flagship devices"],
-			["$1B", "Device-line sales"],
-			["CV", "Night Mode"],
-		],
-		outcomes: [
-			"Contributed to Night Mode work on a device line associated with $1B in sales.",
-			"Developed color-tuning capabilities shipped across 25M+ flagship devices.",
-			"Learned to balance research quality, hardware constraints and the expectations of a mass-market product.",
-		],
-		color: "#ffe788",
-	},
-];
+import PageHero from "../../components/PageHero.astro";
+import { roles } from "../../data/roles.ts";
 ---
 
 <BaseLayout title="Career | Rahul Paul">
 	<main class="wrap">
-		<section class="page-hero">
-			<span class="page-chip">Career</span>
-			<h1>A career built at the intersection of models, markets and people.</h1>
-			<p class="lede">Select a role to see the product decisions, systems and measurable outcomes behind it.</p>
-		</section>
+		<PageHero
+			chip="Career"
+			title="A career built at the intersection of models, markets and people."
+			lede="Select a role to see the product decisions, systems and measurable outcomes behind it."
+		/>
 		<section class="career-shell" id="career-explorer">
 			<div class="role-list" role="tablist" aria-label="Career roles">
 				{
@@ -109,7 +18,9 @@ const roles = [
 						<button
 							type="button"
 							role="tab"
+							id={`role-tab-${r.id}`}
 							aria-selected={i === 0}
+							aria-controls={`role-detail-${r.id}`}
 							class={"role-tab" + (i === 0 ? " active" : "")}
 							data-role-id={r.id}
 						>
@@ -120,73 +31,74 @@ const roles = [
 					))
 				}
 			</div>
-			<article class="role-detail" id="role-detail" style={`--surface: ${roles[0].color}`}>
-				<header>
-					<div>
-						<p id="role-period">{roles[0].period}</p>
-						<h2 id="role-company">{roles[0].company}</h2>
-					</div>
-					<span class="role-number" id="role-number">01</span>
-				</header>
-				<p class="role-summary" id="role-summary">{roles[0].summary}</p>
-				<div class="metric-row" id="role-metrics">
-					{roles[0].metrics.map(([value, label]) => (
-						<div class="metric-tile"><b>{value}</b><span>{label}</span></div>
-					))}
-				</div>
-				<ul class="outcome-list" id="role-outcomes">
-					{roles[0].outcomes.map((o) => <li>{o}</li>)}
-				</ul>
-				<div class="role-footer">
-					<span id="role-title">{roles[0].title}</span>
-					<span id="role-position">1 / {roles.length}</span>
-				</div>
-			</article>
+			{
+				roles.map((role, i) => (
+					<article
+						class="role-detail"
+						id={`role-detail-${role.id}`}
+						role="tabpanel"
+						aria-labelledby={`role-tab-${role.id}`}
+						hidden={i !== 0}
+						style={`--surface: ${role.color}`}
+					>
+						<header>
+							<div>
+								<p>{role.period}</p>
+								<h2>{role.company}</h2>
+							</div>
+							<span class="role-number">{"0" + (i + 1)}</span>
+						</header>
+						<p class="role-summary">{role.summary}</p>
+						<div class="metric-row">
+							{role.metrics.map(([value, label]) => (
+								<div class="metric-tile">
+									<b>{value}</b>
+									<span>{label}</span>
+								</div>
+							))}
+						</div>
+						<ul class="outcome-list">
+							{role.outcomes.map((o) => (
+								<li>{o}</li>
+							))}
+						</ul>
+						<div class="role-footer">
+							<span>{role.title}</span>
+							<span>
+								{i + 1} / {roles.length}
+							</span>
+						</div>
+					</article>
+				))
+			}
 		</section>
 	</main>
 </BaseLayout>
 
-<script define:vars={{ roles }}>
+<script define:vars={{ roleIds: roles.map((r) => r.id) }}>
 	const list = document.getElementById("career-explorer");
 	const tabs = Array.from(list.querySelectorAll(".role-tab"));
-	const detail = document.getElementById("role-detail");
-	const period = document.getElementById("role-period");
-	const company = document.getElementById("role-company");
-	const number = document.getElementById("role-number");
-	const summary = document.getElementById("role-summary");
-	const metrics = document.getElementById("role-metrics");
-	const outcomes = document.getElementById("role-outcomes");
-	const titleEl = document.getElementById("role-title");
-	const position = document.getElementById("role-position");
+	const panels = Object.fromEntries(roleIds.map((id) => [id, document.getElementById(`role-detail-${id}`)]));
 
-	function render(index) {
-		const role = roles[index];
-		tabs.forEach((tab, i) => {
-			tab.classList.toggle("active", i === index);
-			tab.setAttribute("aria-selected", String(i === index));
+	function show(id) {
+		tabs.forEach((tab) => {
+			const active = tab.dataset.roleId === id;
+			tab.classList.toggle("active", active);
+			tab.setAttribute("aria-selected", String(active));
 		});
-		detail.style.setProperty("--surface", role.color);
-		detail.id = role.id;
-		period.textContent = role.period;
-		company.textContent = role.company;
-		number.textContent = "0" + (index + 1);
-		summary.textContent = role.summary;
-		metrics.innerHTML = role.metrics
-			.map(([value, label]) => `<div class="metric-tile"><b>${value}</b><span>${label}</span></div>`)
-			.join("");
-		outcomes.innerHTML = role.outcomes.map((o) => `<li>${o}</li>`).join("");
-		titleEl.textContent = role.title;
-		position.textContent = `${index + 1} / ${roles.length}`;
+		roleIds.forEach((roleId) => {
+			panels[roleId].hidden = roleId !== id;
+		});
 	}
 
-	tabs.forEach((tab, i) => {
+	tabs.forEach((tab) => {
 		tab.addEventListener("click", () => {
-			render(i);
-			history.replaceState(null, "", "#" + roles[i].id);
+			const id = tab.dataset.roleId;
+			show(id);
+			history.replaceState(null, "", "#" + id);
 		});
 	});
 
 	const hash = window.location.hash.slice(1);
-	const initialIndex = roles.findIndex((r) => r.id === hash);
-	if (initialIndex >= 0) render(initialIndex);
+	if (roleIds.includes(hash)) show(hash);
 </script>
