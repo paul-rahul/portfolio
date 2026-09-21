@@ -1,231 +1,70 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import QuickFactStrip from "../components/QuickFactStrip.astro";
-import EntryCard from "../components/EntryCard.astro";
-import LeaderLink from "../components/LeaderLink.astro";
 
-const quickFacts = [
-	{ label: "Background", value: "~6 yrs, ML engineering → product" },
-	{ label: "Focus", value: "Post-MBA product management" },
-	{ label: "Based in", value: "Austin, TX" },
-	{ label: "Status", value: "Open to full-time · Grad 2027", pill: true },
+const facts: [string, string][] = [
+	["6+ years", "Across product & ML engineering"],
+	["$143M+", "Revenue influenced across roles"],
+	["McCombs", "MBA · Brand & Product · May 2027"],
 ];
-
-const sectionPreviews = [
-	{ label: "Career", href: "/career", promise: "Quantified history across five roles" },
-	{ label: "Internships", href: "/internships", promise: "MBA summer internship, in detail" },
-	{ label: "Built", href: "/built", promise: "Independent projects — none posted yet" },
-	{ label: "About", href: "/about", promise: "Background outside the resume" },
-	{ label: "Resume", href: "/resume", promise: "Single-document summary" },
-	{ label: "Contact", href: "/contact", promise: "Email and LinkedIn" },
-];
-
-const highlightIds = ["dream11", "medianet-sde"];
-const career = await getCollection("career");
-const highlights = highlightIds
-	.map((id) => career.find((entry) => entry.id === id))
-	.filter((entry): entry is NonNullable<typeof entry> => entry !== undefined);
 ---
 
-<BaseLayout title="Rahul Paul">
-	<section class="hero">
-		<div class="hero__rig" aria-hidden="true">
-			<span class="hero__rod hero__rod--left"></span>
-			<span class="hero__rod hero__rod--right"></span>
-			<span class="hero__cord hero__cord--left"></span>
-			<span class="hero__cord hero__cord--right"></span>
-		</div>
-		<div class="hero__load">
-			<h1 class="hero__name">Rahul Paul</h1>
-			<p class="hero__positioning">
-				Product manager with ~6 years across ML engineering and product,
-				building toward full-time PM roles after McCombs.
-			</p>
-		</div>
-	</section>
-
-	<section class="facts" aria-label="Quick facts">
-		<QuickFactStrip facts={quickFacts} />
-	</section>
-
-	<section class="highlights">
-		<h2 class="highlights__title">Highlights</h2>
-		<div class="highlights__grid">
-			{
-				highlights.map((entry) => (
-					<EntryCard
-						href={`/career/${entry.id}`}
-						organization={entry.data.organization}
-						title={entry.data.title}
-						summary={entry.data.summary}
-						topMetric={entry.data.metrics[0]}
-					/>
-				))
-			}
-		</div>
-		<LeaderLink href="/career" class="highlights__more">
-			Full career history →
-		</LeaderLink>
-	</section>
-
-	<section class="site-map">
-		<h2 class="site-map__title">Elsewhere on this site</h2>
-		<ul class="site-map__list">
-			{
-				sectionPreviews.map((item) => (
-					<li>
-						<LeaderLink href={item.href} class="site-map__link">
-							<span class="site-map__label">{item.label}</span>
-							<span class="site-map__promise">{item.promise}</span>
-						</LeaderLink>
-					</li>
-				))
-			}
-		</ul>
-	</section>
+<BaseLayout title="Rahul Paul | Product, AI & ML">
+	<main>
+		<section class="hero wrap">
+			<div class="hero-copy">
+				<p class="eyebrow"><span></span> McCombs MBA · May 2027</p>
+				<h1>From modeling data to <em>shaping products.</em></h1>
+				<p class="lede">I'm Rahul, a product leader and former ML engineer who turns technical complexity into products people adopt and businesses can measure.</p>
+				<div class="actions">
+					<a class="button primary" href="/career">
+						Explore my work
+						<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+					</a>
+					<a class="button ghost" href="/Rahul_Paul_Resume.pdf" download>Download résumé</a>
+				</div>
+			</div>
+			<div class="hero-art">
+				<div class="image-frame peach"><img src="/ml-to-product-clay.jpg" alt="Clay-style illustration of data becoming a product experience" /></div>
+				<span class="float-note note-one">ML engineer → PM</span>
+				<span class="float-note note-two">AI · Ads · Platforms</span>
+			</div>
+		</section>
+		<section class="fact-strip wrap" aria-label="Quick facts">
+			{facts.map(([big, small]) => <div><strong>{big}</strong><span>{small}</span></div>)}
+		</section>
+		<section class="work-section wrap">
+			<div class="section-heading">
+				<div><p class="kicker">Selected evidence</p><h2>Work that moved a number.</h2></div>
+				<a href="/career">
+					Full career
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+				</a>
+			</div>
+			<div class="case-grid">
+				<a class="case-card lilac" href="/career#dream11">
+					<div class="case-image"><img src="/ad-launch-clay.jpg" alt="Clay illustration representing an advertising product launch" /></div>
+					<div class="case-copy">
+						<p>Dream11 · Product Manager</p>
+						<h3>Launched in-app advertising into a new revenue line.</h3>
+						<div class="metrics"><span><b>$8M</b> first 60 days</span><span><b>$20M</b> retention lift</span></div>
+					</div>
+				</a>
+				<a class="case-card mint" href="/career#medianet">
+					<div class="case-image"><img src="/ml-platform-clay.jpg" alt="Clay illustration representing a machine-learning platform" /></div>
+					<div class="case-copy">
+						<p>Media.net · Associate Product Manager</p>
+						<h3>Made experimentation faster, safer and easier to use.</h3>
+						<div class="metrics"><span><b>30</b> experiments / 6 mo.</span><span><b>$35M</b> optimizer revenue</span></div>
+					</div>
+				</a>
+			</div>
+		</section>
+		<section class="closing-cta wrap">
+			<p>Product judgment, technical depth, and a bias for measurable outcomes.</p>
+			<a class="button primary" href="/contact">
+				Let's talk
+				<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+			</a>
+		</section>
+	</main>
 </BaseLayout>
-
-<style>
-	.hero {
-		position: relative;
-		max-width: 72rem;
-		margin: 0 auto;
-		padding: var(--space-24) var(--spacing-page-x) var(--space-16);
-		display: flex;
-		justify-content: center;
-	}
-
-	/* Two rods lean in from corners without touching; two cords in
-	   visible tension hold the load between them. Nothing here touches
-	   the text mass directly — tension suspends it. */
-	.hero__rig {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-	}
-
-	.hero__rod {
-		position: absolute;
-		top: var(--space-12);
-		width: 2px;
-		height: 40%;
-		background: var(--color-rod-primary);
-	}
-
-	.hero__rod--left {
-		left: 12%;
-		transform: rotate(8deg);
-		transform-origin: top;
-	}
-
-	.hero__rod--right {
-		right: 12%;
-		transform: rotate(-8deg);
-		transform-origin: top;
-	}
-
-	.hero__cord {
-		position: absolute;
-		top: calc(var(--space-12) + 40%);
-		width: 1px;
-		height: 30%;
-		background: var(--color-cord-tension);
-	}
-
-	.hero__cord--left {
-		left: 12%;
-		transform: rotate(-14deg);
-		transform-origin: top;
-	}
-
-	.hero__cord--right {
-		right: 12%;
-		transform: rotate(14deg);
-		transform-origin: top;
-	}
-
-	.hero__load {
-		position: relative;
-		z-index: 1;
-		text-align: center;
-		max-width: 36rem;
-	}
-
-	.hero__name {
-		margin: 0 0 var(--space-3);
-		font-size: var(--font-heading-xl);
-		font-weight: var(--font-weight-bold);
-		line-height: var(--leading-tight);
-	}
-
-	.hero__positioning {
-		margin: 0;
-		font-size: var(--font-body-sm);
-		color: var(--color-muted-foreground);
-		line-height: var(--leading-relaxed);
-	}
-
-	.highlights {
-		max-width: 56rem;
-		margin: 0 auto;
-		padding: 0 var(--spacing-page-x) var(--space-16);
-	}
-
-	.highlights__title {
-		margin: 0 0 var(--space-6);
-		font-size: var(--font-heading);
-		font-weight: var(--font-weight-bold);
-	}
-
-	.highlights__grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-		gap: var(--space-6);
-	}
-
-	.highlights__more {
-		margin-top: var(--space-6);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-caption);
-		letter-spacing: 0.02em;
-	}
-
-	.site-map {
-		max-width: 56rem;
-		margin: 0 auto;
-		padding: var(--space-16) var(--spacing-page-x) var(--space-24);
-		border-top: 1px solid var(--color-card-border);
-	}
-
-	.site-map__title {
-		margin: 0 0 var(--space-6);
-		font-size: var(--font-heading);
-		font-weight: var(--font-weight-bold);
-	}
-
-	.site-map__list {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-		gap: var(--space-6);
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.site-map__link {
-		gap: var(--space-1);
-	}
-
-	.site-map__label {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-caption);
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-	}
-
-	.site-map__promise {
-		font-size: var(--font-body-sm);
-		color: var(--color-muted-foreground);
-	}
-</style>
