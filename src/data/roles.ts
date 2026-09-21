@@ -19,8 +19,8 @@ export const roles: Role[] = [
 			"Owned two ML-backed product bets: a new in-app advertising surface and an internal platform that made model workflows easier for operators to use.",
 		metrics: [
 			["$8M", "Revenue · first 60 days"],
-			["$20M", "Retention lift"],
-			["100+", "Daily platform users"],
+			["$20M", "Revenue · 1-year mark"],
+			["5%", "Retention lift"],
 		],
 		outcomes: [
 			"Launched in-app advertising as a new monetization line, aligning product, data science, engineering and commercial teams.",
@@ -55,7 +55,7 @@ export const roles: Role[] = [
 		summary: "Built the ML and data foundation that later informed how I lead products.",
 		metrics: [
 			["$80M", "Revenue · 12 months"],
-			["TB/day", "HDFS pipelines"],
+			["5TB/day", "HDFS pipelines"],
 			["ML", "Bid prediction"],
 		],
 		outcomes: [
@@ -92,7 +92,7 @@ export const roles: Role[] = [
 		summary: "Applied computer vision and color science to flagship mobile experiences at global scale.",
 		metrics: [
 			["25M+", "Flagship devices"],
-			["$1B", "Device-line sales"],
+			["$1B", "Device-line sales · contributed"],
 			["CV", "Night Mode"],
 		],
 		outcomes: [
