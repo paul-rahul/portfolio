@@ -1,24 +1,26 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ArrowIcon from "../components/ArrowIcon.astro";
 ---
 
 <BaseLayout title="Contact | Rahul Paul">
 	<main class="wrap">
-		<section class="page-hero">
-			<span class="page-chip">Contact</span>
-			<h1>Let's compare notes.</h1>
-			<p class="lede">For product roles, AI conversations, or a thoughtful exchange on what makes complex products usable.</p>
-		</section>
+		<PageHero
+			chip="Contact"
+			title="Let's compare notes."
+			lede="For product roles, AI conversations, or a thoughtful exchange on what makes complex products usable."
+		/>
 		<section class="contact-card">
 			<h2>Have a hard product problem?</h2>
 			<div class="contact-links">
-				<a href="mailto:rahul.paul@my.utexas.edu">
+				<a href="mailto:rahul.paul118@gmail.com">
 					Email me
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+					<ArrowIcon size={16} />
 				</a>
 				<a href="https://www.linkedin.com/in/paul-rahul/" target="_blank" rel="noreferrer">
 					LinkedIn
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+					<ArrowIcon size={16} />
 				</a>
 			</div>
 		</section>

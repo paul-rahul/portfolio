@@ -1,14 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ArrowIcon from "../components/ArrowIcon.astro";
 ---
 
 <BaseLayout title="Résumé | Rahul Paul">
 	<main class="wrap">
-		<section class="page-hero">
-			<span class="page-chip">Résumé</span>
-			<h1>The one-page version.</h1>
-			<p class="lede">A concise view of my product, AI and engineering experience.</p>
-		</section>
+		<PageHero chip="Résumé" title="The one-page version." lede="A concise view of my product, AI and engineering experience." />
 		<section class="resume-card">
 			<div>
 				<h2>Rahul Paul</h2>
@@ -22,7 +20,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 				</a>
 				<a class="button ghost" href="/Rahul_Paul_Resume.pdf" target="_blank">
 					Open
-					<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+					<ArrowIcon size={17} />
 				</a>
 			</div>
 		</section>

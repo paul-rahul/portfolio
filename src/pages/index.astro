@@ -1,11 +1,16 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ArrowIcon from "../components/ArrowIcon.astro";
+import { roles } from "../data/roles.ts";
 
 const facts: [string, string][] = [
 	["6+ years", "Across product & ML engineering"],
-	["$143M+", "Revenue influenced across roles"],
+	["$135M+", "Revenue influenced across roles"],
 	["McCombs", "MBA · Brand & Product · May 2027"],
 ];
+
+const dream11 = roles.find((r) => r.id === "dream11")!;
+const medianet = roles.find((r) => r.id === "medianet")!;
 ---
 
 <BaseLayout title="Rahul Paul | Product, AI & ML">
@@ -18,7 +23,7 @@ const facts: [string, string][] = [
 				<div class="actions">
 					<a class="button primary" href="/career">
 						Explore my work
-						<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+						<ArrowIcon size={17} />
 					</a>
 					<a class="button ghost" href="/Rahul_Paul_Resume.pdf" download>Download résumé</a>
 				</div>
@@ -37,7 +42,7 @@ const facts: [string, string][] = [
 				<div><p class="kicker">Selected evidence</p><h2>Work that moved a number.</h2></div>
 				<a href="/career">
 					Full career
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+					<ArrowIcon size={16} />
 				</a>
 			</div>
 			<div class="case-grid">
@@ -46,7 +51,10 @@ const facts: [string, string][] = [
 					<div class="case-copy">
 						<p>Dream11 · Product Manager</p>
 						<h3>Launched in-app advertising into a new revenue line.</h3>
-						<div class="metrics"><span><b>$8M</b> first 60 days</span><span><b>$20M</b> retention lift</span></div>
+						<div class="metrics">
+							<span><b>{dream11.metrics[0][0]}</b> {dream11.metrics[0][1].toLowerCase()}</span>
+							<span><b>{dream11.metrics[1][0]}</b> {dream11.metrics[1][1].toLowerCase()}</span>
+						</div>
 					</div>
 				</a>
 				<a class="case-card mint" href="/career#medianet">
@@ -54,7 +62,10 @@ const facts: [string, string][] = [
 					<div class="case-copy">
 						<p>Media.net · Associate Product Manager</p>
 						<h3>Made experimentation faster, safer and easier to use.</h3>
-						<div class="metrics"><span><b>30</b> experiments / 6 mo.</span><span><b>$35M</b> optimizer revenue</span></div>
+						<div class="metrics">
+							<span><b>{medianet.metrics[2][0]}</b> experiments / 6 mo.</span>
+							<span><b>{medianet.metrics[0][0]}</b> optimizer revenue</span>
+						</div>
 					</div>
 				</a>
 			</div>
@@ -63,7 +74,7 @@ const facts: [string, string][] = [
 			<p>Product judgment, technical depth, and a bias for measurable outcomes.</p>
 			<a class="button primary" href="/contact">
 				Let's talk
-				<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg>
+				<ArrowIcon size={17} />
 			</a>
 		</section>
 	</main>
