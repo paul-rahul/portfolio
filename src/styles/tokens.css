@@ -687,10 +687,11 @@ img {
 	top: 0;
 	left: 50%;
 	width: 2px;
-	height: var(--fill, 0%);
+	height: 100%;
 	background: var(--accent);
-	transform: translateX(-50%);
-	transition: height 0.1s linear;
+	transform: translateX(-50%) scaleY(var(--fill, 0));
+	transform-origin: top;
+	transition: transform 0.1s linear;
 }
 
 .tl-dot {
