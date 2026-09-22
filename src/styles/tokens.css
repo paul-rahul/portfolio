@@ -43,6 +43,13 @@ a {
 	text-decoration: none;
 }
 
+a:focus-visible,
+button:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
 img {
 	display: block;
 	width: 100%;
@@ -997,5 +1004,20 @@ img {
 	}
 	.built-placeholder {
 		padding: 34px 26px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	* {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.001ms !important;
+		scroll-behavior: auto !important;
+	}
+	.case-card:hover {
+		transform: none;
 	}
 }
