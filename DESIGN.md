@@ -7,7 +7,7 @@ colors:
   background: "#f6f6f3"
   surface: "#ffffff"
   border: "#dddddA"
-  accent: "#4f63ff"
+  accent: "#4c5ff5"
   accent-soft: "#eef0ff"
   success: "#1f8a5b"
 typography:
@@ -71,7 +71,7 @@ This direction replaced an earlier "clay" pastel-illustration system (see prior 
 
 **Key Characteristics:**
 - Off-white paper background, not pure white — newsprint, not app-chrome
-- One accent color (cobalt `#4f63ff`), used sparingly: links, active states, the single top ribbon, metric highlights
+- One accent color (cobalt `#4c5ff5`), used sparingly: links, active states, the single top ribbon, metric highlights
 - Mono type as a structural signal for anything numeric, dated, or systemic
 - Flat surfaces — no shadows beyond one soft ambient shadow token, borders do the separating
 
@@ -80,7 +80,7 @@ This direction replaced an earlier "clay" pastel-illustration system (see prior 
 The palette is almost monochrome by design; color is a signal, not decoration.
 
 ### Primary
-- **Cobalt** (`#4f63ff`): the only saturated color in the system. Used for the top ribbon, active nav underline, links inside headlines (`<em>`), timeline dots, arrows/icons, and hover states on primary buttons. Never used as a large fill.
+- **Cobalt** (`#4c5ff5`): the only saturated color in the system. Used for the top ribbon, active nav underline, links inside headlines (`<em>`), timeline dots, arrows/icons, and hover states on primary buttons. Never used as a large fill.
 
 ### Neutral
 - **Ink** (`#111111`): primary text color and the fill for primary buttons/badges (near-black, not pure black).
