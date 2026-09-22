@@ -518,3 +518,89 @@ Known issues / deferred items:
 
 Next phase:
 - Phase 7 — Motion / responsive / accessibility
+
+---
+
+## Phase 07 — Motion / Responsive / Accessibility
+
+Status: complete
+Branch: redesign/07-motion-a11y
+PR: (opening next)
+Merged into: redesign/technical-editorial
+
+Implemented:
+- **Reachability fix**: discovered `/internships` had become a fully orphaned route — not in
+  the trimmed primary nav (expected, decided in Phase 2), but also no longer linked from
+  `/career` despite the Phase 2 log explicitly claiming "still reachable (linked from career
+  page)". That link never actually existed. Added a `closing-cta` block at the bottom of
+  `/career` ("One more, structured the same way: a Cisco internship the summer before
+  McCombs." → "See the internship"), reusing the homepage's existing `.closing-cta` class
+  rather than inventing new CSS. This was judged accessibility-adjacent (a page unreachable by
+  any in-site path is a discoverability/IA defect) and folded into this phase rather than
+  opening a separate fix.
+- **Reduced motion**: added a `@media (prefers-reduced-motion: reduce)` block — disables
+  `scroll-behavior: smooth`, collapses all transition/animation durations to ~0, and cancels
+  the `.case-card:hover` `translateY` lift. The site's motion was already minimal (a couple of
+  0.15–0.2s color/border/transform transitions, one smooth-scroll), so this was a small,
+  additive block rather than a rework — no existing motion needed to be redesigned, just gated.
+- **Keyboard focus**: added an explicit `a:focus-visible, button:focus-visible` outline
+  (`--accent` color, 2px, offset) — previously relied entirely on browser default outline
+  behavior with no site-defined fallback, risky given the custom radius/surface colors used
+  throughout. Applied globally rather than per-component since every interactive element on
+  the site is either an `<a>` or a `<button>`.
+- **Decorative content marked for assistive tech**: `aria-hidden="true"` added to the homepage
+  hero's `intersection-diagram` (Tech/Product/Market Venn illustration — purely a visual
+  restatement of the h1 copy) and both `.case-mark` spans (`D11`, `M.` — decorative marks
+  inside case-study cards whose link text already fully describes the destination via
+  `.case-copy`).
+- **Viewport meta**: added `initial-scale=1` to the existing `width=device-width` viewport tag
+  in `BaseLayout.astro` (was previously missing — harmless omission but not spec-correct).
+- **Responsive audit**: reviewed the 980px/680px breakpoints for every component touched in
+  Phases 1–6 (`role-detail`/`metric-row` from career and now internships, `closing-cta`,
+  `contact-card`, `resume-card`, `built-placeholder`) — all either already had correct
+  collapse-to-1-column rules or inherit them by reusing an already-validated shared class.
+  Did not find or need to fix any new overflow/clipping issues. Attempted live in-browser
+  viewport resize via the Chrome extension's `resize_window` tool to visually confirm, but it
+  did not actually change `window.innerWidth` in this environment (confirmed via
+  `javascript_tool`) — falling back to static CSS review instead of a live narrow-viewport
+  screenshot for this phase.
+
+Important decisions:
+- Treated the orphaned `/internships` route as this phase's problem to fix (not Phase 6's),
+  since it's a reachability/IA issue surfaced by an accessibility-lens audit, not a content or
+  visual-language issue.
+- Did not add a hamburger/off-canvas mobile nav — Phase 2 already deliberately rejected that
+  (horizontally-scrollable nav row, judged sufficiently accessible/keyboard-operable at the
+  time) and nothing in this phase's audit contradicted that call.
+- Did not touch color tokens — manually checked contrast for `--ink-secondary` on `--background`
+  (~5.9:1) and on `--surface` (~6.4:1), both comfortably pass WCAG AA for normal text; `--accent`
+  as heading-emphasis color on white (~4.6:1) also passes, and is only ever used at large-text
+  sizes (≥24px) where the AA bar is 3:1 anyway. No changes needed.
+
+Files materially changed:
+- `src/styles/tokens.css` (`:focus-visible` rule, `prefers-reduced-motion` block)
+- `src/layouts/BaseLayout.astro` (viewport meta `initial-scale=1`)
+- `src/pages/index.astro` (`aria-hidden` on decorative diagram + case-mark spans)
+- `src/pages/career/index.astro` (closing-cta link to `/internships`, `ArrowIcon` import)
+
+Validation:
+- npm run build: PASS (7 routes)
+- dev mode: PASS — confirmed the new career→internships CTA renders and the link navigates
+  correctly (checked in-browser via Chrome extension); visually reviewed homepage, career, and
+  internships pages via screenshots.
+- Live narrow-viewport (mobile) screenshot verification was not completed — the available
+  browser-automation resize tool didn't take effect in this environment. Responsive correctness
+  for this phase's changes was instead verified by static review of the 980px/680px media
+  query rules for every touched/reused component.
+
+Known issues / deferred items:
+- Live mobile-viewport screenshot QA still outstanding — worth doing with a working device
+  emulation path (or by hand) before Phase 8 sign-off, particularly for the new career-page
+  closing-cta block, which hasn't been visually confirmed at narrow widths (though it reuses
+  a class already validated responsive on the homepage in Phase 3).
+- `public/*-clay.jpg` orphaned assets (flagged in Phase 6) still undeleted, pending Rahul's
+  confirmation.
+- No OG/meta image work done yet (Phase 8).
+
+Next phase:
+- Phase 8 — Final polish / QA

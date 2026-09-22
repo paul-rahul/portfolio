@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
+import ArrowIcon from "../../components/ArrowIcon.astro";
 import { roles } from "../../data/roles.ts";
 ---
 
@@ -46,6 +47,13 @@ import { roles } from "../../data/roles.ts";
 					</article>
 				))
 			}
+		</section>
+		<section class="closing-cta">
+			<p>One more, structured the same way: a Cisco internship the summer before McCombs.</p>
+			<a class="button primary" href="/internships">
+				See the internship
+				<ArrowIcon size={17} />
+			</a>
 		</section>
 	</main>
 </BaseLayout>
