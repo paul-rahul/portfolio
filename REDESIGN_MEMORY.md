@@ -239,3 +239,70 @@ Known issues / deferred items:
 
 Next phase:
 - Phase 3 — Homepage
+
+---
+
+## Phase 03 — Homepage
+
+Status: complete
+Branch: redesign/03-home
+PR: (opening next)
+Merged into: redesign/technical-editorial
+
+Implemented:
+- Rewrote the hero headline/lede to the plan's target concept: "I build at the intersection of
+  technology, product & market." + the preferred supporting copy ("AI/ML engineer turned product
+  manager and product marketer. I turn technical complexity into products customers understand,
+  adopt, and businesses can measure."), lightly polished, meaning preserved.
+- Removed the clay illustration (`/ml-to-product-clay.jpg`) as the hero device and the two
+  `.float-note` pill callouts that sat on top of it. No authentic photography exists in the repo
+  yet (`public/` only has the four `*-clay.jpg` illustration assets), so per the plan's fallback
+  order (real photo > real work imagery > restrained abstract composition, no fabricated
+  screenshots, no AI-art) built a restrained abstract editorial composition instead: a CSS-only
+  three-circle "Tech / Product / Market" intersection diagram inside the existing `.image-frame`
+  panel, echoing the headline. Left an HTML comment on how to drop a real portrait in later
+  without touching layout — swap the `<img>` in, delete `.intersection-diagram`'s children.
+- Added the Career Progression module (`01 Engineer / 02 Product / 03 Market`) as a new 3-column
+  section directly below the quick-facts strip, using the plan's exact labels/sublines/tag rows.
+- Rebuilt quick facts to the plan's 4-item target: `6+ years — Engineering → Product`,
+  `$135M+ — Revenue influenced` (reused, unchanged — this figure was already reviewed/accepted
+  during the PR #8 merge per prior session memory), `5 industries — AI · Ads · Consumer ·
+  GovTech · Hardware`, `McCombs '27 — MBA`. `.fact-strip` grid went from 3 to 4 columns.
+- Replaced the two clay-illustration featured-work case images (`/ad-launch-clay.jpg`,
+  `/ml-platform-clay.jpg`) and the `.lilac`/`.mint` pastel card variants with a plain
+  `.case-visual` panel showing a large mono employer mark (`D11`, `M.`) on a neutral background —
+  same "no authentic imagery, so abstract not fabricated/AI-generated" reasoning as the hero.
+  Added an explicit "Read case study" link row to each card (previously only the metrics row and
+  card-level link existed) per the plan's featured-work bullet list.
+- All facts/metrics reused verbatim from `src/data/roles.ts` (Dream11, Media.net) — no numbers
+  invented.
+
+Important decisions:
+- No new imagery was fabricated or AI-generated anywhere on the page — both instances where the
+  plan allowed a fallback (hero, case cards) used plain CSS/typographic devices instead, per the
+  plan's explicit "do not fabricate fake product screenshots" / "do not introduce generic
+  AI-generated robot/brain imagery" rules and the core design principle "authentic work over
+  decorative AI art."
+- Left `roles.ts`'s `color` field and Phase-1-flagged dead `--surface` inline style untouched —
+  still deferred to Phase 4 (career page) per the Phase 1 note, out of scope here since this
+  phase only touched `index.astro` and `tokens.css`.
+
+Files materially changed:
+- `src/pages/index.astro` (hero copy/art, progression module, quick facts, featured work cards)
+- `src/styles/tokens.css` (`.intersection-diagram`/`.intersection-circle`, `.progression*`,
+  `.case-visual`/`.case-mark`/`.case-link` added; `.case-image` and `.case-card.lilac/.mint`
+  removed; `.fact-strip` grid-template-columns 3 → 4)
+
+Validation:
+- npm run build: PASS (7 routes)
+- dev mode: PASS — checked rendered homepage HTML directly via curl (hero, fact-strip,
+  progression, case cards all present with correct content/classes) and confirmed the new CSS
+  classes exist in the built stylesheet output.
+
+Known issues / deferred items:
+- Hero and featured-work imagery are still placeholder-abstract, not real photography/product
+  screenshots — swap in real assets whenever Rahul provides them; layout already supports it
+  without restructuring (see HTML comment in `index.astro`).
+
+Next phase:
+- Phase 4 — Career page
