@@ -10,7 +10,7 @@ interface Props {
 const { title, description = "Rahul Paul's portfolio: product leadership, AI systems, machine learning and measurable business outcomes." } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="en" class="no-js">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -26,6 +26,9 @@ const { title, description = "Rahul Paul's portfolio: product leadership, AI sys
 			rel="stylesheet"
 		/>
 		<title>{title}</title>
+		<script is:inline>
+			document.documentElement.classList.remove("no-js");
+		</script>
 	</head>
 	<body>
 		<div class="site-shell">
