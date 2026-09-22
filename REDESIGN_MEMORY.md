@@ -604,3 +604,116 @@ Known issues / deferred items:
 
 Next phase:
 - Phase 8 — Final polish / QA
+
+---
+
+## Phase 08 — Career Timeline Restructure + Capabilities / Operating Model
+
+Branch: redesign/career-capabilities-operating-model (built on top of
+career-timeline-scroll-restructure, which itself branched from the Phase 8
+integration work — see note under "Important decisions" on why this isn't
+branched directly off `redesign/technical-editorial`)
+PR: (opening next)
+Merged into: career-timeline-scroll-restructure (not `redesign/technical-editorial`
+directly — see note below)
+
+Implemented:
+- **Pinned scroll timeline restructure**: `/career` rebuilt around a sticky
+  year/period label + center dot-and-line track + accordion card per role,
+  replacing the prior static list. Accordion cards are collapsed by default,
+  expand when centered in the viewport (`IntersectionObserver`, `rootMargin:
+  "-45% 0px -45% 0px"`), and collapse again once scrolled past — this
+  interaction was explicitly requested over an earlier "always expanded"
+  attempt.
+- **Last-card reachability fix**: the final row (Samsung Research) couldn't
+  reach the observer's center band because there wasn't enough scroll room
+  below the timeline. Fixed with a `.career-timeline { padding-bottom: ... }`
+  trailing spacer. Initially set to `50vh` when the timeline was the last
+  thing on the page; reduced to `15vh` once the new Capabilities/Operating
+  Model sections below gave the page real scroll runway of its own — the
+  larger value left a visible dead gap between the last card and "What I'm
+  known for."
+- **No-JS fallback**: `BaseLayout.astro`'s `<html>` gets a `no-js` class
+  removed by an inline `<head>` script; `.no-js .role-body { max-height:
+  none; opacity: 1; }` in tokens.css keeps all cards readable if JS fails to
+  load.
+- **"What I'm known for" section** (`.capabilities`): 4 capability areas
+  (0→1 Product Building, AI/ML Productization, Monetization & Growth,
+  Cross-functional Execution), editorial treatment — large mono index
+  numbers, heading + one supporting sentence, thin `border-left` dividers
+  instead of cards/shadows/icons. 4-column desktop, 2-column ~980px, 1-column
+  (with left connector border) ≤680px.
+- **"How I operate" section** (`.operating-model`): 5-step sequence
+  (Understand the system → Find the constraint → Align the team → Ship →
+  Measure) as an `<ol role="list">` (the `role="list"` counters Safari
+  VoiceOver stripping list semantics from `list-style: none`). Desktop: 5
+  columns with a short horizontal connector line between steps. ≤680px:
+  vertical sequence with a connector running down the left edge instead.
+  Order is conveyed by the visible `01`–`05` mono numbers, not solely by the
+  connector lines.
+- **Restored `closing-cta`**: Phase 8's timeline rewrite had silently
+  dropped the `/internships` CTA that Phase 07 added to fix an orphaned-route
+  accessibility issue. Restored as the final section, after capabilities and
+  operating model, per the new layout order.
+- Both new sections reuse existing tokens/classes (`.kicker`, `.section-heading`,
+  `--accent`, `--font-mono`, `--border`) rather than introducing new design
+  tokens — no new colors, radii, or shadow values added.
+
+Important decisions:
+- **Branch topology deviation**: the task spec named `redesign/technical-editorial`
+  as both the starting point and PR target. That remote branch is stuck at
+  the end of Phase 07 and does not include the Phase 8 pinned-timeline
+  restructure this work depends on (the accordion, the `IntersectionObserver`
+  logic, `DESIGN.md`'s "Pinned scroll timeline" section). Branching from it
+  as instructed would have regressed the career page. Branched instead from
+  the current Phase 8 tip (`career-timeline-scroll-restructure`) and will PR
+  into that branch rather than `redesign/technical-editorial` directly —
+  flagged to Rahul rather than silently deviating. `redesign/technical-editorial`
+  still needs a follow-up merge from `career-timeline-scroll-restructure` to
+  pick up all of Phase 8 (timeline restructure + this capabilities/operating
+  work) before it's back in sync with what's actually shipped.
+- Rejected card/icon/pill treatment for both new sections per the spec's
+  explicit direction (avoid colorful cards, icons, pills, shadows, gradients)
+  — used typographic hierarchy (mono numbers, border dividers) instead,
+  consistent with the Technical Editorial "Flat-By-Default" and "Mono-Means-
+  Data" rules already documented in `DESIGN.md`.
+- No new career facts, employers, or metrics were introduced — capability
+  and operating-step copy is original synthesis language describing existing
+  documented experience, not a new factual claim.
+
+Files materially changed:
+- `src/pages/career/index.astro` (accordion JS/behavior restore, `capabilities`
+  and `operatingSteps` data arrays, two new `<section>`s, restored `closing-cta`)
+- `src/styles/tokens.css` (`.role-body` accordion rules, `.no-js` fallback,
+  `.career-timeline` spacer tuning, `.capabilities`/`.capability-*`,
+  `.operating-model`/`.operating-*`, responsive rules at 980px/680px)
+- `src/layouts/BaseLayout.astro` (`no-js` class + inline removal script)
+
+Validation:
+- `npx astro check`: PASS (0 errors, 0 warnings, 0 hints)
+- `npm run build`: PASS (7 routes)
+- dev mode (port 4323): confirmed live — accordion collapse/expand works,
+  Samsung Research (last row) reaches `is-active` and expands at the bottom
+  of the timeline, zero-height gap between the timeline and "What I'm known
+  for", both new sections render correctly at desktop width (~1512px) and at
+  a ~606px mobile width (stacked single-column, left-border connectors, no
+  horizontal overflow).
+- Live viewport testing at the exact requested breakpoints (375/430/768/
+  1024/1440px) was not fully achievable — the Chrome extension's
+  `resize_window` tool doesn't reliably change the real viewport in this
+  environment (previously documented in Phase 07's known issues, confirmed
+  again here). Verified desktop (~1512px) and a sub-680px mobile width
+  (~606px) directly; the 980px tablet 2-column state was verified by code
+  review of the media query rather than a live screenshot.
+
+Known issues / deferred items:
+- `redesign/technical-editorial` needs a follow-up merge from
+  `career-timeline-scroll-restructure` to absorb all of Phase 8 — it's
+  currently out of sync with the shipped career page.
+- Tablet-width (~980px) live screenshot verification for the two new
+  sections still outstanding, same tooling limitation as Phase 07's mobile
+  QA gap.
+
+Next phase:
+- Sync `redesign/technical-editorial` with `career-timeline-scroll-restructure`.
+- Phase 9 — Final polish / QA (OG/meta images, orphaned clay assets)

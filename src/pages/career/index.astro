@@ -3,6 +3,57 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import ArrowIcon from "../../components/ArrowIcon.astro";
 import { roles } from "../../data/roles.ts";
+
+const capabilities = [
+	{
+		n: "01",
+		name: "0→1 Product Building",
+		desc: "Turning ambiguous opportunities into products, launches, and measurable business outcomes.",
+	},
+	{
+		n: "02",
+		name: "AI / ML Productization",
+		desc: "Translating technically complex systems into usable products, workflows, and decisions.",
+	},
+	{
+		n: "03",
+		name: "Monetization & Growth",
+		desc: "Connecting product decisions to adoption, experimentation, revenue, and business impact.",
+	},
+	{
+		n: "04",
+		name: "Cross-functional Execution",
+		desc: "Aligning engineering, data, business, and stakeholder teams around clear outcomes.",
+	},
+];
+
+const operatingSteps = [
+	{
+		n: "01",
+		name: "Understand the system",
+		desc: "Build enough technical and customer context to understand what's actually happening.",
+	},
+	{
+		n: "02",
+		name: "Find the constraint",
+		desc: "Identify the problem that matters most rather than optimizing everything at once.",
+	},
+	{
+		n: "03",
+		name: "Align the team",
+		desc: "Make the problem, trade-offs, and desired outcome clear across functions.",
+	},
+	{
+		n: "04",
+		name: "Ship",
+		desc: "Move from analysis to a concrete product decision and get it into users' hands.",
+	},
+	{
+		n: "05",
+		name: "Measure",
+		desc: "Evaluate what changed, learn from the result, and sharpen the next decision.",
+	},
+];
 ---
 
 <BaseLayout title="Career | Rahul Paul">
@@ -10,43 +61,109 @@ import { roles } from "../../data/roles.ts";
 		<PageHero
 			chip="Career"
 			title="A career built at the intersection of models, markets and people."
-			lede="Every role below: what I owned, what we built, and the outcome — in order, no clicking required."
+			lede="Every role below: what I owned, what we built, and the outcome — expand any to see the details."
 		/>
-		<p class="reading-frame">Problem <span>→</span> System / product <span>→</span> User <span>→</span> Business impact</p>
-		<section class="career-shell">
+		<div class="reading-frame">
+			<span class="frame-pill">Problem</span>
+			<span class="frame-arrow" aria-hidden="true">→</span>
+			<span class="frame-pill">System / product</span>
+			<span class="frame-arrow" aria-hidden="true">→</span>
+			<span class="frame-pill">User</span>
+			<span class="frame-arrow" aria-hidden="true">→</span>
+			<span class="frame-pill">Business impact</span>
+		</div>
+		<section class="career-timeline" data-timeline>
 			{
 				roles.map((role, i) => (
-					<article class="role-detail" id={role.id}>
-						<header>
-							<div>
-								<p>{role.period}</p>
+					<div class="tl-row" id={role.id} data-tl-row>
+						<div class="tl-year">
+							<span class="tl-year-index">{"0" + (i + 1)}</span>
+							<span class="tl-year-period">{role.period}</span>
+							<span class="tl-year-company">{role.company}</span>
+						</div>
+						<div class="tl-track" aria-hidden="true">
+							<span class="tl-dot" data-tl-dot />
+						</div>
+						<article class="role-detail">
+							<div class="role-head">
 								<h2>{role.company}</h2>
-								<span class="role-title">{role.title}</span>
+								<span class="role-title">
+									{role.stints.length > 1 ? `${role.stints.length} roles` : role.stints[0].title}
+								</span>
 							</div>
-							<span class="role-number">{"0" + (i + 1)}</span>
-						</header>
-						<p class="role-summary">{role.summary}</p>
-						<div class="metric-row">
-							{role.metrics.map(([value, label]) => (
-								<div class="metric-tile">
-									<b>{value}</b>
-									<span>{label}</span>
+							<div class="role-body" data-role-body>
+								{role.stints.map((stint) => (
+									<div class="stint">
+										{role.stints.length > 1 && (
+											<div class="stint-heading">
+												<h3>{stint.title}</h3>
+												<span class="role-period">{stint.period}</span>
+											</div>
+										)}
+										<p class="role-summary">{stint.summary}</p>
+										<div class="metric-row">
+											{stint.metrics.map(([value, label]) => (
+												<div class="metric-tile">
+													<b>{value}</b>
+													<span>{label}</span>
+												</div>
+											))}
+										</div>
+										<ul class="outcome-list">
+											{stint.outcomes.map((o) => (
+												<li>{o}</li>
+											))}
+										</ul>
+									</div>
+								))}
+								<div class="role-footer">
+									<span>
+										{i + 1} / {roles.length}
+									</span>
 								</div>
-							))}
-						</div>
-						<ul class="outcome-list">
-							{role.outcomes.map((o) => (
-								<li>{o}</li>
-							))}
-						</ul>
-						<div class="role-footer">
-							<span>
-								{i + 1} / {roles.length}
-							</span>
-						</div>
-					</article>
+							</div>
+						</article>
+					</div>
 				))
 			}
+		</section>
+		<section class="capabilities wrap" aria-label="What I'm known for">
+			<div class="section-heading">
+				<div>
+					<p class="kicker">Capabilities</p>
+					<h2>What I'm known for.</h2>
+				</div>
+			</div>
+			<div class="capability-grid">
+				{
+					capabilities.map((c) => (
+						<div class="capability-item">
+							<span class="capability-number">{c.n}</span>
+							<h3>{c.name}</h3>
+							<p>{c.desc}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+		<section class="operating-model wrap" aria-label="How I operate">
+			<div class="section-heading">
+				<div>
+					<p class="kicker">Operating model</p>
+					<h2>How I operate.</h2>
+				</div>
+			</div>
+			<ol class="operating-steps" role="list">
+				{
+					operatingSteps.map((s) => (
+						<li class="operating-step">
+							<span class="operating-number">{s.n}</span>
+							<h3>{s.name}</h3>
+							<p>{s.desc}</p>
+						</li>
+					))
+				}
+			</ol>
 		</section>
 		<section class="closing-cta">
 			<p>One more, structured the same way: a Cisco internship the summer before McCombs.</p>
@@ -57,3 +174,72 @@ import { roles } from "../../data/roles.ts";
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	const rows = document.querySelectorAll<HTMLElement>("[data-tl-row]");
+
+	const syncBody = (row: HTMLElement, expanded: boolean) => {
+		const body = row.querySelector<HTMLElement>("[data-role-body]");
+		if (!body) return;
+		body.style.maxHeight = expanded ? `${body.scrollHeight}px` : "0px";
+	};
+
+	const setActive = (row: HTMLElement) => {
+		rows.forEach((r) => {
+			const isActive = r === row;
+			r.classList.toggle("is-active", isActive);
+			syncBody(r, isActive);
+		});
+	};
+
+	if ("IntersectionObserver" in window) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const visible = entries.filter((e) => e.isIntersecting);
+				if (visible.length === 0) return;
+				const topMost = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
+				setActive(topMost.target as HTMLElement);
+			},
+			{ rootMargin: "-45% 0px -45% 0px", threshold: 0 },
+		);
+		rows.forEach((row) => observer.observe(row));
+	} else {
+		rows.forEach((row) => syncBody(row, true));
+	}
+
+	window.addEventListener("resize", () => {
+		rows.forEach((row) => {
+			if (row.classList.contains("is-active")) syncBody(row, true);
+		});
+	});
+
+	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	if (!prefersReducedMotion) {
+		let ticking = false;
+		const updateFill = () => {
+			ticking = false;
+			const viewportCenter = window.innerHeight * 0.5;
+			rows.forEach((row) => {
+				const track = row.querySelector<HTMLElement>(".tl-track");
+				if (!track) return;
+				const rect = track.getBoundingClientRect();
+				const progress = (viewportCenter - rect.top) / rect.height;
+				const clamped = Math.min(1, Math.max(0, progress));
+				track.style.setProperty("--fill", `${clamped * 100}%`);
+			});
+		};
+		updateFill();
+		window.addEventListener(
+			"scroll",
+			() => {
+				if (!ticking) {
+					ticking = true;
+					requestAnimationFrame(updateFill);
+				}
+			},
+			{ passive: true },
+		);
+		window.addEventListener("resize", updateFill);
+	}
+</script>
