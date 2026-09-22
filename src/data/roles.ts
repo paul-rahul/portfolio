@@ -63,11 +63,11 @@ export const roles: Role[] = [
 	{
 		id: "samagra",
 		company: "Samagra",
-		period: "2021",
+		period: "Aug 2024 — Jan 2025",
 		stints: [
 			{
 				title: "Product & GTM",
-				period: "2021",
+				period: "Aug 2024 — Jan 2025",
 				summary:
 					"Used buyer research and go-to-market strategy to shape adoption for an LLM platform serving government and enterprise contexts.",
 				metrics: [
@@ -123,11 +123,11 @@ export const roles: Role[] = [
 	{
 		id: "samsung",
 		company: "Samsung Research",
-		period: "2018 — 2021",
+		period: "Jun 2019 — Jul 2021",
 		stints: [
 			{
 				title: "ML Engineer",
-				period: "2018 — 2021",
+				period: "Jun 2019 — Jul 2021",
 				summary: "Applied computer vision and color science to flagship mobile experiences at global scale.",
 				metrics: [
 					["25M+", "Flagship devices"],

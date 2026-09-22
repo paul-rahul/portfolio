@@ -72,7 +72,7 @@ img {
 }
 
 .site-header {
-	height: 76px;
+	height: 66px;
 	display: grid;
 	grid-template-columns: auto 1fr auto;
 	align-items: center;
@@ -158,12 +158,12 @@ img {
 }
 
 .hero {
-	min-height: 560px;
+	min-height: 480px;
 	display: grid;
 	grid-template-columns: 1.08fr 0.92fr;
 	align-items: center;
-	gap: 68px;
-	padding-block: 48px;
+	gap: 48px;
+	padding-block: 36px;
 }
 
 .eyebrow,
@@ -314,7 +314,7 @@ img {
 }
 
 .progression {
-	padding-block: 36px 0;
+	padding-block: 26px 0;
 }
 
 .progression-grid {
@@ -327,7 +327,7 @@ img {
 	border: 1px solid var(--border);
 	border-radius: var(--radius-lg);
 	background: var(--surface);
-	padding: 26px 24px;
+	padding: 20px 20px;
 }
 
 .progression-number {
@@ -367,14 +367,14 @@ img {
 	background: var(--ink);
 	color: white;
 	border-radius: var(--radius-lg);
-	padding: 22px 28px;
+	padding: 18px 24px;
 }
 
 .fact-strip div {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
-	padding: 8px 24px;
+	padding: 6px 20px;
 	border-right: 1px solid rgba(255, 255, 255, 0.16);
 }
 
@@ -396,14 +396,14 @@ img {
 }
 
 .work-section {
-	padding-block: 60px;
+	padding-block: 44px;
 }
 
 .section-heading {
 	display: flex;
 	align-items: end;
 	justify-content: space-between;
-	margin-bottom: 34px;
+	margin-bottom: 26px;
 }
 
 .section-heading h2 {
@@ -458,7 +458,7 @@ img {
 }
 
 .case-copy {
-	padding: 24px 26px 28px;
+	padding: 18px 20px 22px;
 }
 
 .case-copy > p {
@@ -476,7 +476,7 @@ img {
 	font-weight: 600;
 	line-height: 1.2;
 	letter-spacing: -0.01em;
-	margin: 10px 0 22px;
+	margin: 8px 0 16px;
 }
 
 .metrics {
@@ -511,12 +511,12 @@ img {
 	background: var(--accent-soft);
 	border: 1px solid var(--border);
 	border-radius: var(--radius-lg);
-	padding: 40px 46px;
-	margin-bottom: 60px;
+	padding: 28px 32px;
+	margin-bottom: 40px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 30px;
+	gap: 22px;
 }
 
 .closing-cta p {
@@ -546,13 +546,13 @@ img {
 }
 
 .page-hero {
-	padding: 40px 0 48px;
+	padding: 28px 0 32px;
 }
 
 .page-hero h1 {
 	font-size: clamp(34px, 4.6vw, 54px);
 	max-width: 900px;
-	margin: 12px 0 20px;
+	margin: 10px 0 16px;
 }
 
 .page-hero .lede {
@@ -577,7 +577,7 @@ img {
 	align-items: center;
 	justify-content: center;
 	gap: 10px;
-	margin: 0 auto 40px;
+	margin: 0 auto 28px;
 	max-width: 900px;
 }
 
@@ -601,20 +601,20 @@ img {
 
 .career-shell {
 	display: grid;
-	gap: 24px;
-	padding-bottom: 60px;
+	gap: 18px;
+	padding-bottom: 40px;
 }
 
 .career-timeline {
 	display: grid;
-	gap: 18px;
-	padding-bottom: 60px;
+	gap: 14px;
+	padding-bottom: 40px;
 }
 
 .timeline-row {
 	display: grid;
 	grid-template-columns: 28px 1fr;
-	gap: 24px;
+	gap: 20px;
 }
 
 .timeline-track {
@@ -662,7 +662,7 @@ img {
 	align-items: center;
 	gap: 20px;
 	width: 100%;
-	padding: 22px 40px;
+	padding: 18px 28px;
 	background: none;
 	border: 0;
 	text-align: left;
@@ -729,12 +729,12 @@ img {
 }
 
 .role-body-inner {
-	padding: 0 40px 40px;
+	padding: 0 28px 28px;
 }
 
 .stint + .stint {
-	margin-top: 32px;
-	padding-top: 32px;
+	margin-top: 24px;
+	padding-top: 24px;
 	border-top: 1px solid var(--border);
 }
 
@@ -742,7 +742,7 @@ img {
 	display: flex;
 	align-items: baseline;
 	gap: 10px;
-	margin-top: 24px;
+	margin-top: 18px;
 }
 
 .stint-heading h3 {
@@ -801,14 +801,14 @@ img {
 	font-size: 18px;
 	line-height: 1.55;
 	color: var(--ink-secondary);
-	margin: 24px 0 0;
+	margin: 18px 0 0;
 }
 
 .metric-row {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 14px;
-	margin-top: 28px;
+	margin-top: 20px;
 }
 
 .metric-tile {
@@ -836,7 +836,7 @@ img {
 	display: grid;
 	gap: 14px;
 	padding: 0;
-	margin: 28px 0 0;
+	margin: 20px 0 0;
 	list-style: none;
 }
 
@@ -866,8 +866,8 @@ img {
 }
 
 .role-footer {
-	margin-top: 28px;
-	padding-top: 22px;
+	margin-top: 20px;
+	padding-top: 16px;
 	border-top: 1px solid var(--border);
 	display: flex;
 	justify-content: space-between;
@@ -880,13 +880,13 @@ img {
 .editorial-grid {
 	display: grid;
 	grid-template-columns: 1.2fr 0.8fr;
-	gap: 22px;
-	padding: 12px 0 60px;
+	gap: 20px;
+	padding: 12px 0 40px;
 }
 
 .editorial-card {
 	border-radius: var(--radius-lg);
-	padding: 32px;
+	padding: 24px;
 	border: 1px solid var(--border);
 	background: var(--surface);
 	min-height: 280px;
@@ -924,11 +924,11 @@ img {
 	background: var(--surface);
 	border: 1px solid var(--border);
 	border-radius: var(--radius-lg);
-	padding: 34px;
-	margin-bottom: 60px;
+	padding: 26px;
+	margin-bottom: 40px;
 	display: grid;
 	grid-template-columns: 1fr auto;
-	gap: 30px;
+	gap: 22px;
 }
 
 .resume-card h2 {
@@ -944,11 +944,11 @@ img {
 	border: 1px solid var(--border);
 	color: var(--ink);
 	border-radius: var(--radius-lg);
-	padding: 44px;
-	margin-bottom: 60px;
+	padding: 32px;
+	margin-bottom: 40px;
 	display: grid;
 	grid-template-columns: 1.2fr 0.8fr;
-	gap: 50px;
+	gap: 36px;
 }
 
 .contact-card h2 {
@@ -986,9 +986,9 @@ img {
 	background: var(--surface);
 	border: 1px solid var(--border);
 	border-radius: var(--radius-lg);
-	padding: 40px;
-	margin-bottom: 60px;
-	min-height: 360px;
+	padding: 28px;
+	margin-bottom: 40px;
+	min-height: 300px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
