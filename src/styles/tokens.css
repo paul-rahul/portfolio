@@ -1163,6 +1163,13 @@ img {
 	.role-toggle-heading {
 		gap: 4px 8px;
 	}
+	.role-toggle-heading .role-period {
+		flex-basis: 100%;
+		margin-top: 2px;
+	}
+	.role-toggle-heading .role-period::before {
+		content: none;
+	}
 	.role-toggle-side {
 		gap: 12px;
 	}

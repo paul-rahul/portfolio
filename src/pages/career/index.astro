@@ -31,7 +31,9 @@ import { roles } from "../../data/roles.ts";
 							<button class="role-toggle" aria-expanded="false" aria-controls={`${role.id}-body`}>
 								<div class="role-toggle-heading">
 									<h2>{role.company}</h2>
-									<span class="role-title">{role.stints[0].title}</span>
+									<span class="role-title">
+									{role.stints.length > 1 ? `${role.stints.length} roles` : role.stints[0].title}
+								</span>
 									<span class="role-period">{role.period}</span>
 								</div>
 								<div class="role-toggle-side">
