@@ -440,3 +440,81 @@ Known issues / deferred items:
 
 Next phase:
 - Phase 6 — Secondary pages
+
+---
+
+## Phase 06 — Secondary Pages
+
+Status: complete
+Branch: redesign/06-secondary-pages
+PR: (opening next)
+Merged into: redesign/technical-editorial
+
+Implemented:
+- `/internships`: replaced the split `.feature-card` layout (decorative `experiments-clay.jpg`
+  illustration + copy panel) with the same `.role-detail` treatment used on `/career`
+  (`career-shell` > `role-detail` > header/period/company/title, `role-summary`, `metric-row`
+  of `metric-tile`s). The Cisco internship is structurally identical content to a career role
+  (period, title, summary, metrics), so it now reads as the same pattern instead of a one-off
+  component — and drops the only remaining decorative-illustration image on the site, matching
+  the plan's "authentic work over decorative AI art" principle (the homepage and career page
+  already moved to abstract `case-mark` treatments in earlier phases; this closes the gap).
+  Did not add a `role-number` badge or `role-footer` counter (e.g. "1/1") since there's only
+  one entry and a counter would misleadingly imply more items follow.
+- `/built`: removed the `.mini-tags` pill list ("Problem framing / Prototype / Build notes /
+  Learnings") and folded it into the closing prose sentence, mirroring the Phase 5 About-page
+  precedent of de-chipping personality/process tags into plain sentences. Kept the honest
+  "coming soon" framing — no fabricated project content, per baseline plan notes.
+- `/resume`: same `.mini-tags` removal (Product strategy / ML products / Experimentation / GTM),
+  folded into the existing summary sentence. Buttons/download behavior unchanged.
+- `/contact`: no content change, but restyled `.contact-card` off the solid `--ink` background /
+  white-on-black button treatment onto the same bordered `--surface` card + `--background`
+  link-row treatment used everywhere else on the site (about, built, resume). The inverted
+  color-block was the last surviving "designed accent" device inconsistent with the site's
+  restrained-editorial direction — every other secondary page uses a plain bordered card.
+- CSS cleanup: removed now-fully-dead `.feature-card`/`.feature-copy`/`.feature-copy h2`/
+  `.feature-copy .metrics` and their 980px/680px responsive overrides (only consumer was
+  `/internships`, now migrated). Removed `.mini-tags`/`.mini-tags span` (no remaining
+  consumers after `/built` and `/resume` edits). Also removed `.simple-grid`/`.simple-card*`
+  and its 680px override — discovered fully orphaned (zero references anywhere in `src/pages`)
+  while auditing this CSS region; not tied to this phase's page edits but adjacent dead code
+  from an earlier iteration, consistent with the Phase 5 precedent of cleaning up dead CSS
+  found along the way.
+
+Important decisions:
+- Reused the `/career` role-detail pattern for `/internships` rather than inventing a new
+  component, since the underlying content shape is identical — avoids a one-off visual
+  language for a single internship entry.
+- Did not delete the orphaned `ad-launch-clay.jpg` / `experiments-clay.jpg` / `ml-platform-
+  clay.jpg` / `ml-to-product-clay.jpg` files from `public/` — none are referenced in `src/`
+  anymore after this phase, but removing static assets felt like a separate cleanup decision
+  from the page-content work; flagged below as a known issue for Rahul to confirm before
+  deletion.
+
+Files materially changed:
+- `src/pages/internships/index.astro` (feature-card → role-detail pattern, no image)
+- `src/pages/built/index.astro` (mini-tags removed, folded into prose)
+- `src/pages/resume.astro` (mini-tags removed, folded into prose)
+- `src/styles/tokens.css` (`.feature-card`/`.feature-copy` family, `.mini-tags`,
+  `.simple-grid`/`.simple-card` family all removed as dead code; `.contact-card`/
+  `.contact-links a` restyled from inverted-ink block to bordered surface card)
+
+Validation:
+- npm run build: PASS (7 routes)
+- dev mode: PASS — checked rendered HTML via curl for all four pages: zero occurrences of
+  `mini-tags`, `feature-card`, `experiments-clay` anywhere in output; confirmed `/internships`
+  role-detail markup renders company/period/title/summary/all three metrics correctly.
+  Visually reviewed all four pages in-browser (screenshots) — internships now matches the
+  career page's card language, contact card now matches the bordered-surface language used
+  on about/built/resume.
+
+Known issues / deferred items:
+- `public/ad-launch-clay.jpg`, `experiments-clay.jpg`, `ml-platform-clay.jpg`,
+  `ml-to-product-clay.jpg` are now fully orphaned (zero references in `src/`) — left in place,
+  not deleted, since removing static assets wasn't clearly in this phase's scope. Flag to
+  Rahul; safe to delete once confirmed no future use planned.
+- No accessibility audit has been done yet (Phase 7).
+- No OG/meta image work done yet (Phase 8).
+
+Next phase:
+- Phase 7 — Motion / responsive / accessibility
