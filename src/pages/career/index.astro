@@ -81,8 +81,18 @@ import { roles } from "../../data/roles.ts";
 <script>
 	const rows = document.querySelectorAll<HTMLElement>("[data-tl-row]");
 
+	const syncBody = (row: HTMLElement, expanded: boolean) => {
+		const body = row.querySelector<HTMLElement>("[data-role-body]");
+		if (!body) return;
+		body.style.maxHeight = expanded ? `${body.scrollHeight}px` : "0px";
+	};
+
 	const setActive = (row: HTMLElement) => {
-		rows.forEach((r) => r.classList.toggle("is-active", r === row));
+		rows.forEach((r) => {
+			const isActive = r === row;
+			r.classList.toggle("is-active", isActive);
+			syncBody(r, isActive);
+		});
 	};
 
 	if ("IntersectionObserver" in window) {
@@ -96,7 +106,15 @@ import { roles } from "../../data/roles.ts";
 			{ rootMargin: "-45% 0px -45% 0px", threshold: 0 },
 		);
 		rows.forEach((row) => observer.observe(row));
+	} else {
+		rows.forEach((row) => syncBody(row, true));
 	}
+
+	window.addEventListener("resize", () => {
+		rows.forEach((row) => {
+			if (row.classList.contains("is-active")) syncBody(row, true);
+		});
+	});
 
 	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
