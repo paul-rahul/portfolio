@@ -24,7 +24,7 @@ body {
 	margin: 0;
 	background: var(--cream);
 	color: var(--ink);
-	font-family: "DM Sans", "Avenir Next", Avenir, system-ui, sans-serif;
+	font-family: "Roboto", system-ui, sans-serif;
 	font-size: 16px;
 	line-height: 1.55;
 }
@@ -87,7 +87,7 @@ img {
 	place-items: center;
 	border-radius: 13px;
 	background: var(--peach);
-	font-family: "Arial Rounded MT Bold", system-ui;
+	font-family: "Poppins", system-ui;
 	font-size: 22px;
 	box-shadow: inset 0 -3px 0 rgba(36, 19, 56, 0.07);
 }
@@ -175,7 +175,7 @@ img {
 .page-hero h1,
 .section-heading h2,
 .editorial-title {
-	font-family: "Arial Rounded MT Bold", "Trebuchet MS", system-ui;
+	font-family: "Poppins", "Trebuchet MS", system-ui;
 	font-weight: 900;
 	letter-spacing: -0.055em;
 	line-height: 0.99;
@@ -432,7 +432,7 @@ img {
 }
 
 .closing-cta p {
-	font-family: "Arial Rounded MT Bold", system-ui;
+	font-family: "Poppins", system-ui;
 	font-size: 30px;
 	font-weight: 900;
 	line-height: 1.15;
@@ -554,7 +554,7 @@ img {
 }
 
 .role-detail h2 {
-	font-family: "Arial Rounded MT Bold", system-ui;
+	font-family: "Poppins", system-ui;
 	font-size: 42px;
 	line-height: 1;
 	margin: 0;
@@ -624,7 +624,7 @@ img {
 }
 
 .role-number {
-	font-family: "Arial Rounded MT Bold", system-ui;
+	font-family: "Poppins", system-ui;
 	font-size: 82px;
 	line-height: 0.8;
 	color: var(--surface, var(--lilac));
@@ -698,7 +698,7 @@ img {
 }
 
 .hand-note {
-	font-family: "Comic Sans MS", cursive;
+	font-family: "Caveat", cursive;
 	font-size: 22px;
 	transform: rotate(-2deg);
 	display: inline-block;
@@ -741,7 +741,7 @@ img {
 }
 
 .feature-copy h2 {
-	font-family: "Arial Rounded MT Bold", system-ui;
+	font-family: "Poppins", system-ui;
 	font-size: 46px;
 	line-height: 1.05;
 	margin: 12px 0 20px;
@@ -795,7 +795,7 @@ img {
 }
 
 .resume-card h2 {
-	font-family: "Arial Rounded MT Bold", system-ui;
+	font-family: "Poppins", system-ui;
 	font-size: 44px;
 	margin: 0 0 18px;
 }
@@ -812,7 +812,7 @@ img {
 }
 
 .contact-card h2 {
-	font-family: "Arial Rounded MT Bold", system-ui;
+	font-family: "Poppins", system-ui;
 	font-size: clamp(44px, 6vw, 75px);
 	line-height: 1;
 	margin: 0;
@@ -846,7 +846,7 @@ img {
 }
 
 .built-placeholder h2 {
-	font-family: "Arial Rounded MT Bold", system-ui;
+	font-family: "Poppins", system-ui;
 	font-size: clamp(45px, 6vw, 76px);
 	max-width: 760px;
 	line-height: 1;
