@@ -6,7 +6,7 @@ colors:
   ink-secondary: "#5f5f5f"
   background: "#f6f6f3"
   surface: "#ffffff"
-  border: "#dddddA"
+  border: "#ddddda"
   accent: "#4c5ff5"
   accent-soft: "#eef0ff"
   success: "#1f8a5b"
@@ -87,7 +87,7 @@ The palette is almost monochrome by design; color is a signal, not decoration.
 - **Ink Secondary** (`#5f5f5f`): all secondary/supporting text — ledes, metadata, captions.
 - **Background** (`#f6f6f3`): page background (warm off-white, "paper").
 - **Surface** (`#ffffff`): card and panel background, sits one step lighter than the page.
-- **Border** (`#dddddA`): all dividers, card outlines, table rules.
+- **Border** (`#ddddda`): all dividers, card outlines, table rules.
 
 ### Named Rules
 **The One Accent Rule.** Cobalt is the only saturated hue in the system. If a new element needs emphasis, reach for ink-on-background contrast or mono type before reaching for a second color.
