@@ -4,9 +4,16 @@ import ArrowIcon from "../components/ArrowIcon.astro";
 import { roles } from "../data/roles.ts";
 
 const facts: [string, string][] = [
-	["6+ years", "Across product & ML engineering"],
-	["$135M+", "Revenue influenced across roles"],
-	["McCombs", "MBA · Brand & Product · May 2027"],
+	["6+ years", "Engineering → Product"],
+	["$135M+", "Revenue influenced"],
+	["5 industries", "AI · Ads · Consumer · GovTech · Hardware"],
+	["McCombs '27", "MBA"],
+];
+
+const progression = [
+	{ n: "01", label: "Engineer", desc: "Build the system", tags: "ML · data · infrastructure" },
+	{ n: "02", label: "Product", desc: "Decide what gets built", tags: "Users · roadmap · economics" },
+	{ n: "03", label: "Market", desc: "Make the value legible", tags: "Positioning · adoption · GTM" },
 ];
 
 const dream11 = roles.find((r) => r.id === "dream11")!;
@@ -18,8 +25,11 @@ const medianet = roles.find((r) => r.id === "medianet")!;
 		<section class="hero wrap">
 			<div class="hero-copy">
 				<p class="eyebrow"><span></span> McCombs MBA · May 2027</p>
-				<h1>From modeling data to <em>shaping products.</em></h1>
-				<p class="lede">I'm Rahul, a product leader and former ML engineer who turns technical complexity into products people adopt and businesses can measure.</p>
+				<h1>I build at the intersection of <em>technology, product & market.</em></h1>
+				<p class="lede">
+					AI/ML engineer turned product manager and product marketer. I turn technical complexity into products
+					customers understand, adopt, and businesses can measure.
+				</p>
 				<div class="actions">
 					<a class="button primary" href="/career">
 						Explore my work
@@ -29,13 +39,30 @@ const medianet = roles.find((r) => r.id === "medianet")!;
 				</div>
 			</div>
 			<div class="hero-art">
-				<div class="image-frame peach"><img src="/ml-to-product-clay.jpg" alt="Clay-style illustration of data becoming a product experience" /></div>
-				<span class="float-note note-one">ML engineer → PM</span>
-				<span class="float-note note-two">AI · Ads · Platforms</span>
+				<!-- Placeholder for a real portrait: drop an <img> into .image-frame and remove .intersection-diagram, no other layout changes needed. -->
+				<div class="image-frame intersection-diagram" aria-hidden="true">
+					<span class="intersection-circle tech">Tech</span>
+					<span class="intersection-circle product">Product</span>
+					<span class="intersection-circle market">Market</span>
+				</div>
 			</div>
 		</section>
 		<section class="fact-strip wrap" aria-label="Quick facts">
 			{facts.map(([big, small]) => <div><strong>{big}</strong><span>{small}</span></div>)}
+		</section>
+		<section class="progression wrap" aria-label="Career progression">
+			<div class="progression-grid">
+				{
+					progression.map((step) => (
+						<div class="progression-step">
+							<span class="progression-number">{step.n}</span>
+							<h3>{step.label}</h3>
+							<p>{step.desc}</p>
+							<span class="progression-tags">{step.tags}</span>
+						</div>
+					))
+				}
+			</div>
 		</section>
 		<section class="work-section wrap">
 			<div class="section-heading">
@@ -46,26 +73,38 @@ const medianet = roles.find((r) => r.id === "medianet")!;
 				</a>
 			</div>
 			<div class="case-grid">
-				<a class="case-card lilac" href="/career#dream11">
-					<div class="case-image"><img src="/ad-launch-clay.jpg" alt="Clay illustration representing an advertising product launch" /></div>
+				<a class="case-card" href="/career#dream11">
+					<div class="case-visual">
+						<span class="case-mark" aria-hidden="true">D11</span>
+					</div>
 					<div class="case-copy">
 						<p>Dream11 · Product Manager</p>
 						<h3>Launched in-app advertising into a new revenue line.</h3>
 						<div class="metrics">
-							<span><b>{dream11.metrics[0][0]}</b> {dream11.metrics[0][1].toLowerCase()}</span>
-							<span><b>{dream11.metrics[1][0]}</b> {dream11.metrics[1][1].toLowerCase()}</span>
+							<span><b>{dream11.stints[0].metrics[0][0]}</b> {dream11.stints[0].metrics[0][1].toLowerCase()}</span>
+							<span><b>{dream11.stints[0].metrics[1][0]}</b> {dream11.stints[0].metrics[1][1].toLowerCase()}</span>
 						</div>
+						<span class="case-link">
+							Read case study
+							<ArrowIcon size={14} />
+						</span>
 					</div>
 				</a>
-				<a class="case-card mint" href="/career#medianet">
-					<div class="case-image"><img src="/ml-platform-clay.jpg" alt="Clay illustration representing a machine-learning platform" /></div>
+				<a class="case-card" href="/career#medianet">
+					<div class="case-visual">
+						<span class="case-mark" aria-hidden="true">M.</span>
+					</div>
 					<div class="case-copy">
 						<p>Media.net · Associate Product Manager</p>
 						<h3>Made experimentation faster, safer and easier to use.</h3>
 						<div class="metrics">
-							<span><b>{medianet.metrics[2][0]}</b> experiments / 6 mo.</span>
-							<span><b>{medianet.metrics[0][0]}</b> optimizer revenue</span>
+							<span><b>{medianet.stints[0].metrics[2][0]}</b> experiments / 6 mo.</span>
+							<span><b>{medianet.stints[0].metrics[0][0]}</b> optimizer revenue</span>
 						</div>
+						<span class="case-link">
+							Read case study
+							<ArrowIcon size={14} />
+						</span>
 					</div>
 				</a>
 			</div>
