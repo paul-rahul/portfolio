@@ -967,7 +967,8 @@ img {
 		gap: 10px;
 	}
 	.header-cta {
-		display: none;
+		padding: 8px 10px;
+		font-size: 13px;
 	}
 	.site-header nav {
 		gap: 16px;

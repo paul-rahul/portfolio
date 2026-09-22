@@ -186,3 +186,56 @@ Known issues / deferred items:
 
 Next phase:
 - Phase 2 — Global shell / navigation
+
+---
+
+## Phase 02 — Global Shell / Navigation
+
+Status: complete
+Branch: redesign/02-navigation
+PR: (opening next)
+Merged into: redesign/technical-editorial
+
+Implemented:
+- Trimmed primary nav from `[Home, Career, Internships, Built, About, Résumé, Contact]` to the
+  plan's target set: `Work → /career`, `Built → /built`, `About → /about`, `Résumé → /resume`,
+  with `Contact` moved out of the link row entirely and re-expressed as the existing
+  `.header-cta` pill-turned-rectangle ("Contact" + arrow icon), matching the plan's
+  `Work / Built / About / Résumé / Contact →` target exactly.
+- `/internships` route is untouched and still reachable (linked from the career page), just no
+  longer a top-level nav item, per the plan's explicit allowance.
+- Updated brand signature from `Product · AI · ML` to `AI · Product · GTM` in `Nav.astro`.
+- Footer left materially as-is (brand block + one positioning line + email link) — already a
+  minimal 3-element row with no pills/rotation, judged to already satisfy "simplify footer"
+  without further trimming.
+- Fixed a mobile-nav gap: the pre-existing `@media (max-width: 680px)` rule hid `.header-cta`
+  entirely (`display: none`), which — now that Contact lives only in `.header-cta` and no longer
+  has a separate nav-row link — would have made Contact unreachable on small screens, violating
+  the phase's explicit "contact remains easy to reach" acceptance criterion. Changed that rule to
+  shrink the CTA's padding/font-size instead of hiding it.
+- Verified via built HTML (`curl` against dev server, not screenshots): current-route
+  `aria-current="page"` correctly applied per-route (checked `/` and `/career`), nav links are
+  plain `<a>` tags (native keyboard/tab order, no custom JS needed), desktop/tablet/mobile CSS
+  breakpoints at 980px/680px all still resolve correctly after the header-cta fix.
+
+Important decisions:
+- Did not add a hamburger/off-canvas mobile menu. The existing pattern (nav row becomes a
+  horizontally-scrollable strip under 980px, full-width) was already keyboard/functionally
+  sound and matches the plan's minimal/editorial direction; introducing a JS-driven mobile menu
+  wasn't asked for and would add interaction surface the plan doesn't call for in this phase.
+
+Files materially changed:
+- `src/components/Nav.astro` (nav items, brand signature, Contact merged into header-cta)
+- `src/styles/tokens.css` (680px breakpoint: header-cta shrinks instead of disappearing)
+
+Validation:
+- npm run build: PASS (7 routes)
+- dev mode: PASS — checked rendered header HTML on `/` and `/career` directly (bypassing the
+  known Chrome-automation forced-dark-mode issue from Phase 1) for correct nav items, active
+  state, and Contact CTA markup.
+
+Known issues / deferred items:
+- None carried forward from this phase.
+
+Next phase:
+- Phase 3 — Homepage
