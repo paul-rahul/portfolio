@@ -137,14 +137,15 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 ### Cards / Containers
 - **Corner Style:** 16px radius (`--radius-lg`) for cards/panels; 12px for metric tiles.
 - **Background:** surface (`#ffffff`) on background (`#f6f6f3`), or background-on-surface for nested tiles (metric tiles sit on `--background` inside a surface card).
-- **Shadow Strategy:** none at rest (see Elevation & Depth); `.case-card` and role-toggle rows get a subtle `translateY` + border-color shift on hover instead of shadow.
+- **Shadow Strategy:** none at rest (see Elevation & Depth); `.case-card` gets a subtle `translateY` + border-color shift on hover instead of shadow.
 - **Border:** 1px solid `--border` on all cards.
 - **Internal Padding:** 18–44px depending on card density (metric tile 18px, contact-card 44px).
 
-### Accordion (career timeline)
-- **Trigger:** full-width button, closed by default, company name (uppercase, Instrument Sans) + title + period on one line separated by mono-rule pipes (`|` in `--border` color).
-- **State:** expansion toggles `max-height` with a 0.3s ease transition; the plus/cross icon rotates 90° on expand. Respects `prefers-reduced-motion` (durations collapse to ~0).
-- **Track:** a left-hand dot-and-line timeline (cobalt-ringed dot, border-colored connecting line) runs alongside every row.
+### Pinned scroll timeline (career page)
+- **Structure:** a three-column row per role — sticky year/period label (mono period + Instrument Sans company name), a center dot-and-line track, and an always-expanded card. Cards are never collapsed; the scroll itself reveals content, so there is no toggle/trigger element.
+- **Pin behavior:** the year label and its track dot use `position: sticky` (same `top` offset, pinned just below the site header) so they hold position while that role's card scrolls past underneath; they release once the row's content clears.
+- **Progress feedback:** the connecting line fills from `--border` to cobalt as the user scrolls through a row (JS sets a `--fill` custom property on scroll, `requestAnimationFrame`-throttled); the active row's dot and period label switch to cobalt via an `IntersectionObserver` watching a band around viewport center. Both effects are skipped for `prefers-reduced-motion`, leaving the row highlight as the only active-state signal.
+- **Mobile (≤680px):** sticky pinning is dropped — year label sits inline above its card, non-sticky, with the dot-and-line rail continuing at the row's left edge.
 
 ## Do's & Don'ts
 
@@ -152,7 +153,7 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 - **Do** keep cobalt to single-element usage (links, active state, one dot, one ribbon) — never a fill larger than a button or dot.
 - **Do** set anything numeric, dated, or systemic in JetBrains Mono, uppercase, with letter-spacing.
 - **Do** separate surfaces with a 1px border + background step, not a shadow.
-- **Do** default accordions/expandable content to closed.
+- **Do** let scroll position — not a click toggle — drive reveal state for the career timeline; keep content in the DOM and visible by default so it works without JS.
 
 ### Don't:
 - **Don't** introduce a second saturated accent color.

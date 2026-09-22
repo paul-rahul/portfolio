@@ -607,129 +607,126 @@ img {
 
 .career-timeline {
 	display: grid;
-	gap: 14px;
 	padding-bottom: 40px;
 }
 
-.timeline-row {
+.tl-row {
 	display: grid;
-	grid-template-columns: 28px 1fr;
-	gap: 20px;
+	grid-template-columns: 220px 28px 1fr;
+	gap: 28px;
+	align-items: start;
 }
 
-.timeline-track {
+.tl-row + .tl-row {
+	margin-top: 8px;
+}
+
+.tl-year {
+	position: sticky;
+	top: 108px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 24px 0;
+}
+
+.tl-year-index {
+	font-family: var(--font-mono);
+	font-weight: 600;
+	font-size: 13px;
+	color: var(--border);
+	letter-spacing: 0.06em;
+}
+
+.tl-year-period {
+	font-family: var(--font-mono);
+	font-weight: 600;
+	font-size: 20px;
+	letter-spacing: -0.01em;
+	color: var(--ink-secondary);
+	transition: color 0.25s ease;
+}
+
+.tl-year-company {
+	font-family: var(--font-heading);
+	font-weight: 600;
+	font-size: 17px;
+	letter-spacing: -0.01em;
+	text-transform: uppercase;
+	color: var(--ink);
+}
+
+.tl-row.is-active .tl-year-period {
+	color: var(--accent);
+}
+
+.tl-track {
 	position: relative;
+	align-self: stretch;
+	height: 100%;
 }
 
-.timeline-track::before {
+.tl-track::before {
 	content: "";
 	position: absolute;
-	top: 44px;
-	bottom: -24px;
+	top: 0;
+	bottom: -8px;
 	left: 50%;
 	width: 2px;
 	background: var(--border);
 	transform: translateX(-50%);
 }
 
-.timeline-row:last-child .timeline-track::before {
-	display: none;
+.tl-row:last-child .tl-track::before {
+	bottom: 0;
 }
 
-.timeline-dot {
+.tl-track::after {
+	content: "";
 	position: absolute;
-	top: 44px;
+	top: 0;
 	left: 50%;
+	width: 2px;
+	height: var(--fill, 0%);
+	background: var(--accent);
+	transform: translateX(-50%);
+	transition: height 0.1s linear;
+}
+
+.tl-dot {
+	position: sticky;
+	top: 114px;
+	display: block;
 	width: 12px;
 	height: 12px;
+	margin-left: 8px;
 	border-radius: 50%;
 	background: var(--surface);
-	border: 2px solid var(--accent);
-	transform: translate(-50%, -50%);
+	border: 2px solid var(--border);
+	transform: translateX(-50%);
 	z-index: 1;
+	transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+}
+
+.tl-row.is-active .tl-dot {
+	border-color: var(--accent);
+	background: var(--accent);
+	transform: translateX(-50%) scale(1.2);
 }
 
 .role-detail {
 	border-radius: var(--radius-lg);
 	background: var(--surface);
 	border: 1px solid var(--border);
-	overflow: hidden;
+	padding: 28px;
+	margin-bottom: 28px;
 }
 
-.role-toggle {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 20px;
-	width: 100%;
-	padding: 18px 28px;
-	background: none;
-	border: 0;
-	text-align: left;
-	font: inherit;
-	color: inherit;
-	cursor: pointer;
-	transition: background-color 0.15s ease;
-}
-
-.role-toggle:hover {
-	background: var(--background);
-}
-
-.role-toggle-heading {
+.role-head {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
-	min-width: 0;
-}
-
-.role-toggle-side {
-	display: flex;
-	align-items: center;
-	gap: 20px;
-	flex-shrink: 0;
-}
-
-.role-toggle-icon {
-	position: relative;
-	width: 18px;
-	height: 18px;
-	flex-shrink: 0;
-}
-
-.role-toggle-icon span {
-	position: absolute;
-	background: var(--accent);
-	border-radius: 1px;
-}
-
-.role-toggle-icon span:first-child {
-	top: 8px;
-	left: 0;
-	width: 18px;
-	height: 2px;
-}
-
-.role-toggle-icon span:last-child {
-	top: 0;
-	left: 8px;
-	width: 2px;
-	height: 18px;
-	transition: transform 0.25s ease;
-}
-
-.role-detail.is-expanded .role-toggle-icon span:last-child {
-	transform: rotate(90deg);
-}
-
-.role-body {
-	max-height: 0;
-	overflow: hidden;
-	transition: max-height 0.3s ease;
-}
-
-.role-body-inner {
-	padding: 0 28px 28px;
+	gap: 0;
 }
 
 .stint + .stint {
@@ -775,7 +772,7 @@ img {
 	color: var(--ink-secondary);
 }
 
-.role-toggle-heading .role-title::before {
+.role-head .role-title::before {
 	content: "|";
 	margin: 0 10px;
 	color: var(--border);
@@ -788,13 +785,6 @@ img {
 	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: 0.06em;
-}
-
-.role-toggle-heading .role-period::before {
-	content: "|";
-	margin: 0 10px;
-	color: var(--border);
-	font-family: var(--font-body);
 }
 
 .role-detail .role-summary {
@@ -855,14 +845,6 @@ img {
 	top: 15px;
 	color: var(--accent);
 	font-weight: 700;
-}
-
-.role-number {
-	font-family: var(--font-mono);
-	font-weight: 600;
-	font-size: 28px;
-	line-height: 0.8;
-	color: var(--border);
 }
 
 .role-footer {
@@ -1139,48 +1121,42 @@ img {
 	}
 	.career-timeline {
 		padding-bottom: 70px;
-		gap: 18px;
 	}
-	.timeline-row {
+	.tl-row {
 		grid-template-columns: 18px 1fr;
-		gap: 14px;
+		column-gap: 14px;
+		row-gap: 8px;
 	}
-	.timeline-track::before,
-	.timeline-dot {
-		top: 30px;
+	.tl-row + .tl-row {
+		margin-top: 32px;
 	}
-	.timeline-track::before {
-		bottom: -18px;
+	.tl-year {
+		grid-column: 2;
+		grid-row: 1;
+		position: static;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 4px 10px;
+		padding: 0;
 	}
-	.timeline-dot {
-		width: 10px;
-		height: 10px;
+	.tl-track {
+		grid-column: 1;
+		grid-row: 1 / span 2;
 	}
-	.role-toggle {
-		padding: 16px 20px;
-		gap: 10px;
+	.tl-dot {
+		position: static;
+		top: auto;
+		margin-top: 6px;
+		margin-left: 3px;
 	}
-	.role-toggle-heading {
-		gap: 4px 8px;
-	}
-	.role-toggle-heading .role-period {
-		flex-basis: 100%;
-		margin-top: 2px;
-	}
-	.role-toggle-heading .role-period::before {
-		content: none;
-	}
-	.role-toggle-side {
-		gap: 12px;
-	}
-	.role-body-inner {
-		padding: 0 20px 26px;
+	.role-detail {
+		grid-column: 2;
+		grid-row: 2;
+		padding: 20px;
 	}
 	.role-detail h2 {
 		font-size: 17px;
-	}
-	.role-number {
-		font-size: 20px;
 	}
 	.metric-row {
 		grid-template-columns: 1fr;

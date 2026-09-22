@@ -20,61 +20,53 @@ import { roles } from "../../data/roles.ts";
 			<span class="frame-arrow" aria-hidden="true">→</span>
 			<span class="frame-pill">Business impact</span>
 		</div>
-		<section class="career-timeline">
+		<section class="career-timeline" data-timeline>
 			{
 				roles.map((role, i) => (
-					<div class="timeline-row">
-						<div class="timeline-track">
-							<span class="timeline-dot" />
+					<div class="tl-row" id={role.id} data-tl-row>
+						<div class="tl-year">
+							<span class="tl-year-index">{"0" + (i + 1)}</span>
+							<span class="tl-year-period">{role.period}</span>
+							<span class="tl-year-company">{role.company}</span>
 						</div>
-						<article class="role-detail" id={role.id} data-role-card>
-							<button class="role-toggle" aria-expanded="false" aria-controls={`${role.id}-body`}>
-								<div class="role-toggle-heading">
-									<h2>{role.company}</h2>
-									<span class="role-title">
+						<div class="tl-track" aria-hidden="true">
+							<span class="tl-dot" data-tl-dot />
+						</div>
+						<article class="role-detail">
+							<div class="role-head">
+								<h2>{role.company}</h2>
+								<span class="role-title">
 									{role.stints.length > 1 ? `${role.stints.length} roles` : role.stints[0].title}
 								</span>
-									<span class="role-period">{role.period}</span>
-								</div>
-								<div class="role-toggle-side">
-									<span class="role-number">{"0" + (i + 1)}</span>
-									<span class="role-toggle-icon" aria-hidden="true">
-										<span /><span />
-									</span>
-								</div>
-							</button>
-							<div class="role-body" id={`${role.id}-body`}>
-								<div class="role-body-inner">
-									{role.stints.map((stint) => (
-										<div class="stint">
-											{role.stints.length > 1 && (
-												<div class="stint-heading">
-													<h3>{stint.title}</h3>
-													<span class="role-period">{stint.period}</span>
-												</div>
-											)}
-											<p class="role-summary">{stint.summary}</p>
-											<div class="metric-row">
-												{stint.metrics.map(([value, label]) => (
-													<div class="metric-tile">
-														<b>{value}</b>
-														<span>{label}</span>
-													</div>
-												))}
-											</div>
-											<ul class="outcome-list">
-												{stint.outcomes.map((o) => (
-													<li>{o}</li>
-												))}
-											</ul>
+							</div>
+							{role.stints.map((stint) => (
+								<div class="stint">
+									{role.stints.length > 1 && (
+										<div class="stint-heading">
+											<h3>{stint.title}</h3>
+											<span class="role-period">{stint.period}</span>
 										</div>
-									))}
-									<div class="role-footer">
-										<span>
-											{i + 1} / {roles.length}
-										</span>
+									)}
+									<p class="role-summary">{stint.summary}</p>
+									<div class="metric-row">
+										{stint.metrics.map(([value, label]) => (
+											<div class="metric-tile">
+												<b>{value}</b>
+												<span>{label}</span>
+											</div>
+										))}
 									</div>
+									<ul class="outcome-list">
+										{stint.outcomes.map((o) => (
+											<li>{o}</li>
+										))}
+									</ul>
 								</div>
+							))}
+							<div class="role-footer">
+								<span>
+									{i + 1} / {roles.length}
+								</span>
 							</div>
 						</article>
 					</div>
@@ -85,14 +77,52 @@ import { roles } from "../../data/roles.ts";
 </BaseLayout>
 
 <script>
-	document.querySelectorAll<HTMLButtonElement>(".role-toggle").forEach((toggle) => {
-		toggle.addEventListener("click", () => {
-			const card = toggle.closest<HTMLElement>("[data-role-card]");
-			const body = card?.querySelector<HTMLElement>(".role-body");
-			if (!card || !body) return;
-			const expanded = card.classList.toggle("is-expanded");
-			toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
-			body.style.maxHeight = expanded ? `${body.scrollHeight}px` : "0px";
-		});
-	});
+	const rows = document.querySelectorAll<HTMLElement>("[data-tl-row]");
+
+	const setActive = (row: HTMLElement) => {
+		rows.forEach((r) => r.classList.toggle("is-active", r === row));
+	};
+
+	if ("IntersectionObserver" in window) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const visible = entries.filter((e) => e.isIntersecting);
+				if (visible.length === 0) return;
+				const topMost = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
+				setActive(topMost.target as HTMLElement);
+			},
+			{ rootMargin: "-45% 0px -45% 0px", threshold: 0 },
+		);
+		rows.forEach((row) => observer.observe(row));
+	}
+
+	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	if (!prefersReducedMotion) {
+		let ticking = false;
+		const updateFill = () => {
+			ticking = false;
+			const viewportCenter = window.innerHeight * 0.5;
+			rows.forEach((row) => {
+				const track = row.querySelector<HTMLElement>(".tl-track");
+				if (!track) return;
+				const rect = track.getBoundingClientRect();
+				const progress = (viewportCenter - rect.top) / rect.height;
+				const clamped = Math.min(1, Math.max(0, progress));
+				track.style.setProperty("--fill", `${clamped * 100}%`);
+			});
+		};
+		updateFill();
+		window.addEventListener(
+			"scroll",
+			() => {
+				if (!ticking) {
+					ticking = true;
+					requestAnimationFrame(updateFill);
+				}
+			},
+			{ passive: true },
+		);
+		window.addEventListener("resize", updateFill);
+	}
 </script>
