@@ -379,3 +379,64 @@ Known issues / deferred items:
 
 Next phase:
 - Phase 5 — About page
+
+---
+
+## Phase 05 — About Page
+
+Status: complete
+Branch: redesign/05-about
+PR: (opening next)
+Merged into: redesign/technical-editorial
+
+Implemented:
+- Rewrote the hero title to the plan's target narrative ("Engineer by training. Product manager
+  by practice. Marketer by curiosity."), kept the existing lede (already fit the tone, no
+  fabricated additions).
+- Reduced from 4 editorial-grid modules to 3, matching the plan's exact hierarchy list —
+  professional track record → current MBA → personal interests. Folded the fourth module ("How
+  I tend to work," a 4-item mini-tags list) into a closing sentence on the large
+  professional/through-line card instead of a separate module, since it was describing working
+  style, not new information, and the plan explicitly prefers "a small number of intentional
+  visual modules."
+- Removed the `.hand-note` "currently → Austin, TX" annotation device and folded that fact into
+  plain prose on the McCombs card ("...graduating May 2027 — currently based in Austin, TX."),
+  per the plan's "reduce handwritten-style annotations" instruction. `.hand-note` is now unused
+  anywhere in the codebase (confirmed via grep) — removed the CSS rule entirely rather than
+  leaving dead code.
+- Removed the `.mini-tags` pill list from the "Off the clock" card, converting badminton/reading/
+  reality TV into one prose sentence (kept verbatim, just de-chipped), per "reduce pill-heavy
+  personality tags." Left `.mini-tags` CSS itself in place — still actively used on `/resume` and
+  `/built` (out of scope for this phase, Phase 6 territory).
+- Removed the `.peach-card`/`.mint-card`/`.sky-card` background-variant classes from
+  `about.astro` (all three had already been neutralized to flat surface/background colors back
+  in Phase 1, so removing them is presentational-cleanup only, not a visual regression) and
+  deleted their now-fully-dead CSS, including a `.sky-card` 980px responsive override that was
+  initially missed and caught by re-checking the actual served HTML rather than trusting the
+  first pass.
+- Did not add real photography — none exists in the repo for this page either; kept the
+  existing text-only editorial-card layout rather than fabricating imagery.
+
+Important decisions:
+- Caught a leftover `.editorial-card.sky-card` rule inside the 980px media query on the first
+  validation pass (grep -c reported a hit on the rendered page that a narrower grep -o initially
+  missed) — worth noting as a reminder to always re-check rendered/built output directly after
+  CSS class removals, not just the source file, since responsive breakpoints are easy to miss.
+
+Files materially changed:
+- `src/pages/about.astro` (hero title, 4 modules → 3, hand-note/mini-tags removed)
+- `src/styles/tokens.css` (`.hand-note`, `.peach-card`/`.mint-card`/`.sky-card`, and the
+  `.sky-card` 980px override all removed as dead code)
+
+Validation:
+- npm run build: PASS (7 routes)
+- dev mode: PASS — checked rendered `/about` HTML via curl: correct h1/h2 content, zero
+  occurrences of `hand-note`/`peach-card`/`mint-card`/`sky-card` anywhere in the response after
+  the second cleanup pass; confirmed the same zero-occurrence result in the `dist/` build output.
+
+Known issues / deferred items:
+- `.mini-tags` CSS remains in `tokens.css`, still used on `/resume` and `/built` — those pages
+  are Phase 6 scope.
+
+Next phase:
+- Phase 6 — Secondary pages
