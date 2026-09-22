@@ -9,42 +9,18 @@ import { roles } from "../../data/roles.ts";
 		<PageHero
 			chip="Career"
 			title="A career built at the intersection of models, markets and people."
-			lede="Select a role to see the product decisions, systems and measurable outcomes behind it."
+			lede="Every role below: what I owned, what we built, and the outcome — in order, no clicking required."
 		/>
-		<section class="career-shell" id="career-explorer">
-			<div class="role-list" role="tablist" aria-label="Career roles">
-				{
-					roles.map((r, i) => (
-						<button
-							type="button"
-							role="tab"
-							id={`role-tab-${r.id}`}
-							aria-selected={i === 0}
-							aria-controls={`role-detail-${r.id}`}
-							class={"role-tab" + (i === 0 ? " active" : "")}
-							data-role-id={r.id}
-						>
-							<b>{r.company}</b>
-							<span>{r.title}</span>
-							<small>{r.period}</small>
-						</button>
-					))
-				}
-			</div>
+		<p class="reading-frame">Problem <span>→</span> System / product <span>→</span> User <span>→</span> Business impact</p>
+		<section class="career-shell">
 			{
 				roles.map((role, i) => (
-					<article
-						class="role-detail"
-						id={`role-detail-${role.id}`}
-						role="tabpanel"
-						aria-labelledby={`role-tab-${role.id}`}
-						hidden={i !== 0}
-						style={`--surface: ${role.color}`}
-					>
+					<article class="role-detail" id={role.id}>
 						<header>
 							<div>
 								<p>{role.period}</p>
 								<h2>{role.company}</h2>
+								<span class="role-title">{role.title}</span>
 							</div>
 							<span class="role-number">{"0" + (i + 1)}</span>
 						</header>
@@ -63,7 +39,6 @@ import { roles } from "../../data/roles.ts";
 							))}
 						</ul>
 						<div class="role-footer">
-							<span>{role.title}</span>
 							<span>
 								{i + 1} / {roles.length}
 							</span>
@@ -74,31 +49,3 @@ import { roles } from "../../data/roles.ts";
 		</section>
 	</main>
 </BaseLayout>
-
-<script define:vars={{ roleIds: roles.map((r) => r.id) }}>
-	const list = document.getElementById("career-explorer");
-	const tabs = Array.from(list.querySelectorAll(".role-tab"));
-	const panels = Object.fromEntries(roleIds.map((id) => [id, document.getElementById(`role-detail-${id}`)]));
-
-	function show(id) {
-		tabs.forEach((tab) => {
-			const active = tab.dataset.roleId === id;
-			tab.classList.toggle("active", active);
-			tab.setAttribute("aria-selected", String(active));
-		});
-		roleIds.forEach((roleId) => {
-			panels[roleId].hidden = roleId !== id;
-		});
-	}
-
-	tabs.forEach((tab) => {
-		tab.addEventListener("click", () => {
-			const id = tab.dataset.roleId;
-			show(id);
-			history.replaceState(null, "", "#" + id);
-		});
-	});
-
-	const hash = window.location.hash.slice(1);
-	if (roleIds.includes(hash)) show(hash);
-</script>

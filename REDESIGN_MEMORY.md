@@ -306,3 +306,76 @@ Known issues / deferred items:
 
 Next phase:
 - Phase 4 — Career page
+
+---
+
+## Phase 04 — Career Page
+
+Status: complete
+Branch: redesign/04-career
+PR: (opening next)
+Merged into: redesign/technical-editorial
+
+Implemented:
+- Replaced the tab-based career explorer (one role visible at a time, click to switch, JS
+  show/hide script) with a stacked executive case-study list — every role fully visible on
+  page load, in the same reverse-not-quite-chronological order the data already defines. This
+  directly targets the plan's "do not bury core achievements behind accordions" and "key
+  outcomes must be visible without requiring excessive interaction" acceptance criteria, which
+  the previous tabbed UI violated (4 of 5 roles were hidden behind a click).
+- Removed the `role="tablist"`/`role="tab"`/`role="tabpanel"` ARIA machinery and the
+  `<script>` block entirely — no longer needed since nothing is hidden/toggled.
+- Kept each role's anchor addressable at the same URL fragment (`id={role.id}` directly on the
+  `<article>`, e.g. `/career#dream11`) so the homepage's existing "Read case study" links
+  (added in Phase 3) still land on the right role without a page-load flash of a wrong
+  tab/scroll-to-hidden-panel bug.
+- Information hierarchy per role now equivalent to the plan's `COMPANY / ROLE / DATES → THE
+  PROBLEM / WHAT I OWNED / WHAT WE BUILT / OUTCOME` structure without introducing new label
+  text not backed by real data: period + company + title in the header, a "role-summary"
+  paragraph (context + ownership, already-verified copy, unchanged), a metrics row, and the
+  existing outcome bullets (each already phrased as action → result, functionally "what we
+  built" + "outcome" combined). Did not fabricate a distinct "problem statement" field that
+  doesn't exist in `roles.ts`.
+- Employer typography given real presence: `.role-detail h2` bumped from 34px to 40px,
+  uppercase, tighter tracking — reads as "DREAM11 / MEDIA.NET / SAMSUNG RESEARCH / SAMAGRA"
+  per the plan's explicit example. No pastel color varies by employer (see below).
+- Removed the now-fully-dead `color` field from the `Role` interface and every entry in
+  `src/data/roles.ts`, plus the inline `style="--surface: ${role.color}"` attribute in the
+  page template — this was flagged as dead code back in Phase 1 (metric-tile/role-number had
+  already stopped reading it) and explicitly deferred to this phase for cleanup.
+- Added one shared "reading frame" line above the case-study list — `Problem → System / product
+  → User → Business impact` — as the plan's lightweight technical-credibility diagram. Kept it
+  as a single page-level framework rather than a per-role diagram, since a per-role version
+  would require inventing role-specific "problem" and "system" phrasing not present in the
+  verified data; this satisfies "where useful" and "only where supported by real experience"
+  without adding unverified claims.
+- Updated the `PageHero` lede on `/career` to describe the new non-interactive stacked layout
+  instead of the old "select a role" instruction.
+- Removed the two-column `career-shell` grid (`300px 1fr` sidebar + detail) and all
+  `.role-list`/`.role-tab` CSS, including their 980px/680px responsive overrides, since the
+  sidebar tab list no longer exists in the markup.
+
+Important decisions:
+- Did not add per-role architecture/system diagrams — plan explicitly forbids inventing
+  architecture details or confidential internals, and the existing data doesn't include that
+  level of detail. The single shared reading-frame line covers the "technical credibility"
+  requirement without overreaching.
+
+Files materially changed:
+- `src/pages/career/index.astro` (full rewrite: stacked list, no tabs/script, reading-frame line)
+- `src/styles/tokens.css` (career-shell restacked, role-list/role-tab removed, role-detail h2 +
+  role-title added, corresponding 980px/680px cleanup)
+- `src/data/roles.ts` (removed dead `color` field from interface and all 5 entries)
+
+Validation:
+- npm run build: PASS (7 routes)
+- dev mode: PASS — checked rendered `/career` HTML via curl: all 5 `id="..."` anchors present
+  (dream11, medianet, medianet-sde, samagra, samsung), no `hidden` attributes left on role
+  articles (only unrelated `aria-hidden` on decorative SVG icons), all 5 `.role-detail` articles
+  present in one response, employer `<h2>` headings render as expected, reading-frame renders.
+
+Known issues / deferred items:
+- None carried forward from this phase.
+
+Next phase:
+- Phase 5 — About page
