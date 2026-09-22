@@ -1,7 +1,59 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
+import ArrowIcon from "../../components/ArrowIcon.astro";
 import { roles } from "../../data/roles.ts";
+
+const capabilities = [
+	{
+		n: "01",
+		name: "0→1 Product Building",
+		desc: "Turning ambiguous opportunities into products, launches, and measurable business outcomes.",
+	},
+	{
+		n: "02",
+		name: "AI / ML Productization",
+		desc: "Translating technically complex systems into usable products, workflows, and decisions.",
+	},
+	{
+		n: "03",
+		name: "Monetization & Growth",
+		desc: "Connecting product decisions to adoption, experimentation, revenue, and business impact.",
+	},
+	{
+		n: "04",
+		name: "Cross-functional Execution",
+		desc: "Aligning engineering, data, business, and stakeholder teams around clear outcomes.",
+	},
+];
+
+const operatingSteps = [
+	{
+		n: "01",
+		name: "Understand the system",
+		desc: "Build enough technical and customer context to understand what's actually happening.",
+	},
+	{
+		n: "02",
+		name: "Find the constraint",
+		desc: "Identify the problem that matters most rather than optimizing everything at once.",
+	},
+	{
+		n: "03",
+		name: "Align the team",
+		desc: "Make the problem, trade-offs, and desired outcome clear across functions.",
+	},
+	{
+		n: "04",
+		name: "Ship",
+		desc: "Move from analysis to a concrete product decision and get it into users' hands.",
+	},
+	{
+		n: "05",
+		name: "Measure",
+		desc: "Evaluate what changed, learn from the result, and sharpen the next decision.",
+	},
+];
 ---
 
 <BaseLayout title="Career | Rahul Paul">
@@ -74,6 +126,51 @@ import { roles } from "../../data/roles.ts";
 					</div>
 				))
 			}
+		</section>
+		<section class="capabilities wrap" aria-label="What I'm known for">
+			<div class="section-heading">
+				<div>
+					<p class="kicker">Capabilities</p>
+					<h2>What I'm known for.</h2>
+				</div>
+			</div>
+			<div class="capability-grid">
+				{
+					capabilities.map((c) => (
+						<div class="capability-item">
+							<span class="capability-number">{c.n}</span>
+							<h3>{c.name}</h3>
+							<p>{c.desc}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+		<section class="operating-model wrap" aria-label="How I operate">
+			<div class="section-heading">
+				<div>
+					<p class="kicker">Operating model</p>
+					<h2>How I operate.</h2>
+				</div>
+			</div>
+			<ol class="operating-steps" role="list">
+				{
+					operatingSteps.map((s) => (
+						<li class="operating-step">
+							<span class="operating-number">{s.n}</span>
+							<h3>{s.name}</h3>
+							<p>{s.desc}</p>
+						</li>
+					))
+				}
+			</ol>
+		</section>
+		<section class="closing-cta">
+			<p>One more, structured the same way: a Cisco internship the summer before McCombs.</p>
+			<a class="button primary" href="/internships">
+				See the internship
+				<ArrowIcon size={17} />
+			</a>
 		</section>
 	</main>
 </BaseLayout>
