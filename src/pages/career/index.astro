@@ -39,34 +39,36 @@ import { roles } from "../../data/roles.ts";
 									{role.stints.length > 1 ? `${role.stints.length} roles` : role.stints[0].title}
 								</span>
 							</div>
-							{role.stints.map((stint) => (
-								<div class="stint">
-									{role.stints.length > 1 && (
-										<div class="stint-heading">
-											<h3>{stint.title}</h3>
-											<span class="role-period">{stint.period}</span>
-										</div>
-									)}
-									<p class="role-summary">{stint.summary}</p>
-									<div class="metric-row">
-										{stint.metrics.map(([value, label]) => (
-											<div class="metric-tile">
-												<b>{value}</b>
-												<span>{label}</span>
+							<div class="role-body" data-role-body>
+								{role.stints.map((stint) => (
+									<div class="stint">
+										{role.stints.length > 1 && (
+											<div class="stint-heading">
+												<h3>{stint.title}</h3>
+												<span class="role-period">{stint.period}</span>
 											</div>
-										))}
+										)}
+										<p class="role-summary">{stint.summary}</p>
+										<div class="metric-row">
+											{stint.metrics.map(([value, label]) => (
+												<div class="metric-tile">
+													<b>{value}</b>
+													<span>{label}</span>
+												</div>
+											))}
+										</div>
+										<ul class="outcome-list">
+											{stint.outcomes.map((o) => (
+												<li>{o}</li>
+											))}
+										</ul>
 									</div>
-									<ul class="outcome-list">
-										{stint.outcomes.map((o) => (
-											<li>{o}</li>
-										))}
-									</ul>
+								))}
+								<div class="role-footer">
+									<span>
+										{i + 1} / {roles.length}
+									</span>
 								</div>
-							))}
-							<div class="role-footer">
-								<span>
-									{i + 1} / {roles.length}
-								</span>
 							</div>
 						</article>
 					</div>

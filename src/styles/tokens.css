@@ -607,7 +607,7 @@ img {
 
 .career-timeline {
 	display: grid;
-	padding-bottom: 40px;
+	padding-bottom: 50vh;
 }
 
 .tl-row {
@@ -720,6 +720,11 @@ img {
 	border: 1px solid var(--border);
 	padding: 28px;
 	margin-bottom: 28px;
+	transition: border-color 0.25s ease;
+}
+
+.tl-row.is-active .role-detail {
+	border-color: var(--accent);
 }
 
 .role-head {
@@ -727,6 +732,15 @@ img {
 	flex-wrap: wrap;
 	align-items: baseline;
 	gap: 0;
+}
+
+.role-body {
+	opacity: 0.35;
+	transition: opacity 0.3s ease;
+}
+
+.tl-row.is-active .role-body {
+	opacity: 1;
 }
 
 .stint + .stint {
