@@ -6,7 +6,6 @@ export interface Role {
 	summary: string;
 	metrics: [string, string][];
 	outcomes: string[];
-	color: string;
 }
 
 export const roles: Role[] = [
@@ -27,7 +26,6 @@ export const roles: Role[] = [
 			"Built a separate ML application platform used by 100+ daily users and delivering approximately $500K in annual savings.",
 			"Translated model behavior into operator-facing workflows, adoption metrics and a roadmap teams could execute.",
 		],
-		color: "#e9dcff",
 	},
 	{
 		id: "medianet",
@@ -45,7 +43,6 @@ export const roles: Role[] = [
 			"Launched an experimentation platform with role-based access controls, supporting 30 experiments in six months.",
 			"Supported APAC go-to-market with customer and market insight grounded in product performance.",
 		],
-		color: "#d9f5de",
 	},
 	{
 		id: "medianet-sde",
@@ -63,7 +60,6 @@ export const roles: Role[] = [
 			"Built and operated large-scale data pipelines processing terabytes per day in HDFS.",
 			"Worked close to the model, infrastructure and business logic—experience I now use to set realistic product direction.",
 		],
-		color: "#dcecff",
 	},
 	{
 		id: "samagra",
@@ -82,7 +78,6 @@ export const roles: Role[] = [
 			"Developed go-to-market direction that contributed to $700K in new ARR.",
 			"Bridged technical platform capabilities with the language, proof points and workflows buyers needed.",
 		],
-		color: "#ffd9c4",
 	},
 	{
 		id: "samsung",
@@ -100,6 +95,5 @@ export const roles: Role[] = [
 			"Developed color-tuning capabilities shipped across 25M+ flagship devices.",
 			"Learned to balance research quality, hardware constraints and the expectations of a mass-market product.",
 		],
-		color: "#ffe788",
 	},
 ];
