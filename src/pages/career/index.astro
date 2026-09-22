@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
-import ArrowIcon from "../../components/ArrowIcon.astro";
 import { roles } from "../../data/roles.ts";
 ---
 
@@ -10,50 +9,88 @@ import { roles } from "../../data/roles.ts";
 		<PageHero
 			chip="Career"
 			title="A career built at the intersection of models, markets and people."
-			lede="Every role below: what I owned, what we built, and the outcome — in order, no clicking required."
+			lede="Every role below: what I owned, what we built, and the outcome — expand any to see the details."
 		/>
-		<p class="reading-frame">Problem <span>→</span> System / product <span>→</span> User <span>→</span> Business impact</p>
-		<section class="career-shell">
+		<div class="reading-frame">
+			<span class="frame-pill">Problem</span>
+			<span class="frame-arrow" aria-hidden="true">→</span>
+			<span class="frame-pill">System / product</span>
+			<span class="frame-arrow" aria-hidden="true">→</span>
+			<span class="frame-pill">User</span>
+			<span class="frame-arrow" aria-hidden="true">→</span>
+			<span class="frame-pill">Business impact</span>
+		</div>
+		<section class="career-timeline">
 			{
 				roles.map((role, i) => (
-					<article class="role-detail" id={role.id}>
-						<header>
-							<div>
-								<p>{role.period}</p>
-								<h2>{role.company}</h2>
-								<span class="role-title">{role.title}</span>
-							</div>
-							<span class="role-number">{"0" + (i + 1)}</span>
-						</header>
-						<p class="role-summary">{role.summary}</p>
-						<div class="metric-row">
-							{role.metrics.map(([value, label]) => (
-								<div class="metric-tile">
-									<b>{value}</b>
-									<span>{label}</span>
+					<div class="timeline-row">
+						<div class="timeline-track">
+							<span class="timeline-dot" />
+						</div>
+						<article class="role-detail" id={role.id} data-role-card>
+							<button class="role-toggle" aria-expanded="false" aria-controls={`${role.id}-body`}>
+								<div class="role-toggle-heading">
+									<h2>{role.company}</h2>
+									<span class="role-title">{role.stints[0].title}</span>
+									<span class="role-period">{role.period}</span>
 								</div>
-							))}
-						</div>
-						<ul class="outcome-list">
-							{role.outcomes.map((o) => (
-								<li>{o}</li>
-							))}
-						</ul>
-						<div class="role-footer">
-							<span>
-								{i + 1} / {roles.length}
-							</span>
-						</div>
-					</article>
+								<div class="role-toggle-side">
+									<span class="role-number">{"0" + (i + 1)}</span>
+									<span class="role-toggle-icon" aria-hidden="true">
+										<span /><span />
+									</span>
+								</div>
+							</button>
+							<div class="role-body" id={`${role.id}-body`}>
+								<div class="role-body-inner">
+									{role.stints.map((stint) => (
+										<div class="stint">
+											{role.stints.length > 1 && (
+												<div class="stint-heading">
+													<h3>{stint.title}</h3>
+													<span class="role-period">{stint.period}</span>
+												</div>
+											)}
+											<p class="role-summary">{stint.summary}</p>
+											<div class="metric-row">
+												{stint.metrics.map(([value, label]) => (
+													<div class="metric-tile">
+														<b>{value}</b>
+														<span>{label}</span>
+													</div>
+												))}
+											</div>
+											<ul class="outcome-list">
+												{stint.outcomes.map((o) => (
+													<li>{o}</li>
+												))}
+											</ul>
+										</div>
+									))}
+									<div class="role-footer">
+										<span>
+											{i + 1} / {roles.length}
+										</span>
+									</div>
+								</div>
+							</div>
+						</article>
+					</div>
 				))
 			}
 		</section>
-		<section class="closing-cta">
-			<p>One more, structured the same way: a Cisco internship the summer before McCombs.</p>
-			<a class="button primary" href="/internships">
-				See the internship
-				<ArrowIcon size={17} />
-			</a>
-		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	document.querySelectorAll<HTMLButtonElement>(".role-toggle").forEach((toggle) => {
+		toggle.addEventListener("click", () => {
+			const card = toggle.closest<HTMLElement>("[data-role-card]");
+			const body = card?.querySelector<HTMLElement>(".role-body");
+			if (!card || !body) return;
+			const expanded = card.classList.toggle("is-expanded");
+			toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+			body.style.maxHeight = expanded ? `${body.scrollHeight}px` : "0px";
+		});
+	});
+</script>
