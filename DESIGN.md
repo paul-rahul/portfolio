@@ -57,6 +57,10 @@ components:
   chip:
     backgroundColor: "{colors.surface}"
     rounded: "{rounded.pill}"
+  media-placeholder:
+    backgroundColor: "{colors.background}"
+    rounded: "{rounded.md}"
+    border: "1px dashed {colors.border}"
 ---
 
 Design System: Rahul Paul Portfolio
@@ -192,6 +196,29 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 - **Border:** 1px solid `--border` on all cards.
 - **Internal Padding:** 18–44px depending on card density (metric tile 18px, contact-card 44px).
 
+### MediaPlaceholder
+
+- **Purpose:** a reusable placeholder for any future image/visual slot — used everywhere a real photo, screenshot, or diagram is planned but doesn't exist yet. Introduced by the Content & Visual Refinement plan's image policy: placeholders everywhere, never stock/AI/fabricated imagery.
+- **Component:** `src/components/MediaPlaceholder.astro`. Props: `id` (string, e.g. `IMG-04`), `label` (e.g. "Portrait"), `description` (e.g. "Professional portrait / candid"), `aspectRatio` (one of `16:9`/`16:10`/`3:2`/`4:3`/`4:5`/`1:1`, default `16:10`), optional `class`.
+- **Styling:** sits on `--background` (not `--surface`, so it reads as "recessed/pending" rather than a populated card), **1px dashed** `--border` — a deliberate, intentional deviation from the system's solid-border rule for real cards/panels, so a placeholder is visually distinguishable from real content at a glance. No shadow (Flat-By-Default rule still applies). Content is centered: mono `id`, mono uppercase `label`, secondary-color `description`, small mono ratio indicator.
+- **Theme behavior:** uses semantic tokens only (`--background`, `--border`, `--ink-secondary`) — verified in both Day and Night.
+- **Replacement process:** when a real asset exists, swap the `MediaPlaceholder` for a real `<img>` (or a wrapping `.image-frame` if crop/radius treatment is needed) and remove its row from `VISUAL_ASSETS.md`, or mark it `Retained`/fulfilled.
+- **Relationship to `VISUAL_ASSETS.md`:** every placeholder instance in the codebase must have a corresponding row there (page, placement, asset needed, ratio, status). `VISUAL_ASSETS.md` is the authoritative inventory; this section is the component spec.
+
+### Status chip
+
+- **Purpose:** an honest, unmissable "this isn't real/finished yet" signal — used for Built project preview cards (Home) and the `ProjectCaseStudy` header, wherever content is legitimately pending rather than shipped.
+- **Structure:** a small colored dot + mono uppercase label, e.g. `● IN PROGRESS`, `● QUEUED`. Same visual language as the existing hero `.eyebrow` dot, generalized into a reusable class.
+- **Classes:** `.status-chip` (base) + a tone modifier — `.status-active` (dot = `--success`, "shipped/in-progress" tone) or `.status-queued` (dot = `--ink-secondary`, neutral/pending tone). Add new tones the same way if a third state is ever needed.
+- **Rule:** never used to imply something is live/shipped when it isn't — pair only with placeholder-backed content, never with real screenshots presented as finished.
+
+### Project case-study template
+
+- **Purpose:** the standard structure for any Built project's dedicated page — Problem → Solution → How I got there → Outcome, per the site's product principle of scannable, evidence-led storytelling extended to personal projects.
+- **Component:** `src/components/ProjectCaseStudy.astro`. Renders: status chip + title → hero `MediaPlaceholder` (16:9) → "The problem" → "The solution" → product/flow `MediaPlaceholder` (16:10) → "How I got there" → supporting `MediaPlaceholder` (3:2) → "The outcome" → footer CTAs (Back to Built, optional Next project / Live / GitHub — each rendered only if a real URL is supplied, never fabricated).
+- **Section labels** use the existing `.kicker` mono-uppercase convention, not the career page's `.reading-frame`/`.frame-pill` pill (that pattern is explicitly scoped to the career page's Problem→System→User→Impact frame only, per the Named Rule below — it is not a general-purpose tag component).
+- **Status as of this plan:** the component exists and is verified (via a temporary, fully-reverted test route) but is **not wired to any live page** — no real Built project content exists yet. It's ready to back the first real entry.
+
 ### Pinned scroll timeline (career page)
 - **Structure:** a three-column row per role — sticky year/period label (mono period + Instrument Sans company name), a center dot-and-line track, and an always-expanded card. Cards are never collapsed; the scroll itself reveals content, so there is no toggle/trigger element.
 - **Pin behavior:** the year label and its track dot use `position: sticky` (same `top` offset, pinned just below the site header) so they hold position while that role's card scrolls past underneath; they release once the row's content clears.
@@ -205,6 +232,7 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 - **Do** set anything numeric, dated, or systemic in JetBrains Mono, uppercase, with letter-spacing.
 - **Do** separate surfaces with a 1px border + background step, not a shadow.
 - **Do** let scroll position — not a click toggle — drive reveal state for the career timeline; keep content in the DOM and visible by default so it works without JS.
+- **Do** use `MediaPlaceholder` (dashed border) for any planned-but-missing visual, and log it in `VISUAL_ASSETS.md` — never leave an unexplained empty gap and never fabricate a stand-in image.
 
 ### Don't:
 - **Don't** introduce a second saturated accent color.
@@ -218,3 +246,5 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 - **Don't** use absolute positioning for core content, or fixed heights on text-heavy sections.
 - **Don't** rely on horizontal scroll for content someone needs to read start-to-finish — it's acceptable only for a clearly-scrollable control like the compact nav row, never for prose or a data table someone must read completely.
 - **Don't** give Day and Night different responsive/layout logic — theme changes color tokens only; every structural fix in this system has been (and should stay) theme-independent.
+- **Don't** source stock imagery, generate AI imagery, or invent screenshots/diagrams/photographs to fill a gap — use `MediaPlaceholder` until a real asset exists.
+- **Don't** reuse the career page's `.reading-frame`/`.frame-pill` as a general-purpose tag/label component — it's scoped to the career page's Problem→System→User→Impact frame only; use `.kicker` section labels for other structured content.

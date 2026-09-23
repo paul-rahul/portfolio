@@ -1680,3 +1680,50 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 9 — design documentation (update DESIGN.md with MediaPlaceholder, ProjectCaseStudy, status-chip patterns)
+
+---
+
+## Content & Visual Refinement — Stage 09
+
+Status: complete
+
+Branch:
+refinement/09-design-documentation
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- `DESIGN.md` updated with 3 new component sections: **MediaPlaceholder** (purpose, props, styling incl. the intentional dashed-border deviation, theme behavior, replacement process, relationship to `VISUAL_ASSETS.md`), **Status chip** (purpose, structure, `.status-active`/`.status-queued` tones, the rule that it must never accompany content presented as finished), **Project case-study template** (`ProjectCaseStudy`, its Problem→Solution→How→Outcome section order, why it doesn't reuse the career page's page-scoped `.reading-frame` pill, and its current not-yet-wired-to-a-route status).
+- 2 new Do's/Don'ts entries added: use `MediaPlaceholder` + log in `VISUAL_ASSETS.md` rather than leave a gap or fabricate; don't reuse `.reading-frame`/`.frame-pill` as a general tag component.
+- Frontmatter `components:` block gained a `media-placeholder` token entry, matching the existing button/card/chip entries.
+
+Content decisions:
+- None
+
+Design decisions:
+- Formalized the dashed-border-for-placeholders convention (introduced ad hoc in Stage 2) as a documented, intentional system rule rather than a one-off.
+
+Image placeholder decisions:
+- None (documentation only — `VISUAL_ASSETS.md` itself was kept current stage-by-stage already)
+
+Files materially changed:
+- `DESIGN.md`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- YES — this was the point of the stage. Summary: documents `MediaPlaceholder`, `.status-chip`, and `ProjectCaseStudy`, the patterns introduced across Stages 2-4, so `DESIGN.md` now matches the actual shipped code rather than lagging behind it.
+
+Validation:
+- npm run build: PASS (7/7 routes — docs-only change)
+- dev mode: N/A
+- Day mode / Night mode / mobile / tablet / desktop: N/A (no code changed)
+
+Known issues / deferred items:
+- None
+
+Next stage:
+- Stage 10 — final regression QA, then STOP for Rahul's explicit sign-off before any merge toward `main`
