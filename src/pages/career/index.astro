@@ -44,7 +44,7 @@ const defaultFirmId = firms[0].id;
 					<h2>How I operate.</h2>
 				</div>
 			</div>
-			<ol class="operating-steps" role="list">
+			<ol class="operating-steps" role="list" data-operating-steps>
 				{
 					operatingSteps.map((s) => (
 						<li class="operating-step">
@@ -163,16 +163,16 @@ const defaultFirmId = firms[0].id;
 															<span class="accordion-number">{String(si + 1).padStart(2, "0")}</span>
 															<span class="accordion-title">{section.title}</span>
 															<span class="accordion-icon" aria-hidden="true">
-																{section.defaultOpen ? "–" : "+"}
+																+
 															</span>
 														</button>
 													</h4>
 													<div
-														class="accordion-panel"
+														class:list={["accordion-panel", section.defaultOpen && "is-open"]}
 														id={panelId}
 														role="region"
 														aria-labelledby={triggerId}
-														hidden={!section.defaultOpen}
+														inert={section.defaultOpen ? undefined : true}
 													>
 														<div class:list={["accordion-panel-inner", isEmpty && "accordion-panel-inner--empty"]}>
 															{section.paragraphs?.map((p) => <p>{p}</p>)}
@@ -205,6 +205,13 @@ const defaultFirmId = firms[0].id;
 		const firmTriggers = Array.from(explorer.querySelectorAll<HTMLButtonElement>("[data-firm-trigger]"));
 		const firmPanels = Array.from(explorer.querySelectorAll<HTMLElement>("[data-firm-panel]"));
 
+		const playEnter = (el: HTMLElement, className: string) => {
+			el.classList.remove(className);
+			// force reflow so re-adding the class restarts the animation
+			void el.offsetWidth;
+			el.classList.add(className);
+		};
+
 		const activateFirm = (firmId: string, { focus = false }: { focus?: boolean } = {}) => {
 			firmTriggers.forEach((btn) => {
 				const isActive = btn.dataset.firmId === firmId;
@@ -212,7 +219,10 @@ const defaultFirmId = firms[0].id;
 				if (isActive && focus) btn.focus();
 			});
 			firmPanels.forEach((panel) => {
-				panel.hidden = panel.dataset.firmId !== firmId;
+				const isActive = panel.dataset.firmId === firmId;
+				const wasHidden = panel.hidden;
+				panel.hidden = !isActive;
+				if (isActive && wasHidden) playEnter(panel, "motion-firm-enter");
 			});
 		};
 
@@ -237,7 +247,10 @@ const defaultFirmId = firms[0].id;
 			const activateProject = (projectId: string) => {
 				projectTriggers.forEach((btn) => btn.setAttribute("aria-pressed", String(btn.dataset.projectId === projectId)));
 				projectPanels.forEach((p) => {
-					p.hidden = p.dataset.projectId !== projectId;
+					const isActive = p.dataset.projectId === projectId;
+					const wasHidden = p.hidden;
+					p.hidden = !isActive;
+					if (isActive && wasHidden) playEnter(p, "motion-project-enter");
 				});
 			};
 
@@ -255,11 +268,34 @@ const defaultFirmId = firms[0].id;
 			trigger.addEventListener("click", () => {
 				const expanded = trigger.getAttribute("aria-expanded") === "true";
 				const panel = document.getElementById(trigger.getAttribute("aria-controls") ?? "");
-				const icon = trigger.querySelector<HTMLElement>(".accordion-icon");
 				trigger.setAttribute("aria-expanded", String(!expanded));
-				if (panel) panel.hidden = expanded;
-				if (icon) icon.textContent = expanded ? "+" : "–";
+				if (panel) {
+					panel.classList.toggle("is-open", !expanded);
+					if (expanded) {
+						panel.setAttribute("inert", "");
+					} else {
+						panel.removeAttribute("inert");
+					}
+				}
 			});
 		});
+	}
+
+	const operatingSteps = document.querySelector<HTMLElement>("[data-operating-steps]");
+	if (operatingSteps && "IntersectionObserver" in window) {
+		Array.from(operatingSteps.children).forEach((child) => child.classList.add("motion-pre-reveal"));
+		const revealObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						operatingSteps.classList.add("is-revealed");
+						revealObserver.disconnect();
+						break;
+					}
+				}
+			},
+			{ threshold: 0.2 },
+		);
+		revealObserver.observe(operatingSteps);
 	}
 </script>
