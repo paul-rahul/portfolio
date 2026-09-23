@@ -852,6 +852,48 @@ img {
 	border: 1px solid var(--border);
 }
 
+@keyframes motion-fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes motion-scale-in {
+	from {
+		opacity: 0;
+		transform: scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.motion-firm-enter {
+	animation: motion-fade-up var(--motion-base) var(--ease-out);
+}
+
+.motion-project-enter {
+	animation: motion-fade-up var(--motion-fast) var(--ease-out);
+}
+
+.motion-project-enter .metric-tile {
+	animation: motion-scale-in var(--motion-base) var(--ease-out) backwards;
+}
+
+.motion-project-enter .metric-tile:nth-child(2) {
+	animation-delay: 40ms;
+}
+
+.motion-project-enter .metric-tile:nth-child(3) {
+	animation-delay: 80ms;
+}
+
 .metric-tile b {
 	display: block;
 	font-family: var(--font-mono);
@@ -1175,9 +1217,26 @@ img {
 	color: var(--accent);
 	width: 16px;
 	text-align: center;
+	transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+.accordion-trigger[aria-expanded="true"] .accordion-icon {
+	transform: rotate(45deg);
+}
+
+.accordion-panel {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows var(--motion-base) var(--ease-standard);
+}
+
+.accordion-panel.is-open {
+	grid-template-rows: 1fr;
 }
 
 .accordion-panel-inner {
+	min-height: 0;
+	overflow: hidden;
 	padding: 0 4px 20px 40px;
 	color: var(--ink-secondary);
 	font-size: 15px;
@@ -1291,6 +1350,31 @@ img {
 	color: var(--ink-secondary);
 	font-size: 14px;
 	line-height: 1.5;
+}
+
+.motion-pre-reveal {
+	opacity: 0;
+	transform: translateY(10px);
+}
+
+.operating-steps.is-revealed .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
+}
+
+.operating-steps.is-revealed .operating-step:nth-child(1) {
+	animation-delay: 0ms;
+}
+.operating-steps.is-revealed .operating-step:nth-child(2) {
+	animation-delay: 70ms;
+}
+.operating-steps.is-revealed .operating-step:nth-child(3) {
+	animation-delay: 140ms;
+}
+.operating-steps.is-revealed .operating-step:nth-child(4) {
+	animation-delay: 210ms;
+}
+.operating-steps.is-revealed .operating-step:nth-child(5) {
+	animation-delay: 280ms;
 }
 
 .about-intro {
