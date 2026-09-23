@@ -111,7 +111,58 @@ The palette is almost monochrome by design; color is a signal, not decoration.
 
 ## Layout
 
-Content is constrained to a `min(1180px, calc(100% - 40px))` wrap, centered. The header is a sticky 76px bar with a 3px cobalt "top ribbon" above it. Sections use generous block padding (48–60px) with tighter internal card padding (18–44px depending on density). The career page introduces a two-column timeline grid (`28px` dot track + flexible content column) that collapses to `18px` + content under 680px. Below 980px the header nav wraps under the brand row; below 680px most multi-column grids (fact-strip, case-grid, editorial-grid, contact-card) collapse to a single column.
+Content is constrained to a `min(1180px, calc(100% - 40px))` wrap, centered. The header is a sticky bar, `min-height: 66px` on desktop (allowed to grow, never clipped, if a user's text-size settings need more room). Sections use generous block padding (48–60px) with tighter internal card padding (18–44px depending on density). The career page introduces a two-column timeline grid (`28px` dot track + flexible content column) that collapses to `18px` + content under 680px. Below 980px the header nav wraps under the brand row; below 680px most multi-column grids (fact-strip, case-grid, editorial-grid, contact-card) collapse to a single column. See **Responsiveness** below for the full breakpoint system.
+
+## Responsiveness
+
+Established by a dedicated responsive audit/remediation pass (see `RESPONSIVE_AUDIT.md` for the
+QA record). The system uses two structural breakpoints plus one narrow tablet-only refinement
+band — semantic ranges, not device presets:
+
+| Range | Width | Role |
+|---|---|---|
+| **Compact** | ≤680px | Phones. Single-column grids, sticky elements drop pinning, nav becomes a horizontally-scrollable touch row with 44px+ tap targets. |
+| **Comfortable / tablet** | 681–980px | Tablets and small laptops. Header nav has already wrapped under the brand row (see Navigation below); a narrow `(max-width: 980px) and (min-width: 681px)` band exists specifically to ease density in components that would otherwise inherit desktop spacing untouched (Career's pinned timeline, metric grid). |
+| **Desktop** | 981–1279px | Full desktop layout, header returns to its compact single-row form. |
+| **Wide** | 1280px+ | Content stays capped at the `min(1180px, calc(100% - 40px))` wrap — wide screens get more margin, not infinitely stretched content. |
+
+### Global shell
+- Max content width: `min(1180px, calc(100% - 40px))`, centered.
+- Horizontal gutters: `max(24px, calc((100vw - 1180px) / 2))` on the header; `min(100% - 28px, 1180px)` on the wrap below 680px.
+- Header: `min-height: 66px` (not fixed `height`) so it can grow rather than clip if text size increases; wraps to a two-row layout (brand row + scrollable nav row, ~138px measured) below 980px.
+- No page uses `overflow-x: hidden` as a blanket fix — every overflow source found during the audit was traced to its actual layout cause (a grid track, a flex item, a fixed dimension) and fixed at that cause.
+
+### Typography
+- Headings that need to shrink on mobile use a single `clamp(floor, Nvw, ceiling)` — never a `clamp()` plus a separate breakpoint override for the same property. (Stage 6 found and removed three cases of exactly that duplication.)
+- Current heading clamps: hero H1 `clamp(38px, 5vw, 64px)`, page-hero H1 `clamp(40px, 4.6vw, 54px)`, editorial title `clamp(36px, 4.4vw, 48px)`, section H2 `clamp(30px, 3.4vw, 42px)`.
+- Body line length: paragraph/lede `max-width` values sit in the 640–760px range — a comfortable reading measure at any viewport, never allowed to stretch edge-to-edge on wide screens.
+
+### Navigation
+- **Desktop (>980px):** single-row header, nav centered between brand and header actions, compact 6px-padding links (mouse target, no touch-target inflation needed).
+- **Compact/tablet (≤980px):** nav wraps to its own full-width row below the brand, `overflow-x: auto` for horizontal scroll rather than wrapping links onto multiple lines; links get `padding-block: 12px` + `padding-inline: 5px` on the row so both the tap target (~47.7px tall) and the focus-visible ring stay clear of the scroll-container edge.
+- Theme toggle lives in `.header-actions`, to the right of nav, unchanged across all breakpoints — always reachable without opening a menu.
+
+### Grids
+- 4-column → 2-column → 1-column: `.capability-grid` ("What I'm known for") — 4 columns desktop, 2 at ≤980px, 1 at ≤680px.
+- 3-column → 1-column: `.progression-grid` (homepage) and `.metric-row` — 3 columns desktop, straight to 1 at ≤680px; `.metric-row` gets an intermediate 2-column step in the 681–980px tablet band.
+- 5-column → vertical flow: `.operating-steps` ("How I operate") — 5 columns desktop/tablet, collapses to a single vertical column with a left-border connector (no arrows, no horizontal scroll) at ≤680px.
+- Card stacking principle: collapse to fewer columns before content is forced to shrink below a readable minimum — never let a grid track's `auto` min-sizing silently force the page wider than the viewport (the root cause behind both P1 overflow issues found in the Stage 1 baseline audit).
+
+### Career
+- Role navigation is the pinned-scroll timeline (see **Pinned scroll timeline** above) — sticky year/dot pinning is active from 681px up; below 680px it drops to a static, non-sticky inline layout.
+- Sticky offsets (`.tl-year`/`.tl-dot` `top`) are tuned against the *actual measured* header height at that breakpoint (150px/156px against a ~138.4px tablet header), not guessed — re-verify this pairing any time header height changes.
+- Metric layout: 3 columns desktop, 2 columns in the 681–980px tablet band, 1 column at ≤680px.
+- Capability/"How I operate" behavior: see Grids above.
+
+### Media
+- Base `img { width: 100%; height: 100%; object-fit: cover }` bounds every image to its container by default — no per-component overrides needed for the common case.
+- No diagram/SVG component in the current site needs mobile-specific treatment (none found during the Stage 6 audit); if one is added, it must scale without clipping or forcing horizontal scroll, per the anti-patterns below.
+
+### Accessibility
+- Minimum practical tap target: ~44px tall, enforced on all interactive elements in the touch-scrollable mobile/tablet nav row and on all button components (`.button` is already 44px min-height at every breakpoint).
+- Focus-visible: `outline: 2px solid var(--accent); outline-offset: 3px` globally, in both themes (same accent token). Any scrollable/clipped container (e.g. `overflow-x: auto` nav) must carry enough `padding-inline` to keep that outline from being clipped at its edges.
+- Reduced motion: `@media (prefers-reduced-motion: reduce)` zeroes all `animation-duration`/`transition-duration` and sets `scroll-behavior: auto`. The pinned-timeline scroll-fill is scroll-position-driven (not autoplaying), so it isn't a reduced-motion concern on its own.
+- Zoom/text scaling: prefer `min-height` over fixed `height` on any container that holds text (the header was the one fixed-height case found and fixed in Stage 7) — a fixed height can't grow if a user's text-size settings increase, even though page-level browser zoom scales proportionally and isn't itself a risk.
 
 ## Elevation & Depth
 
@@ -159,3 +210,11 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 - **Don't** introduce a second saturated accent color.
 - **Don't** add drop shadows to cards or buttons at rest — flat is the rule, translateY/border-color is the hover language.
 - **Don't** use pastel fills, illustration devices, or decorative chips outside the reading-frame pill — that direction was explicitly rejected in favor of this system.
+- **Don't** use blanket `overflow-x: hidden` to mask a layout bug — find and fix the actual cause (an unshrinkable grid/flex item, a fixed width/height, an unbroken word).
+- **Don't** ship a desktop layout "shrunk" to mobile — every grid/flex component needs an intentional narrower-width composition (fewer columns, stacked order, adjusted spacing), not just smaller numbers plugged into the same structure.
+- **Don't** hide important content (career metrics, outcomes, contact info) purely to make a narrow layout easier — recompose instead.
+- **Don't** pair a `clamp()` with a separate breakpoint-specific `font-size` override for the same property — fold the override's value into the clamp's floor/ceiling instead.
+- **Don't** use a fixed pixel `height` on any container that holds text — use `min-height` so it can grow instead of clipping.
+- **Don't** use absolute positioning for core content, or fixed heights on text-heavy sections.
+- **Don't** rely on horizontal scroll for content someone needs to read start-to-finish — it's acceptable only for a clearly-scrollable control like the compact nav row, never for prose or a data table someone must read completely.
+- **Don't** give Day and Night different responsive/layout logic — theme changes color tokens only; every structural fix in this system has been (and should stay) theme-independent.

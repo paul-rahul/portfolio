@@ -1074,3 +1074,50 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 8 — update DESIGN.md with the responsive system now that all structural stages are complete
+
+## Responsive Audit — Stage 08
+
+Status: complete
+
+Branch:
+responsive/08-design-documentation
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- `DESIGN.md` — full document review and update
+
+Issues found:
+- `DESIGN.md`'s Layout section described the header as "a sticky 76px bar" — stale since Stage 7 changed it to `min-height: 66px`
+- No responsive/breakpoint system was documented at all prior to this stage
+
+Implemented:
+- `DESIGN.md`: fixed the stale 76px header claim
+- Added a new **Responsiveness** section covering: semantic breakpoint table (Compact ≤680px / Comfortable-tablet 681-980px / Desktop 981-1279px / Wide 1280px+), Global shell, Typography (documents the exact clamp() values from Stage 6), Navigation, Grids (documents the 4/2/1, 3/1, 5/vertical patterns from Stages 2-4), Career (pinned-timeline sticky-offset pairing note from Stage 7), Media, and Accessibility
+- Extended the existing "Don't" list with 8 responsive-specific anti-patterns (no blanket `overflow-x: hidden`, no shrunk-desktop-to-mobile, no hiding content to fit, no clamp+override duplication, no fixed-height text containers, no absolute-positioned core content, no horizontal-scroll-for-prose, no theme-divergent responsive logic)
+
+Responsive decisions:
+- Documented breakpoints as semantic ranges (Compact/Comfortable/Desktop/Wide) per the plan's explicit instruction to avoid device-specific-only documentation
+- Every value recorded in the doc is one actually shipped in `tokens.css` during Stages 2-7, not aspirational — cross-checked against the real CSS before writing
+
+Breakpoints tested:
+- N/A (documentation-only stage); `npm run build` re-confirmed passing
+
+Theme validation:
+- N/A (documentation-only stage, no CSS/component changes)
+
+Validation:
+- npm run build: PASS
+- dev mode: not re-tested this stage (no code changes)
+- horizontal overflow: N/A this stage
+- keyboard/accessibility: N/A this stage
+
+Known issues / deferred items:
+- None — Stage 8 is documentation-only and complete
+
+Next stage:
+- Stage 9 — final regression QA (full route × width × theme matrix, update RESPONSIVE_AUDIT.md issue statuses to FIXED/DEFERRED/WONTFIX, then the FINAL REVIEW GATE — stop and wait for Rahul's explicit sign-off before any merge toward main)
