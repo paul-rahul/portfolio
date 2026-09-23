@@ -149,6 +149,7 @@ const defaultFirmId = firms[0].id;
 										))}
 									</div>
 
+									{project.sections.length > 0 && (
 									<div class="accordion" data-accordion>
 										{project.sections.map((section, si) => {
 											const panelId = `${project.id}-${section.id}`;
@@ -192,6 +193,7 @@ const defaultFirmId = firms[0].id;
 											);
 										})}
 									</div>
+									)}
 								</article>
 							))}
 						</div>
