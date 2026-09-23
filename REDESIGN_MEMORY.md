@@ -820,3 +820,51 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 3 — homepage responsiveness (fix R002: build the intentional mobile vertical flow for the Engineer→Product→Market module)
+
+## Responsive Audit — Stage 03
+
+Status: complete
+
+Branch:
+responsive/03-home
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- Homepage (`/`) — Engineer→Product→Market progression module specifically; full-page overflow re-swept across the required width matrix
+
+Issues found:
+- Confirmed R002 root cause: `.progression-grid` was a fixed `repeat(3, 1fr)` grid with no responsive override; unbreakable tag words exceeded each column's min-content budget at narrow widths, forcing all 3 tracks (and the page) wider than the viewport — a textbook "desktop layout shrunk to mobile" case
+- No other structural overflow found on the homepage in the 320–1920px sweep
+
+Implemented:
+- `src/styles/tokens.css`: added `.progression-grid { grid-template-columns: 1fr; gap: 14px; }` inside the existing `≤680px` breakpoint (intentional single-column stack, matching the pattern already used for `.editorial-grid`/`.fact-strip` at `≤980px`)
+- Added `min-width: 0` to `.progression-step` as a grid-item safety net
+- `RESPONSIVE_AUDIT.md` updated: R002 marked Fixed, Stage 3 section added with root-cause explanation and re-verification notes
+
+Responsive decisions:
+- Progression module stacks to 1 column below 680px rather than 2, since it's a 3-item set (no clean 2-column split) and the existing card language already reads fine stacked without needing a custom connector graphic like the "How I operate" stepper
+- Kept the 3-column desktop/tablet layout untouched above 680px — Stage 1 already confirmed no overflow there, and re-verified again this stage
+
+Breakpoints tested:
+- Homepage full-page overflow re-verified at 320, 375, 390, 430, 680, 681, 768, 820, 980, 1024, 1280, 1440, 1728, 1920 (iframe scrollWidth technique)
+
+Theme validation:
+- Day: PASS (structural fix, theme-independent)
+- Night: PASS (not re-screenshotted; layout-only change, no color-token changes, consistent with Stage 1/2's theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS — homepage bodyOverflow is 0 at every required width, 320–1920px
+- keyboard/accessibility: not tested this stage (deferred to Stage 7 per plan)
+
+Known issues / deferred items:
+- Only the R002 structural-overflow item was addressed this stage. The rest of the Stage 3 checklist (hero typography scaling, hero media order, CTA wrap behavior, quick facts layout, featured-work card density) has not been independently visually reviewed — still deferred to Stage 7 or a manual pass, same tooling limitation as Stage 1/2 (no reliable viewport-resize/screenshot tooling this session)
+
+Next stage:
+- Stage 4 — Career page responsiveness (most important recruiter page; sticky sidebar/role navigation, metrics, "What I'm known for", "How I operate")
