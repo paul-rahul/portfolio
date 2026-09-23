@@ -1334,3 +1334,55 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 2 — image placeholder system (`MediaPlaceholder` component + `VISUAL_ASSETS.md`)
+
+---
+
+## Content & Visual Refinement — Stage 02
+
+Status: complete
+
+Branch:
+refinement/02-placeholder-system
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- `src/components/MediaPlaceholder.astro`: reusable placeholder component. Props: `id`, `label`, `description`, `aspectRatio` (`16:9`/`16:10`/`3:2`/`4:3`/`4:5`/`1:1`, defaults to `16:10`), optional `class`. Renders as a dashed-border box (not the solid-border card style, to visually read as "not real content yet") with a mono `id`, mono uppercase `label`, small secondary `description`, and a small mono ratio indicator. `role="img"` + `aria-label` combining label/description for accessibility since the box has no real image content.
+- `.media-placeholder*` styles added to `tokens.css`: muted `--background` fill (not `--surface`, to sit visually a step below real cards), 1px **dashed** `--border` (deliberately distinct from the solid border used on real cards/panels, per the plan's "clearly communicate what asset belongs there" requirement), `--radius-md`, no shadow — consistent with the Flat-By-Default rule.
+- `VISUAL_ASSETS.md` created — inventory of all identified image slots from the Stage 1 audit (IMG-01 through IMG-10), with Status column (Needed/Retained/Deferred) and reasoning per row.
+
+Content decisions:
+- None (infrastructure only)
+
+Design decisions:
+- Placeholder uses a **dashed** border (new pattern) vs. the system's existing solid `1px solid var(--border)` — intentional deviation so placeholders are visually distinguishable from real cards/panels at a glance, without introducing a new color or shadow language. Documented for DESIGN.md update in Stage 9.
+- Placeholder sits on `--background` (not `--surface`) so it reads as "recessed/pending" rather than as a populated card.
+
+Image placeholder decisions:
+- Component built; not yet placed on any real page (that's Stage 3/4/6's job). Verified via a temporary throwaway injection on `/built` (added 3 `MediaPlaceholder` instances inline, screenshotted Day + Night, then fully reverted `built/index.astro` to its Stage-1 state before committing — confirmed via `git diff` that only `tokens.css`, the new component, and `VISUAL_ASSETS.md` are part of this commit).
+
+Files materially changed:
+- `src/components/MediaPlaceholder.astro` (new)
+- `src/styles/tokens.css` (added `.media-placeholder*` rules)
+- `VISUAL_ASSETS.md` (new)
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — deferred to Stage 9 per plan (component behavior may still shift slightly once placed in Stage 3/4/6 real contexts); tracked here so it isn't dropped.
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS
+- Day mode: PASS — screenshotted on a temporary `/built` test injection (dashed border, mono labels all legible against `--background`)
+- Night mode: PASS — same screenshot pass, dark-theme tokens (`--background: #121214`, `--border: #303033`) give adequate contrast against the dashed border and mono text
+- mobile/tablet/desktop: not yet re-tested (component not placed on a real route yet; full responsive QA happens per-placement in Stages 3/4/6 and again in Stage 8)
+
+Known issues / deferred items:
+- DESIGN.md entry for `MediaPlaceholder` deferred to Stage 9 (see above)
+
+Next stage:
+- Stage 3 — homepage projects (replace Career-duplicating case cards with a Selected Projects preview using `MediaPlaceholder`)
