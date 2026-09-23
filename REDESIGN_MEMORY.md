@@ -1179,3 +1179,52 @@ Next stage:
   npm run dev
   ```
   Widths tested this audit: 320, 375, 390, 430, 680, 768, 820, 980, 1024, 1280, 1440, 1728, 1920px, across all 7 routes, in both Day and Night themes (structural fixes are theme-independent; color-token behavior itself was not touched). Waiting for Rahul's explicit sign-off before any merge toward `redesign/technical-editorial` or `main` — successful QA, a successful build, or "looks good" in conversation does not count as that sign-off per the plan's own rule.
+
+## Review fixes 01
+
+Status: complete
+
+Branch:
+responsive/review-fixes-01
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- `/code-review` run against the full `feature/responsive-audit` diff; 2 findings — `.brand small` ellipsis (Nav.astro/tokens.css) and `.tl-year`/`.tl-dot` sticky-offset/header-height coupling (Career page)
+
+Issues found:
+- RF01: reviewer flagged `.brand small`'s `text-overflow: ellipsis` as inert because `<small>` defaults to `display: inline` — **investigated and found to be a false positive**: CSS Grid blockification promotes it to `display: block` automatically since it's a grid item; verified via computed style + a live screenshot with forced overflow content (ellipsis renders correctly)
+- RF02: reviewer correctly identified that Stage 7's `.site-header` fixed-height → `min-height` change (to prevent text-scaling clipping) made the header's height variable, while `.tl-year`/`.tl-dot`'s sticky `top` offsets stayed hardcoded against a height snapshot — a real regression risk if a viewer's text-size settings grow the header past the hardcoded buffer
+
+Implemented:
+- No change for RF01 (false positive, confirmed not assumed)
+- RF02: `src/components/Nav.astro` gained a script that measures `.site-header`'s real height and sets `--header-h` on `:root`, with a `resize`/`ResizeObserver` listener to keep it current
+- `src/styles/tokens.css`: `.tl-year`/`.tl-dot` sticky `top` (both the base/desktop and the 681-980px tablet rules) changed from hardcoded pixel values to `calc(var(--header-h, <fallback>) + <gap>px)`, with the previous hardcoded values kept as the `var()` fallback for graceful no-JS degradation
+- `RESPONSIVE_AUDIT.md` updated with a "Review fixes 01" section documenting both findings, the false-positive verification method, and the fix
+
+Responsive decisions:
+- Chose a runtime-measured CSS custom property over a larger static buffer — matches the plan's "fix the cause, not the symptom" principle; the previous hardcoded offsets were themselves already a symptom-level fix (Stage 7 had to re-tune them once after its own nav-padding change grew the header — exactly the fragility this fix removes)
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free on all 7 routes
+- Sticky offset values re-confirmed matching real measured header height at 700, 820, 980, 1024, 1440, 1920px (all correct: 150/156px tablet, 108/114px desktop)
+
+Theme validation:
+- Day: PASS (layout-only change, theme-independent)
+- Night: PASS (not re-screenshotted; consistent with prior stages' theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix
+- keyboard/accessibility: N/A this pass (no touch-target/focus changes)
+
+Known issues / deferred items:
+- **Tooling limitation, not a code defect:** this session's browser-automation profile does not fire `ResizeObserver` callbacks at all (confirmed with a minimal isolated repro — not even the spec-guaranteed initial callback fires). The *initial* `--header-h` sync (which fixes the actually-reported bug) was verified correct at every breakpoint; the *live update* path (`resize`/`ResizeObserver` re-firing if the header grows after page load, e.g. from a text-size setting change) could not be exercised end-to-end this session. Both are standard, well-supported browser APIs — flagged for Rahul to spot-check manually (bump text-size/zoom on `/career` at a tablet width, confirm the sticky year label still clears the header) rather than assumed correct.
+
+Next stage:
+- None — this was a post-Stage-9 review-fix cycle per the plan's "REVIEW FIXES AFTER RAHUL FEEDBACK" section. Still waiting on Rahul's explicit sign-off before any promotion toward `redesign/technical-editorial`/`main`.

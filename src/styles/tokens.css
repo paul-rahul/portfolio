@@ -702,7 +702,7 @@ img {
 
 .tl-year {
 	position: sticky;
-	top: 108px;
+	top: calc(var(--header-h, 66px) + 42px);
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
@@ -775,7 +775,7 @@ img {
 
 .tl-dot {
 	position: sticky;
-	top: 114px;
+	top: calc(var(--header-h, 66px) + 48px);
 	display: block;
 	width: 12px;
 	height: 12px;
@@ -1273,12 +1273,13 @@ img {
 		gap: 20px;
 	}
 	.tl-year {
-		/* header wraps to two rows below 980px (~138px incl. Stage 7's larger nav
-		   touch targets); clear it before sticking */
-		top: 150px;
+		/* header wraps to two rows below 980px; --header-h (set in Nav.astro)
+		   tracks its real measured height so this clears it even if the
+		   header grows (larger text-size settings, longer nav labels, etc.) */
+		top: calc(var(--header-h, 138px) + 12px);
 	}
 	.tl-dot {
-		top: 156px;
+		top: calc(var(--header-h, 138px) + 18px);
 	}
 	.metric-row {
 		grid-template-columns: repeat(2, 1fr);

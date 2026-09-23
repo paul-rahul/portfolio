@@ -64,4 +64,23 @@ const isActive = (href: string) => (href === "/" ? path === "/" : path === href 
 			syncLabel();
 		});
 	})();
+
+	(function () {
+		// Exposes the real header height as --header-h so anything sticky
+		// below it (e.g. the career timeline) clears it even if the header
+		// grows — larger text-size settings, a longer nav label, etc. —
+		// instead of relying on a hardcoded pixel guess.
+		var header = document.querySelector(".site-header");
+		if (!header) return;
+
+		function syncHeaderHeight() {
+			document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px");
+		}
+
+		syncHeaderHeight();
+		window.addEventListener("resize", syncHeaderHeight);
+		if (window.ResizeObserver) {
+			new ResizeObserver(syncHeaderHeight).observe(header);
+		}
+	})();
 </script>

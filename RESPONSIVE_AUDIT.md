@@ -304,3 +304,29 @@ re-verified. The deferred items are all either visual-polish or interaction-veri
 that need human eyes/hands rather than automated tooling. Recommend Rahul spend a few minutes on
 a manual pass covering these before final sign-off, particularly the career-timeline scroll
 interaction.
+
+## Review fixes 01 — /code-review findings on the merged responsive-audit diff
+
+Ran `/code-review` against the full `feature/responsive-audit` diff. Two findings; one real, one
+false positive (verified, not assumed):
+
+| ID | Finding | Verdict | Resolution |
+|---|---|---|---|
+| RF01 | `.brand small` gets `overflow: hidden; text-overflow: ellipsis` but no explicit `display` override, and `<small>` defaults to `display: inline` — reviewer flagged that `text-overflow` only applies to block containers, so the ellipsis wouldn't render | **False positive** | No change. Verified: `.brand small` is a CSS Grid item (child of `.brand div { display: grid }`), and per CSS Display Level 3 "blockification," an inline-level box that's a grid item is automatically promoted to `display: block`. Confirmed via computed style (`display: block`) and a live screenshot with forced overflow content — the ellipsis renders correctly (`AI · PRO…`). |
+| RF02 | `.tl-year`/`.tl-dot` sticky `top` offsets (150px/156px tablet, 108px/114px desktop) were hardcoded against a header height snapshot, while Stage 7's own change (`.site-header` fixed `height` → `min-height`) specifically made that height variable — if a viewer's text-size settings grow the header past the hardcoded buffer, the sticky label scrolls to a position still under the header (no `z-index` on `.tl-year`, header at `z-index: 50`) | **Real, fixed** | Replaced the hardcoded offsets with `calc(var(--header-h, <fallback>) + <gap>px)`. Added a small script in `Nav.astro` that measures the real `.site-header` height and sets `--header-h` on page load (confirmed correct: 66px desktop, 138px tablet, matching prior measurements), plus a `resize`/`ResizeObserver` listener to keep it current if the header's height changes after load. |
+
+**Tooling limitation on RF02's verification:** this session's browser-automation profile does not
+fire `ResizeObserver` callbacks at all — confirmed with a minimal isolated repro (a bare
+`ResizeObserver` on a plain `<div>` never fired, not even its spec-guaranteed initial callback).
+This is the same class of limitation already documented for `resize_window` (doesn't change real
+`innerWidth`) and `scrollTo` (doesn't register) since Stage 1. It means the *initial* header-height
+sync (which resolves the actual reported bug — the offset not matching the real height at load)
+was verified correct across all breakpoints, but the *live update* path (`resize` event /
+`ResizeObserver` firing again if the header grows after load) could not be exercised end-to-end
+in this session. Both are standard, widely-supported browser APIs and should work correctly in a
+real browser — but this is flagged for Rahul to spot-check manually (e.g. bump the browser's
+text-size/zoom setting on `/career` at a tablet width and confirm the sticky year label still
+clears the header) rather than assumed.
+
+Re-verified the full required matrix (320-1920px) overflow-free on all 7 routes after these
+changes.
