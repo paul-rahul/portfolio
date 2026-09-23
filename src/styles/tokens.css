@@ -345,7 +345,8 @@ img {
 	transform: none;
 }
 
-.no-js .intersection-circle,
+.no-js .venn-ring,
+.no-js .venn-label,
 .no-js .intersection-arrow,
 .no-js .intersection-dot,
 .no-js .intersection-note {
@@ -447,50 +448,39 @@ img {
 	background: var(--surface);
 }
 
-.intersection-circle {
-	position: absolute;
-	display: grid;
-	place-items: center;
-	width: 52%;
-	aspect-ratio: 1;
-	border-radius: 50%;
-	border: 1.5px solid var(--accent);
-	font-family: var(--font-mono);
-	font-size: clamp(10px, 1.6vw, 12px);
-	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: var(--ink);
-	mix-blend-mode: multiply;
-	text-align: center;
-	padding: 10%;
+/* Single bounded coordinate system (viewBox 0 0 100 100) for the whole diagram —
+   circle centers/radii, the dot, the arrow, and both label sets are all authored
+   in the same 100-unit space, so geometry stays exact and scales as one unit at
+   any width instead of drifting between independently-positioned pieces. */
+.venn {
+	display: block;
+	width: 100%;
+	height: auto;
 }
 
-.intersection-circle.engineering {
-	top: 8%;
-	left: 8%;
+.venn-ring {
+	fill: none;
+	stroke: var(--accent);
+	stroke-width: 2.75;
+	mix-blend-mode: multiply;
 	opacity: 0;
+}
+
+:root[data-theme="dark"] .venn-ring {
+	mix-blend-mode: normal;
+}
+
+.venn-engineering {
 	animation: motion-converge-engineering var(--motion-slow) var(--ease-out) both;
 	animation-delay: 300ms;
 }
 
-.intersection-circle.design {
-	top: 8%;
-	right: 8%;
-	/* inset from the circle's own center so the label mirrors ENGINEERING's placement
-	   instead of sitting near the diagram's outer-right edge */
-	transform: translate(-14%, 6%);
-	opacity: 0;
+.venn-design {
 	animation: motion-converge-design var(--motion-slow) var(--ease-out) both;
 	animation-delay: 480ms;
 }
 
-.intersection-circle.business {
-	bottom: 8%;
-	left: 28%;
-	/* sits slightly above the circle's literal vertical center */
-	transform: translateY(-18%);
-	opacity: 0;
+.venn-business {
 	animation: motion-converge-business var(--motion-slow) var(--ease-out) both;
 	animation-delay: 660ms;
 }
@@ -498,7 +488,7 @@ img {
 @keyframes motion-converge-engineering {
 	from {
 		opacity: 0;
-		translate: -14px -10px;
+		translate: -60px -40px;
 	}
 	to {
 		opacity: 1;
@@ -509,7 +499,7 @@ img {
 @keyframes motion-converge-design {
 	from {
 		opacity: 0;
-		translate: 14px -10px;
+		translate: 60px -40px;
 	}
 	to {
 		opacity: 1;
@@ -520,7 +510,7 @@ img {
 @keyframes motion-converge-business {
 	from {
 		opacity: 0;
-		translate: 0 14px;
+		translate: 0 60px;
 	}
 	to {
 		opacity: 1;
@@ -528,29 +518,54 @@ img {
 	}
 }
 
-:root[data-theme="dark"] .intersection-circle {
-	mix-blend-mode: normal;
+.venn-label {
+	font-family: var(--font-mono);
+	font-size: 23px;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	fill: var(--ink);
+	text-anchor: middle;
+	dominant-baseline: central;
+	opacity: 0;
 }
 
-.intersection-accent {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	overflow: visible;
-	pointer-events: none;
+.venn-label-engineering {
+	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
+	animation-delay: 2100ms;
+}
+
+.venn-label-design {
+	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
+	animation-delay: 2280ms;
+}
+
+.venn-label-business {
+	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
+	animation-delay: 2460ms;
+}
+
+@keyframes motion-fade-up-svg {
+	from {
+		opacity: 0;
+		translate: 0 20px;
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
 }
 
 .intersection-arrow {
 	fill: none;
 	stroke: var(--accent);
-	stroke-width: 0.85;
+	stroke-width: 3.5;
 	stroke-linecap: round;
+	stroke-linejoin: round;
 	opacity: 0;
-	stroke-dasharray: 60;
-	stroke-dashoffset: 60;
+	stroke-dasharray: 200;
+	stroke-dashoffset: 200;
 	animation: motion-arrow-draw var(--motion-enter) var(--ease-out) both;
-	animation-delay: 2700ms;
+	animation-delay: 2950ms;
 }
 
 .intersection-arrowhead-fill {
@@ -560,7 +575,7 @@ img {
 @keyframes motion-arrow-draw {
 	from {
 		opacity: 0;
-		stroke-dashoffset: 60;
+		stroke-dashoffset: 200;
 	}
 	to {
 		opacity: 1;
@@ -571,8 +586,9 @@ img {
 .intersection-dot {
 	fill: var(--accent);
 	opacity: 0;
+	filter: drop-shadow(0 0 8px var(--accent));
 	animation: motion-dot-appear var(--motion-base) var(--ease-out) both;
-	animation-delay: 2500ms;
+	animation-delay: 2700ms;
 }
 
 @keyframes motion-dot-appear {
@@ -585,18 +601,14 @@ img {
 }
 
 .intersection-note {
-	position: absolute;
-	left: 68%;
-	top: 58%;
 	font-family: var(--font-hand);
-	font-size: clamp(18px, 2.4vw, 24px);
-	font-weight: 600;
+	font-size: 37px;
+	font-weight: 400;
 	font-style: italic;
-	color: var(--accent);
-	white-space: nowrap;
+	fill: var(--accent);
 	opacity: 0;
-	animation: motion-fade-up var(--motion-enter) var(--ease-out) both;
-	animation-delay: 3050ms;
+	animation: motion-fade-up-svg var(--motion-enter) var(--ease-out) both;
+	animation-delay: 3300ms;
 }
 
 .fact-strip {

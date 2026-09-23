@@ -73,24 +73,29 @@ const projects = [
 			<div class="hero-art">
 				<!-- Placeholder for a real portrait: drop an <img> into .image-frame and remove .intersection-diagram, no other layout changes needed. -->
 				<div class="image-frame intersection-diagram" aria-hidden="true">
-					<span class="intersection-circle engineering">Engineering</span>
-					<span class="intersection-circle design">Design</span>
-					<span class="intersection-circle business">Business</span>
-					<svg class="intersection-accent" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
+					<svg class="venn" viewBox="0 0 1000 1000" focusable="false">
 						<defs>
-							<marker id="intersection-arrowhead" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse">
+							<marker id="intersection-arrowhead" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
 								<path d="M0,0 L8,4 L0,8 Z" class="intersection-arrowhead-fill" />
 							</marker>
 						</defs>
+						<!-- exact target geometry: equal r=245 circles, upper circles symmetric at cy=345
+						     (cx 355/675), lower circle centered at cx=515, cy=650 -->
+						<circle class="venn-ring venn-engineering" cx="355" cy="345" r="245" />
+						<circle class="venn-ring venn-design" cx="675" cy="345" r="245" />
+						<circle class="venn-ring venn-business" cx="515" cy="650" r="245" />
+						<text class="venn-label venn-label-engineering" x="285" y="350">ENGINEERING</text>
+						<text class="venn-label venn-label-design" x="735" y="355">DESIGN</text>
+						<text class="venn-label venn-label-business" x="515" y="650">BUSINESS</text>
 						<path
 							class="intersection-arrow"
-							d="M89,63 C77,66 63,58 52,46.5"
+							d="M690,445 C650,470 610,480 528,476"
 							fill="none"
 							marker-end="url(#intersection-arrowhead)"
 						/>
-						<circle class="intersection-dot" cx="51" cy="45" r="1.7" />
+						<circle class="intersection-dot" cx="515" cy="475" r="12" />
+						<text class="intersection-note" x="720" y="435">This is me</text>
 					</svg>
-					<span class="intersection-note">This is me</span>
 				</div>
 			</div>
 		</section>
