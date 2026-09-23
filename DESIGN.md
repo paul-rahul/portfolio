@@ -153,9 +153,9 @@ band — semantic ranges, not device presets:
 - Card stacking principle: collapse to fewer columns before content is forced to shrink below a readable minimum — never let a grid track's `auto` min-sizing silently force the page wider than the viewport (the root cause behind both P1 overflow issues found in the Stage 1 baseline audit).
 
 ### Career
-- Role navigation is the pinned-scroll timeline (see **Pinned scroll timeline** above) — sticky year/dot pinning is active from 681px up; below 680px it drops to a static, non-sticky inline layout.
-- Sticky offsets (`.tl-year`/`.tl-dot` `top`) are tuned against the *actual measured* header height at that breakpoint (150px/156px against a ~138.4px tablet header), not guessed — re-verify this pairing any time header height changes.
-- Metric layout: 3 columns desktop, 2 columns in the 681–980px tablet band, 1 column at ≤680px.
+- Career uses a **firm/role/project explorer** (see **Firm/role/project explorer** below), replacing the earlier pinned-scroll timeline pattern (still in use on `/internships`, a single-entry page where a scroll-driven reveal still fits).
+- Desktop layout is a 30/70 split: sticky `.firm-pane` (min 260px, 30% width) + `.firm-detail-pane` (70%). Below 980px it collapses to a single column and the firm pane stops being sticky.
+- Metric layout: 3 columns desktop, 2 columns in the 681–980px tablet band, 1 column at ≤680px (same `.metric-row` component used elsewhere).
 - Capability/"How I operate" behavior: see Grids above.
 
 ### Media
@@ -235,11 +235,23 @@ Primary assets, served from `public/`:
 - **Section labels** use the existing `.kicker` mono-uppercase convention (the career page previously had a separate `.reading-frame`/`.frame-pill` pattern for this same kind of framing; it was removed in Review fixes 01, so `.kicker` is now the only section-label convention in the system).
 - **Status as of this plan:** the component exists and is verified (via a temporary, fully-reverted test route) but is **not wired to any live page** — no real Built project content exists yet. It's ready to back the first real entry.
 
-### Pinned scroll timeline (career page)
+### Pinned scroll timeline (internships page)
 - **Structure:** a three-column row per role — sticky year/period label (mono period + Instrument Sans company name), a center dot-and-line track, and an always-expanded card. Cards are never collapsed; the scroll itself reveals content, so there is no toggle/trigger element.
 - **Pin behavior:** the year label and its track dot use `position: sticky` (same `top` offset, pinned just below the site header) so they hold position while that role's card scrolls past underneath; they release once the row's content clears.
 - **Progress feedback:** the connecting line fills from `--border` to cobalt as the user scrolls through a row (JS sets a `--fill` custom property on scroll, `requestAnimationFrame`-throttled); the active row's dot and period label switch to cobalt via an `IntersectionObserver` watching a band around viewport center. Both effects are skipped for `prefers-reduced-motion`, leaving the row highlight as the only active-state signal.
 - **Mobile (≤680px):** sticky pinning is dropped — year label sits inline above its card, non-sticky, with the dot-and-line rail continuing at the row's left edge.
+- **Status:** this pattern now backs only `/internships` (a single-firm, single-role deep dive where continuous scroll narration still fits). The multi-firm Career page uses the **Firm/role/project explorer** below instead — its `.tl-*` classes are shared with, but independent from, the explorer's markup.
+
+### Firm/role/project explorer (career page)
+- **Purpose:** supports multiple firms, multiple roles within a firm, and multiple projects within a role/firm, each with detailed accordion content — the structure a `.tl-row`-per-firm timeline couldn't hold once a firm had more than one role or more than one project worth showing separately.
+- **Hierarchy:** Firm → Role(s) → Project(s) → accordion detail. Data lives in `src/data/career.ts` (`Firm[]`, each with `roles: FirmRole[]` and `projects: Project[]`); nothing here is a content collection.
+- **Desktop structure (`.career-explorer`):** `.firm-pane` (30%, sticky) lists every firm as a `.firm-card` button (`aria-pressed` marks the selected one); `.firm-detail-pane` (70%) holds one `.firm-detail` panel per firm (`hidden` on all but the selected one).
+- **Firm detail panel:** name + period header, then — only for firms with more than one role — a `.role-history` block (dot-marked list, title/period/summary per role; single-role firms skip this and go straight to projects, so a role history never appears for a firm that doesn't need one). Then `.project-nav`, a list of `.project-chip` buttons (title, descriptor, and — only when the firm has multiple roles — the project's role label) driving the same `aria-pressed`/`hidden` pattern as firm selection.
+- **Project detail (`.project-detail`):** title + summary, a `.metric-row` of verified metrics, then `.accordion` with exactly six sections in a fixed order — The problem, How I approached it, How the product works, Tools and product decisions, Impact to users, What I learned. "The problem" and "Impact to users" default open (`aria-expanded="true"`, `hidden` absent on their panel); the other four default collapsed.
+- **Accordion markup:** each section is a `<button class="accordion-trigger" aria-expanded aria-controls>` inside an `<h4>`, controlling a `role="region" aria-labelledby` panel. Content is a mix of `<p>` paragraphs and/or a `<ul>` of short claims (per-section, whichever fits the underlying fact — never both forced into every section).
+- **Interaction (vanilla JS, no framework):** firm selection, project selection and accordion toggling are all click-driven `aria-pressed`/`aria-expanded` + `hidden` toggles — no animation, so there's nothing to gate behind `prefers-reduced-motion`. Firm selection also syncs `location.hash` (`#cisco`, `#dream11`, …) via `history.replaceState`, and reads an incoming hash on load — preserving the old timeline's deep-link behavior without a full router.
+- **Responsive:** ≥981px is the 30/70 split above. ≤980px, `.career-explorer` drops to a single column and `.firm-pane` stops being sticky (`position: static`) — firm cards, project chips and the project detail all stack full-width in document order (firm list → selected firm → role history → project list → selected project → accordion). No breakpoint hides or horizontally scrolls any of this content.
+- **Content rule:** every project's six sections and every firm/role fact are restructured from already-verified role/metric data (see `experience_data_reconciled.md`) — no invented projects, metrics, tools, or personal "lessons learned." A project with only one or two real metrics shows only those; empty metric slots are never invented to fill a row.
 
 ## Do's & Don'ts
 
