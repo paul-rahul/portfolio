@@ -1438,3 +1438,53 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 4 — project/case-study structure (Problem→Solution→How→Outcome template for Built project pages)
+
+---
+
+## Content & Visual Refinement — Stage 04
+
+Status: complete
+
+Branch:
+refinement/04-project-case-study-structure
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- `src/components/ProjectCaseStudy.astro`: reusable case-study template implementing the plan's required Problem → Solution → How I got there → Outcome sequence. Props: `title`, `status`, `heroId`/`flowId`/`supportingId` (MediaPlaceholder ids), `problem`/`solution`/`how`/`outcome` (copy), optional `githubUrl`/`liveUrl`/`backHref`/`nextHref`/`nextLabel`. Footer CTAs (Back to Built / Next project / Live / GitHub) render conditionally — only shown when a real URL is supplied, never fabricated.
+- Section labels use the existing `.kicker` mono-uppercase convention (not the career page's `.reading-frame`/`.frame-pill`, which DESIGN.md explicitly scopes to the career page only — a new general pattern was needed, not a reuse of a page-scoped one).
+- `.project-case*` styles added to `tokens.css`.
+
+Content decisions:
+- **No live project route was created.** Since no real Built project content exists yet (confirmed again against project memory), instantiating this template on a real page would mean either fabricating content or shipping an empty/fake page — both against the plan's explicit rules. The component is built, styled, and verified, ready to back the first real Built entry whenever Rahul provides one.
+
+Design decisions:
+- Reused `.status-chip` (from Stage 3) for the case-study header status line — keeps the "pending work" visual language consistent between the homepage preview cards and the eventual project page itself.
+
+Image placeholder decisions:
+- Template defines 3 `MediaPlaceholder` slots per project (hero 16:9, product/flow 16:10, supporting 3:2) — matches IMG-08/09/10 in `VISUAL_ASSETS.md`, still `Deferred` since no live route exists.
+
+Files materially changed:
+- `src/components/ProjectCaseStudy.astro` (new)
+- `src/styles/tokens.css`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — deferred to Stage 9 with the rest of the placeholder/pattern documentation
+
+Validation:
+- npm run build: PASS (7/7 routes — component isn't wired to any route yet, so route count is unchanged)
+- dev mode: PASS — verified via a temporary throwaway route (`src/pages/built/temp-preview.astro`) with clearly-labeled placeholder copy, screenshotted, then fully deleted before commit (confirmed via `git status` that only the component and `tokens.css` are part of this commit)
+- Day mode: PASS
+- Night mode: PASS
+- mobile/tablet/desktop: not yet re-tested (no live route; will be verified against the first real project page once it exists, and structurally re-checked in Stage 8 using the temp-preview method if needed)
+
+Known issues / deferred items:
+- Component is unused in the shipped site until Rahul provides real Built project content — this is intentional, not an oversight
+
+Next stage:
+- Stage 5 — density and visual hierarchy

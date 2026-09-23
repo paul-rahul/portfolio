@@ -1,0 +1,93 @@
+---
+import MediaPlaceholder from "./MediaPlaceholder.astro";
+import ArrowIcon from "./ArrowIcon.astro";
+
+interface Props {
+	title: string;
+	status: string;
+	heroId: string;
+	problem: string;
+	solution: string;
+	flowId: string;
+	how: string;
+	supportingId: string;
+	outcome: string;
+	githubUrl?: string;
+	liveUrl?: string;
+	backHref?: string;
+	nextHref?: string;
+	nextLabel?: string;
+}
+
+const {
+	title,
+	status,
+	heroId,
+	problem,
+	solution,
+	flowId,
+	how,
+	supportingId,
+	outcome,
+	githubUrl,
+	liveUrl,
+	backHref = "/built",
+	nextHref,
+	nextLabel,
+} = Astro.props;
+---
+
+<article class="project-case">
+	<header class="project-case-head">
+		<p class="status-chip status-active"><span /> {status}</p>
+		<h1>{title}</h1>
+	</header>
+
+	<MediaPlaceholder id={heroId} label="Project hero" description="Final product screenshot" aspectRatio="16:9" class="project-case-hero" />
+
+	<section class="project-case-section">
+		<p class="kicker">The problem</p>
+		<p class="project-case-copy">{problem}</p>
+	</section>
+
+	<section class="project-case-section">
+		<p class="kicker">The solution</p>
+		<p class="project-case-copy">{solution}</p>
+	</section>
+
+	<MediaPlaceholder id={flowId} label="Product or flow" description="Key screen or user flow" aspectRatio="16:10" />
+
+	<section class="project-case-section">
+		<p class="kicker">How I got there</p>
+		<p class="project-case-copy">{how}</p>
+	</section>
+
+	<MediaPlaceholder id={supportingId} label="Supporting visual" description="Diagram, architecture, or detail shot" aspectRatio="3:2" />
+
+	<section class="project-case-section">
+		<p class="kicker">The outcome</p>
+		<p class="project-case-copy">{outcome}</p>
+	</section>
+
+	<footer class="project-case-footer">
+		<a class="button ghost" href={backHref}>Back to Built</a>
+		{nextHref && nextLabel && (
+			<a class="button ghost" href={nextHref}>
+				{nextLabel}
+				<ArrowIcon size={15} />
+			</a>
+		)}
+		{liveUrl && (
+			<a class="button primary" href={liveUrl} target="_blank" rel="noreferrer">
+				Live
+				<ArrowIcon size={15} />
+			</a>
+		)}
+		{githubUrl && (
+			<a class="button ghost" href={githubUrl} target="_blank" rel="noreferrer">
+				GitHub
+				<ArrowIcon size={15} />
+			</a>
+		)}
+	</footer>
+</article>
