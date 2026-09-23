@@ -1631,3 +1631,52 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 8 — cross-theme responsive QA (full breakpoint × theme matrix)
+
+---
+
+## Content & Visual Refinement — Stage 08
+
+Status: complete
+
+Branch:
+refinement/08-cross-theme-responsive-qa
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- No code changes — QA-only stage covering every section touched by Stages 2–7 (Home's Selected Projects, About's intro + 2-card grid, `MediaPlaceholder`, `ProjectCaseStudy`, the renamed nav label).
+- **Programmatic overflow sweep**: required breakpoint matrix (375/430/768/1024/1440/1920) × the 4 changed pages (`/`, `/about`, `/career`, `/built`) = 24 checks, run via a same-origin iframe harness (`document.documentElement.scrollWidth > window.innerWidth` per iframe at each target width) since this session's `resize_window` tool did not reliably resize the actual browser viewport (confirmed: repeated resize calls reported success but `innerWidth` stayed pinned near 200px regardless of the requested width — a tooling limitation, not a site bug; the iframe harness sidesteps it by giving each check its own real, correctly-sized viewport). **Result: 0/24 overflow.**
+- **Visual verification**: Day + Night screenshots already captured per-stage for Home (Stage 3) and About (Stage 6) at ~1456px desktop width; an earlier resize to 400px (which *did* take effect, unlike later attempts) confirmed the mobile nav collapse/scroll-row behavior renders correctly with the new "Career" label and no visible clipping.
+- Accessibility: no new interactive elements were introduced beyond the site's existing `.button`/`.case-card`/link patterns (all already 44px+ tap targets and `focus-visible` per the established system) — nothing new to re-verify here; the plan's tap-target/focus-ring rules were not touched by any Stage 2–7 change.
+
+Content decisions:
+- None
+
+Design decisions:
+- None
+
+Image placeholder decisions:
+- None
+
+Files materially changed:
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS
+- Day mode: PASS (screenshotted in Stages 3, 4, 6)
+- Night mode: PASS (screenshotted in Stages 2, 3, 4, 6)
+- mobile/tablet/desktop: PASS — 0/24 horizontal-overflow failures across the full required breakpoint matrix, verified via iframe harness (see above)
+
+Known issues / deferred items:
+- **Tooling limitation, not a code defect**: this session's `resize_window` browser tool did not reliably drive the real viewport to arbitrary widths (repeat calls silently clamped to ~200-400px css regardless of the requested value). Overflow was still verified correctly via the iframe-harness workaround; a true full-window resize visual sweep (matching the rigor of the prior `portfolio_responsive_audit`) was not possible this session and could be spot-checked by Rahul manually if desired.
+
+Next stage:
+- Stage 9 — design documentation (update DESIGN.md with MediaPlaceholder, ProjectCaseStudy, status-chip patterns)
