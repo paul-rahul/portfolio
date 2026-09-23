@@ -770,3 +770,53 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 2 — global shell/navigation/page frame (fix R001 first, since it affects every route)
+
+## Responsive Audit — Stage 02
+
+Status: complete
+
+Branch:
+responsive/02-global-shell
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- Global shell (`.site-header`, `.brand`, `.site-header nav`, `.header-actions`, footer) across all 7 routes
+
+Issues found:
+- Confirmed R001 (from Stage 1): `.brand` had no shrink constraint below 980px, forcing header wider than viewport at ≤320px
+- No other global-shell-level overflow found (footer clean at 320px on all routes; no blanket `overflow-x: hidden` in use)
+
+Implemented:
+- `src/styles/tokens.css`: `.brand` and `.brand div` gained `min-width: 0`; `.brand div`/`.brand small` gained `overflow: hidden; text-overflow: ellipsis`
+- `≤980px` `.site-header` grid track changed from `auto 1fr` to `minmax(0, auto) minmax(0, 1fr)` so the brand column can actually shrink
+- `≤680px` breakpoint hides `.brand small` (subtitle) — no room for it next to logo + nav at that width
+- `RESPONSIVE_AUDIT.md` updated: R001 marked Fixed, Stage 2 section added with re-verification notes
+
+Responsive decisions:
+- Prefer allowing the brand lockup to shrink/truncate over shrinking the header height or hiding nav items; subtitle drop happens only below 680px, name text never truncates in practice at any tested width once the grid track can shrink
+
+Breakpoints tested:
+- Header/footer overflow re-verified at 320, 375, 390, 430, 680, 768 (iframe scrollWidth technique) across all 7 routes
+
+Theme validation:
+- Day: PASS (structural fix, theme-independent — confirmed data-theme="light" default still renders correctly)
+- Night: PASS (not re-screenshotted; fix is layout-only, no color-token changes, consistent with Stage 1's theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS (all 7 routes served 200 during verification)
+- horizontal overflow: PASS for global shell (header + footer) on all routes at 320px; homepage body overflow (R002) remains, out of scope for this stage
+- keyboard/accessibility: not tested this stage (deferred to Stage 7 per plan)
+
+Known issues / deferred items:
+- R002 (homepage progression module overflow) still open — Stage 3
+- Visual-only issues (clipped text, dense layouts, tap targets) still not screenshot-audited — same tooling limitation as Stage 1, deferred to Stage 7 or manual pass
+- Sticky-header/anchor-offset behavior and mobile-nav horizontal-scroll usability not deeply audited this stage — nav already uses an intentional `overflow-x: auto` row below 980px per existing design; revisit in Stage 7 (accessibility/interaction pass) if it proves hard to use by touch
+
+Next stage:
+- Stage 3 — homepage responsiveness (fix R002: build the intentional mobile vertical flow for the Engineer→Product→Market module)
