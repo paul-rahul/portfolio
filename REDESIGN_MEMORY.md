@@ -1727,3 +1727,71 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 10 — final regression QA, then STOP for Rahul's explicit sign-off before any merge toward `main`
+
+---
+
+## Content & Visual Refinement — Stage 10
+
+Status: complete
+
+Branch:
+refinement/10-final-regression
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Full-route regression pass: `npm run build` (7/7 routes), dev-server smoke test (all 7 routes 200), visual spot-check of Career and Built (both unchanged in content, correctly showing the renamed "Career" nav label active-state).
+- Code audit per the plan's checklist:
+  - Hardcoded light/dark colors outside `tokens.css`: **none found** (grepped `src/pages`/`src/components` for hex codes and `rgb(a)`).
+  - Duplicate placeholder implementations: **none** — `MediaPlaceholder` is the only placeholder component, used consistently.
+  - Unsupported image references: **none** — no `<img>` tags reference nonexistent files; all visuals are either real (existing icons/favicon) or `MediaPlaceholder`.
+  - Dead links: **none** — audited every `href` (static and dynamic) across `src/pages`/`src/components`; all resolve to real routes, the existing résumé PDF (confirmed present in `public/`), or real external URLs (LinkedIn, mailto).
+  - Abandoned styles: **none outstanding** — `.case-mark`/`.metrics`/`.editorial-card.large` and their responsive overrides were removed in Stages 3 and 6 as their markup was replaced; verified via grep that no orphaned selectors remain from this plan's changes.
+  - Unnecessary one-off media queries: none added — all new responsive rules (`.about-intro`, `.editorial-grid.two-col`) reuse the site's existing 980px/680px breakpoint structure, no new breakpoints introduced.
+
+# Final summary (per the plan's required Stage 10 report)
+
+**What changed:** Home no longer duplicates Career (replaced with an honest, pending-status Selected Projects preview); a reusable `MediaPlaceholder` system + `VISUAL_ASSETS.md` inventory now exists; a `ProjectCaseStudy` template (Problem→Solution→How→Outcome) is built and ready for the first real Built project; About gained portrait/McCombs/badminton image slots, resolving its prior excess-whitespace issue; the primary nav's "Work" label was renamed to "Career" to remove ambiguity with "Built"; `DESIGN.md` documents all 3 new patterns.
+
+**Which pages changed:** Home (`/`), About (`/about`), and the global Nav (affecting every page's header). Career, Built, Internships, Résumé, and Contact are unchanged in content — Built/Career were deliberately left alone since Stage 1 found they already worked well.
+
+**Image placeholders:** 6 live (IMG-02 through IMG-06 minus the dropped IMG-07, plus IMG-04), 3 deferred (IMG-08/09/10, waiting on the first real Built project), 1 retained as an intentional non-gap (IMG-01, the homepage hero diagram). Full inventory in `VISUAL_ASSETS.md`.
+
+**DESIGN.md:** updated in Stage 9 — documents MediaPlaceholder, status-chip, and the ProjectCaseStudy template.
+
+**Build status:** PASS (7/7 routes, all 11 stages).
+
+**Day/Night status:** PASS — verified via screenshots at every stage that touched visual code (2, 3, 4, 6); theme tokens used exclusively, no hardcoded colors introduced.
+
+**Responsive QA status:** PASS — 0/24 horizontal-overflow failures across the full required breakpoint matrix (375-1920px) on all 4 changed pages, verified via an iframe harness after this session's window-resize tool proved unreliable (documented tooling limitation, not a site defect).
+
+**No fabricated content was introduced anywhere in this plan** — Built project content, About's personal details, and all career facts are either unchanged from the pre-existing, fact-checked baseline or represented honestly as pending/placeholder.
+
+Files materially changed (cumulative, Stages 0-10):
+- `src/pages/index.astro`, `src/pages/about.astro`, `src/pages/career/index.astro` (whitespace-only, reverted)
+- `src/components/Nav.astro`, `src/components/MediaPlaceholder.astro` (new), `src/components/ProjectCaseStudy.astro` (new)
+- `src/styles/tokens.css`
+- `VISUAL_ASSETS.md` (new), `DESIGN.md`, `REDESIGN_MEMORY.md`
+
+DESIGN.md updated:
+- NO this stage (already done in Stage 9); confirmed still accurate against final code in this stage's audit
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS (7/7 routes, 200)
+- Day mode: PASS
+- Night mode: PASS
+- mobile: PASS (0/24 overflow)
+- tablet: PASS (0/24 overflow)
+- desktop: PASS (0/24 overflow)
+
+Known issues / deferred items:
+- `resize_window` tool limitation noted in Stage 8 — full visual (not just overflow-check) sweep at every exact breakpoint wasn't possible this session; Rahul can spot-check locally via real browser DevTools if desired.
+- `ProjectCaseStudy` template remains unused until Rahul provides real Built project content (intentional, not a gap).
+
+Next stage:
+- **NONE — STOP per the plan's Final Review Gate.** `feature/content-visual-refinement` is a complete refinement candidate. Do not merge to `main` or any parent branch without Rahul's explicit sign-off after reviewing the branch himself.
