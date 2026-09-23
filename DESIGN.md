@@ -101,8 +101,9 @@ The palette is almost monochrome by design; color is a signal, not decoration.
 **Display Font:** Instrument Sans (with Inter Tight, Inter, system-ui fallback)
 **Body Font:** Inter (with system-ui fallback)
 **Label/Mono Font:** JetBrains Mono (with IBM Plex Mono, ui-monospace fallback)
+**Hand/Script Font:** Caveat, weight 600 (with cursive fallback) — reserved for the homepage hero's "This is me" annotation only, loaded at a single weight to keep payload minimal
 
-**Character:** Instrument Sans headlines are tight and confident (negative letter-spacing, line-height near 1), Inter body copy stays relaxed and readable at 1.55 line-height, and JetBrains Mono marks anything that is data rather than prose.
+**Character:** Instrument Sans headlines are tight and confident (negative letter-spacing, line-height near 1), Inter body copy stays relaxed and readable at 1.55 line-height, JetBrains Mono marks anything that is data rather than prose, and Caveat supplies the one deliberately handwritten moment in the whole system.
 
 ### Hierarchy
 - **Display / H1** (600 weight, `clamp(40px, 5vw, 64px)`, line-height 1.04, letter-spacing -0.02em): hero and page-hero headlines.
@@ -112,6 +113,8 @@ The palette is almost monochrome by design; color is a signal, not decoration.
 
 ### Named Rules
 **The Mono-Means-Data Rule.** JetBrains Mono is reserved for anything numeric, dated, or systemic (metrics, periods, role numbers, nav-brand mark). It never appears in prose copy.
+
+**The Script-Means-One-Moment Rule.** Caveat is reserved for the hero "This is me" annotation and nowhere else — it is not a general accent font.
 
 ## Layout
 
@@ -216,7 +219,8 @@ A shared `revealOnce()` helper (`src/scripts/motion-reveal.ts`) backs every scro
 
 ### Component rules
 - **Page-hero entrance:** every page using the shared `PageHero`/`.page-hero` component (Career, About, Built, Internships, Contact) fades its chip → h1 → lede up in sequence on load (~90–150ms stagger). This is the "standard page-heading entrance" — no page adds its own variant, and it stays page-load (not scroll-triggered) since it's always above the fold.
-- **Homepage hero:** headline, lede, CTA buttons, then the intersection diagram fade up in sequence (`--motion-enter`, ~90ms stagger); the Tech/Product/Business circles additionally converge from slightly offset starting positions into their resting overlap, once, over `--motion-slow`. Like the page-hero, this stays a page-load sequence rather than a viewport reveal — it's above the fold by definition.
+- **Homepage hero — Venn diagram:** headline, lede, CTA buttons, then the intersection diagram fade up in sequence (`--motion-enter`, ~90ms stagger) — like the page-hero, this stays a page-load sequence rather than a viewport reveal, since it's above the fold by definition. Within the diagram, the Engineering/Design/Business rings converge from slightly offset starting positions into their resting overlap, once, over `--motion-slow` (staggered 300/480/660ms). Each label settles in shortly after its own ring finishes (`--motion-base`, staggered 2100/2280/2460ms). Once all three labels have settled, the center dot fades in (`--motion-base`, ~2.7s in), then the short arrow draws in via a `stroke-dashoffset` animation (`--motion-enter`), then "This is me" fades up last — matching the corrected circles → labels → dot → arrow → annotation sequence. No bounce, spring overshoot, looping pulse, or letter-by-letter animation is used anywhere in this sequence.
+- **Homepage reveals:** the quick-fact strip and capability grid reveal with a light stagger the first time they scroll into view (`IntersectionObserver`, run once, progressive enhancement — content is fully visible without JS).
 - **Career firm/project switching:** the newly active panel fades up (`--motion-base` for both firm and project switch, landing both in the plan's overlapping 220–300ms range); metric tiles get a light `scale(.98→1)` with a 2-step stagger riding on the project-switch entrance. The previously active panel is hidden immediately rather than exit-animated — a deliberate simplification to keep the swap robust and avoid `hidden`-attribute/animation timing races.
 - **Career accordions:** the abrupt `hidden`-attribute toggle was replaced with a CSS-grid `0fr → 1fr` height transition (no fixed/measured heights), and the `+`/`–` glyph swap was replaced with a single "+" that rotates 45°. Collapsed panels get `inert` (not just `hidden`) so they drop out of the tab order without needing extra ARIA.
 - **Nav active/hover state:** the old instant `border-bottom-color` swap was replaced with a `scaleX(0→1)` underline on a `::after` pseudo-element, `hover` and `focus-visible` both trigger it.
@@ -293,6 +297,18 @@ Primary assets, served from `public/`:
 - **Shadow Strategy:** none at rest (see Elevation & Depth); `.case-card` gets a subtle `translateY` + border-color shift on hover instead of shadow.
 - **Border:** 1px solid `--border` on all cards.
 - **Internal Padding:** 18–44px depending on card density (metric tile 18px, contact-card 44px).
+
+### Homepage hero — Engineering/Design/Business Venn diagram
+- **Meaning:** three equal-sized overlapping circles — Engineering (upper-left), Design (upper-right), Business (lower-center) — with a shared three-way overlap, marked by a small accent dot, a short curved arrow, and a handwritten "This is me" annotation pointing at it. The diagram is `aria-hidden="true"`: the hero H1 ("I build at the intersection of technology, product & market") already communicates the same idea in words, so nothing unique is exposed to assistive tech and no decorative SVG path is announced or focusable.
+- **Single coordinate system:** the whole diagram is one inline SVG (`viewBox="0 0 1000 1000"`) — circle centers/radii, labels, the dot, and the arrow are all authored in that same 1000-unit space rather than mixing HTML-positioned elements with an SVG overlay. That keeps the geometry exact and makes the whole diagram scale as one unit at any width; the container CSS only sets `width: 100%; height: auto` on the `<svg>`.
+- **Circle geometry (exact target values):** all three rings share one radius (`r=245`). Engineering `cx=355, cy=345`; Design `cx=675, cy=345` (symmetric with Engineering about the shared `cy` and about the diagram's horizontal midline); Business `cx=515, cy=650`, clearly lower than the two upper circles. This is intentionally spacious — generous, even padding between every circle and the card edge, and the three-way overlap sits near the visual center without crowding it.
+- **Ring treatment:** all three circles share one thin accent-colored (`--accent`) outline (`stroke-width: 2.75` of the 1000-unit viewBox — a delicate line, not a bold one), no fill, no shadow. `mix-blend-mode: multiply` (light mode only, reset to `normal` in dark) darkens the overlaps the way real overlapping circles would.
+- **Label treatment:** ENGINEERING / DESIGN / BUSINESS use the standard mono label system (`--font-mono`, `font-size: 23px`, `font-weight: 600`, `letter-spacing: 0.14em`) in primary ink (`--ink`) — small, tracked, editorial-annotation scale rather than display-sized text. Sized proportionally to the viewBox, so it scales with the rest of the diagram automatically.
+- **Label placement (exact target values):** Engineering at `(285, 350)` and Design at `(735, 355)` mirror each other at the same relative inset inside their own circles, comfortably clear of the shared overlap and of each other. Business sits at `(515, 650)` — its own circle's horizontal center, comfortably inside the lower circle and well separated from the dot/arrow/annotation above it.
+- **Center dot + arrow + annotation (exact target values):** a small accent-filled dot (`cx=515, cy=475, r=12`, a subtle `drop-shadow` glow only) marks the three-way overlap. A short, thin curved path (`stroke-width: 3.5`, `stroke-linecap/linejoin: round` — slightly heavier than the rings but never a thick marker stroke) with a small SVG marker arrowhead runs from just below "This is me" and curves left into the dot — deliberately short, confined to the center-right region only, never crossing the Business or Design labels. "This is me" sits at `(720, 435)` — right of the arrow, slightly above its start, inside the Design circle's open space, in Caveat (script/hand font, see Typography, `font-size: 37px`, `font-weight: 400` — the handwriting itself carries the emphasis, not bold weight) — reading order "This is me → arrow → dot," staying clear of the arrow stroke and both circle labels.
+- **Day/Night:** every diagram color (rings, dot, arrow, arrowhead, labels) is a semantic token (`--accent`, `--ink`) that already flips per theme — there is no diagram-specific dark/light branch, and the geometry is byte-for-byte identical in both themes.
+- **Responsive:** because the whole diagram is one SVG scaled by its `viewBox` against a square, percentage-sized container (`.intersection-diagram` is `width: 100%; max-width: 600px` under the existing ≤980px hero-stack rule), every piece — rings, labels, dot, arrow, annotation — scales together proportionally at any width instead of being tuned per breakpoint.
+- **Motion:** see Motion → Component rules and Reduced motion above; the entrance sequence and reduced-motion fallback are identical to the rest of the site's conventions, nothing diagram-specific was added to the reduced-motion rule.
 
 ### MediaPlaceholder
 
