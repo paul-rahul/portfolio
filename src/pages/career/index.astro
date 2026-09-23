@@ -200,6 +200,8 @@ const defaultFirmId = firms[0].id;
 </BaseLayout>
 
 <script>
+	import { revealOnce } from "../../scripts/motion-reveal.ts";
+
 	const explorer = document.querySelector<HTMLElement>("[data-career-explorer]");
 	if (explorer) {
 		const firmTriggers = Array.from(explorer.querySelectorAll<HTMLButtonElement>("[data-firm-trigger]"));
@@ -281,21 +283,6 @@ const defaultFirmId = firms[0].id;
 		});
 	}
 
-	const operatingSteps = document.querySelector<HTMLElement>("[data-operating-steps]");
-	if (operatingSteps && "IntersectionObserver" in window) {
-		Array.from(operatingSteps.children).forEach((child) => child.classList.add("motion-pre-reveal"));
-		const revealObserver = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						operatingSteps.classList.add("is-revealed");
-						revealObserver.disconnect();
-						break;
-					}
-				}
-			},
-			{ threshold: 0.2 },
-		);
-		revealObserver.observe(operatingSteps);
-	}
+	revealOnce("[data-operating-steps]");
+	revealOnce("[data-career-explorer]");
 </script>
