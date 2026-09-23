@@ -146,3 +146,28 @@ const projects = [
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	const revealOnce = (containerSelector: string, itemsSelector?: string) => {
+		const container = document.querySelector<HTMLElement>(containerSelector);
+		if (!container || !("IntersectionObserver" in window)) return;
+		const items = itemsSelector ? Array.from(container.querySelectorAll<HTMLElement>(itemsSelector)) : Array.from(container.children);
+		items.forEach((item) => item.classList.add("motion-pre-reveal"));
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						container.classList.add("is-revealed");
+						observer.disconnect();
+						break;
+					}
+				}
+			},
+			{ threshold: 0.2 },
+		);
+		observer.observe(container);
+	};
+
+	revealOnce(".fact-strip");
+	revealOnce(".capability-grid", ".capability-item");
+</script>
