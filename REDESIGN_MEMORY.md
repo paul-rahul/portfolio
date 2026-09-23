@@ -1795,3 +1795,59 @@ Known issues / deferred items:
 
 Next stage:
 - **NONE — STOP per the plan's Final Review Gate.** `feature/content-visual-refinement` is a complete refinement candidate. Do not merge to `main` or any parent branch without Rahul's explicit sign-off after reviewing the branch himself.
+
+---
+
+## Content & Visual Refinement — Review fixes 01
+
+Status: complete
+
+Branch:
+refinement/review-fixes-01
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Rahul reviewed the live branch (localhost:4330) and requested 5 changes, applied immediately per standing feedback on rapid iteration:
+
+1. **Homepage progression section → Capabilities.** Removed the "Engineer / Product / Market" 3-card progression section from Home. In its place, moved the Career page's "What I'm known for" Capabilities section (4 cards: 0→1 Product Building, AI/ML Productization, Monetization & Growth, Cross-functional Execution) onto Home, and removed it from Career entirely — content and data unchanged, just relocated.
+2. **Resume page removed.** Deleted `src/pages/resume.astro`, removed "Résumé" from the primary nav. The homepage hero's direct "Download résumé" PDF link (`/Rahul_Paul_Resume.pdf`) was left in place — that wasn't part of the ask and still serves a real purpose. `PRODUCT.md` updated (Operating Context, Capabilities and Constraints, Brand Commitments, Product Principles) to stop referencing a Resume page that no longer exists.
+3. **Operating Model moved up on Career.** The "How I operate" 5-step section now sits immediately after the PageHero's lede ("Every role below: what I owned, what we built, and the outcome — expand any to see the details."), before the timeline — was previously below the timeline and Capabilities.
+4. **Reading-frame pills deleted.** The Problem→System/Product→User→Business impact pill row on Career is gone.
+5. **Nav "Built" → "Projects"** (a follow-on request during the same fix pass) — label only, route (`/built`) and the page's own "Built" identity/copy left unchanged since only the navbar label was asked for.
+
+Content decisions:
+- None invented — all moved content is verbatim from its prior location.
+
+Design decisions:
+- `DESIGN.md` updated: the reading-frame/frame-pill component entry removed (component no longer exists), the Shapes section's pill-radius note updated to reflect it's currently unused, the ProjectCaseStudy section's cross-reference to `.reading-frame` reworded, and the corresponding Don't-rule removed.
+
+Image placeholder decisions:
+- None affected.
+
+Files materially changed:
+- `src/pages/index.astro` (progression → capabilities)
+- `src/pages/career/index.astro` (operating-model moved, capabilities + reading-frame removed)
+- `src/pages/resume.astro` (deleted)
+- `src/components/Nav.astro` (Résumé removed, Built → Projects)
+- `src/styles/tokens.css` (removed dead `.progression*`, `.reading-frame`/`.frame-pill`/`.frame-arrow`, `.resume-card` rules and their responsive overrides)
+- `DESIGN.md`, `PRODUCT.md`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- YES — removed the now-nonexistent reading-frame pill component documentation, updated the Shapes/Do's-Don'ts cross-references.
+
+Validation:
+- npm run build: PASS (6/6 routes — resume route correctly gone)
+- dev mode: PASS — verified live via the already-running dev server (localhost:4330) that Rahul was reviewing; confirmed via raw HTML/route checks: `/resume` now 404s, nav renders "Career / Projects / About", Career's `<h1>`→lede→operating-model→career-timeline order is correct, no `reading-frame`/`capabilities` markup remains on Career, Home's Capabilities section renders with the moved data.
+- Day mode / Night mode: not re-screenshotted this pass (browser screenshot capture was unavailable — 0-width window — during this session; verified structurally via raw HTML instead, which is theme-independent by construction since no new colors were introduced, only markup relocated/removed)
+- mobile/tablet/desktop: not independently re-verified this pass — no new responsive rules were added (moved sections reuse their existing, already-audited `.capability-grid`/`.operating-steps` breakpoint behavior); dead-code removal confirmed via grep (0 remaining references to every removed class)
+
+Known issues / deferred items:
+- Browser screenshot capture was unavailable this pass (reported "0 width" — likely the viewing browser window was minimized/inactive on Rahul's end); verified via `get_page_text` + raw HTML/curl checks instead, which confirmed correctness but didn't produce a visual screenshot record. Rahul was actively viewing the live dev server himself during this pass, which substitutes for it.
+
+Next stage:
+- None — awaiting Rahul's continued review / further fix requests, or sign-off to promote.

@@ -177,7 +177,7 @@ The system is flat by default — no drop shadows on cards or buttons at rest. D
 
 ## Shapes
 
-Three radius steps cover the whole system: `8px` (sm — buttons, small badges), `12px` (md — metric tiles), `16px` (lg — cards, panels, image frames). Pills (`999px`) are reserved for the reading-frame chips (Problem → System → User → Business impact) and are the only fully-rounded shape in the system — everything else uses the sm/md/lg step scale.
+Three radius steps cover the whole system: `8px` (sm — buttons, small badges), `12px` (md — metric tiles), `16px` (lg — cards, panels, image frames). Pills (`999px`) were previously reserved for the career page's reading-frame chips; that component was removed (Review fixes 01) and the pill radius is currently unused — kept in the scale for any future chip need.
 
 ## Components
 
@@ -187,7 +187,7 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 - **Ghost:** surface background, ink text, border; hovers to ink-colored border.
 
 ### Chips / Pills
-- **Reading-frame pill:** surface background, 1px border, 999px radius, mono uppercase label, 8px/18px padding. Used only for the Problem→System→User→Impact frame on the career page — not a general-purpose tag component.
+- No pill-radius chip is in current use (the career page's reading-frame pill was removed — Review fixes 01). The `--radius-pill` token remains defined for any future chip need.
 
 ### Cards / Containers
 - **Corner Style:** 16px radius (`--radius-lg`) for cards/panels; 12px for metric tiles.
@@ -216,7 +216,7 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 
 - **Purpose:** the standard structure for any Built project's dedicated page — Problem → Solution → How I got there → Outcome, per the site's product principle of scannable, evidence-led storytelling extended to personal projects.
 - **Component:** `src/components/ProjectCaseStudy.astro`. Renders: status chip + title → hero `MediaPlaceholder` (16:9) → "The problem" → "The solution" → product/flow `MediaPlaceholder` (16:10) → "How I got there" → supporting `MediaPlaceholder` (3:2) → "The outcome" → footer CTAs (Back to Built, optional Next project / Live / GitHub — each rendered only if a real URL is supplied, never fabricated).
-- **Section labels** use the existing `.kicker` mono-uppercase convention, not the career page's `.reading-frame`/`.frame-pill` pill (that pattern is explicitly scoped to the career page's Problem→System→User→Impact frame only, per the Named Rule below — it is not a general-purpose tag component).
+- **Section labels** use the existing `.kicker` mono-uppercase convention (the career page previously had a separate `.reading-frame`/`.frame-pill` pattern for this same kind of framing; it was removed in Review fixes 01, so `.kicker` is now the only section-label convention in the system).
 - **Status as of this plan:** the component exists and is verified (via a temporary, fully-reverted test route) but is **not wired to any live page** — no real Built project content exists yet. It's ready to back the first real entry.
 
 ### Pinned scroll timeline (career page)
@@ -237,7 +237,7 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 ### Don't:
 - **Don't** introduce a second saturated accent color.
 - **Don't** add drop shadows to cards or buttons at rest — flat is the rule, translateY/border-color is the hover language.
-- **Don't** use pastel fills, illustration devices, or decorative chips outside the reading-frame pill — that direction was explicitly rejected in favor of this system.
+- **Don't** use pastel fills, illustration devices, or decorative chips — that direction was explicitly rejected in favor of this system.
 - **Don't** use blanket `overflow-x: hidden` to mask a layout bug — find and fix the actual cause (an unshrinkable grid/flex item, a fixed width/height, an unbroken word).
 - **Don't** ship a desktop layout "shrunk" to mobile — every grid/flex component needs an intentional narrower-width composition (fewer columns, stacked order, adjusted spacing), not just smaller numbers plugged into the same structure.
 - **Don't** hide important content (career metrics, outcomes, contact info) purely to make a narrow layout easier — recompose instead.
@@ -247,4 +247,3 @@ Three radius steps cover the whole system: `8px` (sm — buttons, small badges),
 - **Don't** rely on horizontal scroll for content someone needs to read start-to-finish — it's acceptable only for a clearly-scrollable control like the compact nav row, never for prose or a data table someone must read completely.
 - **Don't** give Day and Night different responsive/layout logic — theme changes color tokens only; every structural fix in this system has been (and should stay) theme-independent.
 - **Don't** source stock imagery, generate AI imagery, or invent screenshots/diagrams/photographs to fill a gap — use `MediaPlaceholder` until a real asset exists.
-- **Don't** reuse the career page's `.reading-frame`/`.frame-pill` as a general-purpose tag/label component — it's scoped to the career page's Problem→System→User→Impact frame only; use `.kicker` section labels for other structured content.
