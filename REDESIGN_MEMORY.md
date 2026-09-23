@@ -1533,3 +1533,55 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 6 — personality and About page (image placeholder slots; also resolves the deferred whitespace item above)
+
+---
+
+## Content & Visual Refinement — Stage 06
+
+Status: complete
+
+Branch:
+refinement/06-personality-and-about
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- `/about` restructured: the old `.editorial-card.large` (580px min-height, text-only, identified in Stage 5 as having excess whitespace) is replaced by a new `.about-intro` hero-style 2-column grid — `MediaPlaceholder` portrait (IMG-04, 4:5) + the existing "through-line" copy, unchanged.
+- The remaining `.editorial-grid` now has `.two-col` (equal-width, was `1.2fr/0.8fr`) with 2 cards — McCombs/Austin (IMG-05, 4:3) and Off the clock/badminton (IMG-06, 4:3) — each gets a `MediaPlaceholder` above its existing, unchanged copy.
+- Dead CSS removed: `.editorial-card.large` rule (580px) and its two responsive overrides (460px/400px min-heights) — no longer referenced after the restructure.
+- New responsive rules added for `.about-intro` (collapses to 1 column ≤980px, placeholder capped at 320px width) and `.editorial-grid.two-col` (collapses to 1 column ≤980px).
+
+Content decisions:
+- **No new personal content invented.** All three existing content blocks (through-line, McCombs, off-the-clock/badminton/reading/reality-TV) are unchanged — only images were added to what was already there.
+
+Design decisions:
+- `.editorial-grid` went from an asymmetric `1.2fr/0.8fr` 2-card grid (with one oversized "large" card) to a symmetric `.two-col` grid, since both remaining cards now carry equal visual weight (image + heading + paragraph each).
+
+Image placeholder decisions:
+- **`VISUAL_ASSETS.md` updated**: IMG-04/05/06 marked live/placed. **IMG-07 (separate "personal/candid" slot) dropped** — Stage 6 found no distinct third content block to hang a separate image on without inventing new personal copy, which the plan prohibits. IMG-04's portrait description ("professional portrait / candid") already covers that flexibility as one slot. Documented in `VISUAL_ASSETS.md` with reasoning rather than silently dropped.
+
+Files materially changed:
+- `src/pages/about.astro`
+- `src/styles/tokens.css`
+- `VISUAL_ASSETS.md`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — deferred to Stage 9 with the rest of this plan's pattern/placeholder documentation
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS
+- Day mode: PASS — screenshotted, portrait + intro copy render correctly, dashed placeholders legible
+- Night mode: PASS — screenshotted (intro section + both grid cards), contrast holds
+- mobile/tablet/desktop: not independently re-verified this stage beyond the new collapse rules being added defensively (1-column at ≤980px matching the existing `.hero`/`.editorial-grid` pattern); full sweep scheduled for Stage 8
+
+Known issues / deferred items:
+- None new
+
+Next stage:
+- Stage 7 — Career/Built separation clarity

@@ -1071,11 +1071,29 @@ img {
 	line-height: 1.5;
 }
 
+.about-intro {
+	display: grid;
+	grid-template-columns: 0.85fr 1.15fr;
+	gap: 40px;
+	align-items: center;
+	padding: 12px 0 40px;
+}
+
+.about-intro-copy p {
+	font-size: 17px;
+	color: var(--ink-secondary);
+	margin-top: 14px;
+}
+
 .editorial-grid {
 	display: grid;
 	grid-template-columns: 1.2fr 0.8fr;
 	gap: 20px;
-	padding: 12px 0 40px;
+	padding: 0 0 40px;
+}
+
+.editorial-grid.two-col {
+	grid-template-columns: repeat(2, 1fr);
 }
 
 .editorial-card {
@@ -1086,13 +1104,8 @@ img {
 	min-height: 280px;
 }
 
-.editorial-card.large {
-	grid-row: span 2;
-	min-height: 580px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	background: var(--surface);
+.editorial-card .media-placeholder {
+	margin-bottom: 18px;
 }
 
 .editorial-title {
@@ -1333,11 +1346,19 @@ img {
 		border-right: 0;
 		border-bottom: 1px solid var(--inverse-border);
 	}
+	.about-intro {
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
+	.about-intro .media-placeholder {
+		max-width: 320px;
+		margin-inline: auto;
+	}
 	.editorial-grid {
 		grid-template-columns: 1fr;
 	}
-	.editorial-card.large {
-		min-height: 460px;
+	.editorial-grid.two-col {
+		grid-template-columns: 1fr;
 	}
 	.contact-card {
 		grid-template-columns: 1fr;
@@ -1509,9 +1530,6 @@ img {
 	}
 	.editorial-card {
 		padding: 26px;
-	}
-	.editorial-card.large {
-		min-height: 400px;
 	}
 	.resume-card {
 		grid-template-columns: 1fr;
