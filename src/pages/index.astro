@@ -73,9 +73,24 @@ const projects = [
 			<div class="hero-art">
 				<!-- Placeholder for a real portrait: drop an <img> into .image-frame and remove .intersection-diagram, no other layout changes needed. -->
 				<div class="image-frame intersection-diagram" aria-hidden="true">
-					<span class="intersection-circle tech">Tech</span>
-					<span class="intersection-circle product">Product</span>
-					<span class="intersection-circle market">Business</span>
+					<span class="intersection-circle engineering">Engineering</span>
+					<span class="intersection-circle design">Design</span>
+					<span class="intersection-circle business">Business</span>
+					<svg class="intersection-accent" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
+						<defs>
+							<marker id="intersection-arrowhead" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse">
+								<path d="M0,0 L8,4 L0,8 Z" class="intersection-arrowhead-fill" />
+							</marker>
+						</defs>
+						<path
+							class="intersection-arrow"
+							d="M89,63 C77,66 63,58 52,46.5"
+							fill="none"
+							marker-end="url(#intersection-arrowhead)"
+						/>
+						<circle class="intersection-dot" cx="51" cy="45" r="1.7" />
+					</svg>
+					<span class="intersection-note">This is me</span>
 				</div>
 			</div>
 		</section>

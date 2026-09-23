@@ -101,8 +101,9 @@ The palette is almost monochrome by design; color is a signal, not decoration.
 **Display Font:** Instrument Sans (with Inter Tight, Inter, system-ui fallback)
 **Body Font:** Inter (with system-ui fallback)
 **Label/Mono Font:** JetBrains Mono (with IBM Plex Mono, ui-monospace fallback)
+**Hand/Script Font:** Caveat, weight 600 (with cursive fallback) — reserved for the homepage hero's "This is me" annotation only, loaded at a single weight to keep payload minimal
 
-**Character:** Instrument Sans headlines are tight and confident (negative letter-spacing, line-height near 1), Inter body copy stays relaxed and readable at 1.55 line-height, and JetBrains Mono marks anything that is data rather than prose.
+**Character:** Instrument Sans headlines are tight and confident (negative letter-spacing, line-height near 1), Inter body copy stays relaxed and readable at 1.55 line-height, JetBrains Mono marks anything that is data rather than prose, and Caveat supplies the one deliberately handwritten moment in the whole system.
 
 ### Hierarchy
 - **Display / H1** (600 weight, `clamp(40px, 5vw, 64px)`, line-height 1.04, letter-spacing -0.02em): hero and page-hero headlines.
@@ -112,6 +113,8 @@ The palette is almost monochrome by design; color is a signal, not decoration.
 
 ### Named Rules
 **The Mono-Means-Data Rule.** JetBrains Mono is reserved for anything numeric, dated, or systemic (metrics, periods, role numbers, nav-brand mark). It never appears in prose copy.
+
+**The Script-Means-One-Moment Rule.** Caveat is reserved for the hero "This is me" annotation and nowhere else — it is not a general accent font.
 
 ## Layout
 
@@ -202,7 +205,7 @@ Defined in `src/styles/tokens.css` `:root`, alongside the existing color/spacing
 
 ### Component rules
 - **Page-hero entrance:** every page using the shared `PageHero`/`.page-hero` component (Career, About, Built, Internships, Contact) fades its chip → h1 → lede up in sequence on load (~90–150ms stagger). This is the "standard page-heading entrance" — no page adds its own variant.
-- **Homepage hero:** headline, lede, CTA buttons, then the intersection diagram fade up in sequence (`--motion-enter`, ~90ms stagger); the Tech/Product/Business circles additionally converge from slightly offset starting positions into their resting overlap, once, over `--motion-slow`.
+- **Homepage hero — Venn diagram:** headline, lede, CTA buttons, then the intersection diagram fade up in sequence (`--motion-enter`, ~90ms stagger). Within the diagram, the Engineering/Design/Business circles converge from slightly offset starting positions into their resting overlap, once, over `--motion-slow` (staggered 300/480/660ms). Once the circles settle (~2.4s in), the center dot fades in (`--motion-base`), then the curved arrow draws in via a `stroke-dashoffset` animation (`--motion-enter`), then "This is me" fades up last — matching the plan's circles → dot → arrow → annotation sequence. No bounce, spring overshoot, looping pulse, or letter-by-letter animation is used anywhere in this sequence.
 - **Homepage reveals:** the quick-fact strip and capability grid reveal with a light stagger the first time they scroll into view (`IntersectionObserver`, run once, progressive enhancement — content is fully visible without JS).
 - **Career firm/project switching:** the newly active panel fades up (`--motion-base` for firm switch, `--motion-fast` for project switch, since it's the finer-grained navigation); metric tiles get a light `scale(.98→1)` with a 2-step stagger riding on the project-switch entrance. The previously active panel is hidden immediately rather than exit-animated — a deliberate simplification to keep the swap robust and avoid `hidden`-attribute/animation timing races.
 - **Career accordions:** the abrupt `hidden`-attribute toggle was replaced with a CSS-grid `0fr → 1fr` height transition (no fixed/measured heights), and the `+`/`–` glyph swap was replaced with a single "+" that rotates 45°. Collapsed panels get `inert` (not just `hidden`) so they drop out of the tab order without needing extra ARIA.
@@ -274,6 +277,16 @@ Primary assets, served from `public/`:
 - **Shadow Strategy:** none at rest (see Elevation & Depth); `.case-card` gets a subtle `translateY` + border-color shift on hover instead of shadow.
 - **Border:** 1px solid `--border` on all cards.
 - **Internal Padding:** 18–44px depending on card density (metric tile 18px, contact-card 44px).
+
+### Homepage hero — Engineering/Design/Business Venn diagram
+- **Meaning:** three overlapping circles — Engineering (upper-left), Design (upper-right), Business (lower-center) — with a shared three-way overlap, marked by a small accent dot, a curved arrow, and a handwritten "This is me" annotation pointing at it. The diagram is `aria-hidden="true"`: the hero H1 ("I build at the intersection of technology, product & market") already communicates the same idea in words, so nothing unique is exposed to assistive tech and no decorative SVG path is announced or focusable.
+- **Ring treatment:** all three circles share one accent-colored (`--accent`) 1.5px outline, no fill, no shadow. `mix-blend-mode: multiply` (light mode only, reset to `normal` in dark) darkens the overlaps the way real overlapping circles would.
+- **Label treatment:** ENGINEERING / DESIGN / BUSINESS use the standard mono label system (`--font-mono`, uppercase, tracked, `clamp(10px, 1.6vw, 12px)`) in primary ink (`--ink`) — not accent-colored, unlike the pre-redesign version where the Business label used the accent color.
+- **Label placement:** Engineering sits at its own circle's center and is the anchor other labels are placed relative to. Design is nudged inward (`transform: translate(-14%, 6%)` off its circle's center) so it visually mirrors Engineering instead of crowding the diagram's outer-right edge. Business is nudged up (`transform: translateY(-18%)`) so it sits above its circle's literal vertical center, leaving room below and clear of the center annotation.
+- **Center dot + arrow + annotation:** an inline SVG (`viewBox="0 0 100 100"`, matching the container's percentage coordinate system 1:1) draws a small accent-filled dot at the diagram's true three-way overlap and a single curved, accent-colored path with an SVG marker arrowhead running from the lower-right toward it. "This is me" sits past the arrow's tail in Caveat (script/hand font, see Typography), accent-colored, `clamp(18px, 2.4vw, 24px)`.
+- **Day/Night:** every diagram color (rings, dot, arrow, arrowhead, labels) is a semantic token (`--accent`, `--ink`) that already flips per theme — there is no diagram-specific dark/light branch, and the geometry is identical in both themes.
+- **Responsive:** all circle, dot, and arrow positioning is percentage-based against the square `.intersection-diagram` container (itself `width: 100%; max-width: 600px` under the existing ≤980px hero-stack rule), and label/annotation type sizes use `clamp()` — so the diagram scales continuously from desktop down to the smallest supported width without a dedicated per-breakpoint override.
+- **Motion:** see Motion → Component rules and Reduced motion above; the entrance sequence and reduced-motion fallback are identical to the rest of the site's conventions, nothing diagram-specific was added to the reduced-motion rule.
 
 ### MediaPlaceholder
 
