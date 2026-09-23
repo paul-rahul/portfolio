@@ -179,6 +179,22 @@ The system is flat by default — no drop shadows on cards or buttons at rest. D
 
 Three radius steps cover the whole system: `8px` (sm — buttons, small badges), `12px` (md — metric tiles), `16px` (lg — cards, panels, image frames). Pills (`999px`) were previously reserved for the career page's reading-frame chips; that component was removed (Review fixes 01) and the pill radius is currently unused — kept in the scale for any future chip need.
 
+## Brand Mark & Favicon
+
+The favicon/app icon follows the Technical Editorial identity: a dark charcoal (`#111214`) rounded-square base, a white editorial serif `R`, and a cobalt (`#4c5ff5`) accent dot and underline — restrained, premium, legible in both light and dark browser chrome.
+
+The same asset is used across Day and Night modes; the favicon does not theme-swap.
+
+Primary assets, served from `public/`:
+- `favicon.ico` — multi-size ICO (legacy browser tab fallback)
+- `favicon-16x16.png`, `favicon-32x32.png`, `favicon-48x48.png` — standard PNG tab icons
+- `apple-touch-icon.png` (180×180) — iOS home screen / Safari
+- `android-chrome-192x192.png`, `android-chrome-512x512.png` — Android/Chromium installable icons, referenced from `site.webmanifest`
+- `site.webmanifest` — PWA manifest (`theme_color: #111214`, `background_color: #F6F6F3`)
+
+### Named Rules
+**The One-Mark Rule.** The favicon does not theme-swap between Day and Night — one asset, designed to read cleanly in both browser chrome themes.
+
 ## Components
 
 ### Buttons
