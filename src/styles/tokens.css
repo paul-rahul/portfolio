@@ -562,6 +562,14 @@ img {
 	padding-block: 32px 44px;
 }
 
+.work-section.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.work-section.is-revealed > .case-grid {
+	animation-delay: 80ms;
+}
+
 .section-heading {
 	display: flex;
 	align-items: end;
@@ -1526,6 +1534,19 @@ img {
 .motion-pre-reveal {
 	opacity: 0;
 	transform: translateY(10px);
+}
+
+/* Self-unit reveal: container carries both classes at once (see revealOnce's `asUnit` option). */
+.motion-pre-reveal.is-revealed {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.career-explorer.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
+}
+
+.career-explorer.is-revealed > .firm-detail-pane {
+	animation-delay: 60ms;
 }
 
 .operating-steps.is-revealed .motion-pre-reveal {
