@@ -37,7 +37,7 @@ changes color tokens, not layout), so these are not theme-specific.
 | ID | Route | Width | Severity | Issue | Likely Cause | Proposed Fix | Status |
 |----|-------|-------|----------|-------|--------------|--------------|--------|
 | R001 | global (all routes) | ≤320px | P1 | Page-level horizontal overflow (~21px at 320px); `.site-header` `scrollWidth` (341px) exceeds viewport (320px) | `.site-header` grid is `grid-template-columns: auto 1fr` below 980px; `.brand` (logo + "AI · Product · GTM" subtitle) has no shrink constraint, so its column claims its full natural content width (~181px at 320px), leaving too little room for `nav` and forcing overall header wider than the viewport | Give `.brand` column a `minmax(0, auto)` (or similar) track / `min-width: 0` on the brand so it can shrink below content width; consider hiding or truncating the subtitle below ~360px | Fixed (Stage 2) |
-| R002 | `/` (homepage) | 320–430px | P1 | Homepage overflows horizontally — 119px at 320px, 49px at 390px, 9px at 430px | The Engineer → Product → Market progression module (`.progression-step`) does not have an intentional narrow-mobile layout; content forces width beyond viewport | Build the explicit mobile vertical flow described in the plan's Stage 3 (stacked steps with connector, no forced horizontal min-width) rather than shrinking the desktop layout | Open |
+| R002 | `/` (homepage) | 320–430px | P1 | Homepage overflows horizontally — 119px at 320px, 49px at 390px, 9px at 430px | The Engineer → Product → Market progression module (`.progression-step`) does not have an intentional narrow-mobile layout; content forces width beyond viewport | Build the explicit mobile vertical flow described in the plan's Stage 3 (stacked steps with connector, no forced horizontal min-width) rather than shrinking the desktop layout | Fixed (Stage 3) |
 
 No other structural overflow found in the 320–1920px sweep. This is a partial inventory (overflow-focused, per the methodology note above) — Stage 1 should be revisited with a visual pass (clipped text, overlaps, dense layouts, tap targets, CTA misalignment) before Stage 2 fixes are considered complete for sign-off.
 
@@ -66,3 +66,34 @@ anywhere in `tokens.css`.
 
 Remaining overflow at 320–430px is homepage-body-specific (R002, the Engineer→Product→Market
 module) — out of scope for global shell, deferred to Stage 3 as planned.
+
+## Stage 3 — Homepage responsiveness
+
+Fixed R002. Root cause (confirmed via re-inspection): `.progression-grid` (`tokens.css`) was a
+fixed `repeat(3, 1fr)` grid with no responsive override anywhere in the stylesheet. Grid's
+default `auto` min-sizing function keeps a track at least as wide as its content's min-content
+size — and at narrow widths, unbreakable words in the tag line ("infrastructure", "economics")
+exceeded each column's available share, forcing all three tracks wider than the viewport. This
+is exactly the "desktop layout shrunk to mobile" anti-pattern the plan calls out.
+
+Fix, in `src/styles/tokens.css`:
+
+- Added `.progression-grid { grid-template-columns: 1fr; gap: 14px; }` inside the existing
+  `≤680px` breakpoint — an intentional single-column mobile stack (matches the pattern already
+  used for `.editorial-grid`/`.fact-strip` at `≤980px`), not a shrunk 3-column layout.
+- Added `min-width: 0` to `.progression-step` as a general grid-item safety net.
+- Left the 3-column layout untouched from 681px up — Stage 1's audit already confirmed no
+  overflow at 768px+, and this was verified again below.
+
+This stage only addressed the one structural overflow item (R002) inherited from Stage 1. The
+rest of the Stage 3 checklist (hero typography scaling, hero media order, CTA wrap behavior,
+quick facts layout, featured-work card density) has not been independently reviewed — Stage 1's
+overflow-only sweep found no additional structural overflow on the homepage, but that is not the
+same as a visual pass. A visual pass (clipped text, awkward stacking, dense typography, one-word
+heading wraps) is still deferred to Stage 7 or a manual pass by Rahul, per the Stage 1
+methodology note (no reliable viewport-resize/screenshot tooling available this session; the
+iframe scrollWidth technique used instead catches overflow but not visual polish issues).
+
+Re-verified via same-origin iframe technique: homepage `bodyOverflow` (document.scrollWidth −
+viewport width) is 0 at every width in the full required matrix — 320, 390, 430, 768, 820,
+1024, 1280, 1440, 1728, 1920.
