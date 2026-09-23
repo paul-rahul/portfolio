@@ -1,8 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
-import ArrowIcon from "../../components/ArrowIcon.astro";
-import { roles } from "../../data/roles.ts";
+import { firms } from "../../data/career.ts";
 
 const operatingSteps = [
 	{
@@ -31,6 +30,8 @@ const operatingSteps = [
 		desc: "Evaluate what changed, learn from the result, and sharpen the next decision.",
 	},
 ];
+
+const defaultFirmId = firms[0].id;
 ---
 
 <BaseLayout title="Career | Rahul Paul">
@@ -38,7 +39,7 @@ const operatingSteps = [
 		<PageHero
 			chip="Career"
 			title="A career built at the intersection of models, markets and people."
-			lede="Every role below: what I owned, what we built, and the outcome — expand any to see the details."
+			lede="Pick an employer to see the roles, the projects, and the evidence behind each one."
 		/>
 		<section class="operating-model wrap" aria-label="How I operate">
 			<div class="section-heading">
@@ -59,136 +60,210 @@ const operatingSteps = [
 				}
 			</ol>
 		</section>
-		<section class="career-timeline" data-timeline>
-			{
-				roles.map((role, i) => (
-					<div class="tl-row" id={role.id} data-tl-row>
-						<div class="tl-year">
-							<span class="tl-year-index">{"0" + (i + 1)}</span>
-							<span class="tl-year-period">{role.period}</span>
-							<span class="tl-year-company">{role.company}</span>
-						</div>
-						<div class="tl-track" aria-hidden="true">
-							<span class="tl-dot" data-tl-dot />
-						</div>
-						<article class="role-detail">
-							<div class="role-head">
-								<h2>{role.company}</h2>
-								<span class="role-title">
-									{role.stints.length > 1 ? `${role.stints.length} roles` : role.stints[0].title}
-								</span>
-							</div>
-							<div class="role-body" data-role-body>
-								{role.stints.map((stint) => (
-									<div class="stint">
-										{role.stints.length > 1 && (
-											<div class="stint-heading">
-												<h3>{stint.title}</h3>
-												<span class="role-period">{stint.period}</span>
-											</div>
-										)}
-										<p class="role-summary">{stint.summary}</p>
-										<div class="metric-row">
-											{stint.metrics.map(([value, label]) => (
-												<div class="metric-tile">
-													<b>{value}</b>
-													<span>{label}</span>
+
+		<section class="career-explorer" data-career-explorer aria-label="Career explorer">
+			<nav class="firm-pane" aria-label="Firms">
+				<p class="kicker">Employers</p>
+				<ul class="firm-list" role="list">
+					{
+						firms.map((firm) => (
+							<li>
+								<button
+									type="button"
+									class="firm-card"
+									data-firm-trigger
+									data-firm-id={firm.id}
+									aria-pressed={firm.id === defaultFirmId ? "true" : "false"}
+								>
+									<span class="firm-card-name">{firm.name}</span>
+									<span class="firm-card-role">{firm.roleSummary}</span>
+									<span class="firm-card-period">{firm.period}</span>
+								</button>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			<div class="firm-detail-pane">
+				{
+					firms.map((firm) => (
+						<div class="firm-detail" data-firm-panel data-firm-id={firm.id} id={firm.id} hidden={firm.id !== defaultFirmId}>
+							<header class="firm-detail-head">
+								<h2>{firm.name}</h2>
+								<p class="firm-detail-meta">{firm.period}</p>
+							</header>
+
+							{firm.roles.length > 1 && (
+								<div class="role-history">
+									<p class="kicker">My roles at {firm.name}</p>
+									<ol class="role-history-list" role="list">
+										{firm.roles.map((role) => (
+											<li class="role-history-item">
+												<span class="role-history-dot" aria-hidden="true" />
+												<div>
+													<div class="role-history-heading">
+														<h3>{role.title}</h3>
+														<span class="role-history-period">{role.period}</span>
+													</div>
+													<p>{role.summary}</p>
 												</div>
-											))}
-										</div>
-										<ul class="outcome-list">
-											{stint.outcomes.map((o) => (
-												<li>{o}</li>
-											))}
-										</ul>
-									</div>
-								))}
-								<div class="role-footer">
-									<span>
-										{i + 1} / {roles.length}
-									</span>
+											</li>
+										))}
+									</ol>
+								</div>
+							)}
+
+							<div class="project-nav">
+								<p class="kicker">Projects at {firm.name}</p>
+								<div class="project-selector" role="list">
+									{firm.projects.map((project, i) => (
+										<button
+											type="button"
+											class="project-chip"
+											data-project-trigger
+											data-project-id={project.id}
+											aria-pressed={i === 0 ? "true" : "false"}
+										>
+											<span class="project-chip-title">{project.title}</span>
+											<span class="project-chip-desc">{project.descriptor}</span>
+											{project.roleLabel && firm.roles.length > 1 && <span class="project-chip-role">{project.roleLabel}</span>}
+										</button>
+									))}
 								</div>
 							</div>
-						</article>
-					</div>
-				))
-			}
-		</section>
-		<section class="closing-cta">
-			<p>One more, structured the same way: a Cisco internship the summer before McCombs.</p>
-			<a class="button primary" href="/internships">
-				See the internship
-				<ArrowIcon size={17} />
-			</a>
+
+							{firm.projects.map((project, i) => (
+								<article class="project-detail" data-project-panel data-project-id={project.id} hidden={i !== 0}>
+									<header class="project-detail-head">
+										<h3>{project.title}</h3>
+										<p>{project.summary}</p>
+									</header>
+
+									<div class="metric-row">
+										{project.metrics.map(([value, label]) => (
+											<div class="metric-tile">
+												<b>{value}</b>
+												<span>{label}</span>
+											</div>
+										))}
+									</div>
+
+									<div class="accordion" data-accordion>
+										{project.sections.map((section, si) => {
+											const panelId = `${project.id}-${section.id}`;
+											const triggerId = `${panelId}-trigger`;
+											const isEmpty = !section.paragraphs?.length && !section.bullets?.length;
+											return (
+												<div class="accordion-item">
+													<h4 class="accordion-heading">
+														<button
+															type="button"
+															class="accordion-trigger"
+															id={triggerId}
+															aria-expanded={section.defaultOpen ? "true" : "false"}
+															aria-controls={panelId}
+														>
+															<span class="accordion-number">{String(si + 1).padStart(2, "0")}</span>
+															<span class="accordion-title">{section.title}</span>
+															<span class="accordion-icon" aria-hidden="true">
+																{section.defaultOpen ? "–" : "+"}
+															</span>
+														</button>
+													</h4>
+													<div
+														class="accordion-panel"
+														id={panelId}
+														role="region"
+														aria-labelledby={triggerId}
+														hidden={!section.defaultOpen}
+													>
+														<div class:list={["accordion-panel-inner", isEmpty && "accordion-panel-inner--empty"]}>
+															{section.paragraphs?.map((p) => <p>{p}</p>)}
+															{section.bullets && (
+																<ul>
+																	{section.bullets.map((b) => (
+																		<li>{b}</li>
+																	))}
+																</ul>
+															)}
+														</div>
+													</div>
+												</div>
+											);
+										})}
+									</div>
+								</article>
+							))}
+						</div>
+					))
+				}
+			</div>
 		</section>
 	</main>
 </BaseLayout>
 
 <script>
-	const rows = document.querySelectorAll<HTMLElement>("[data-tl-row]");
+	const explorer = document.querySelector<HTMLElement>("[data-career-explorer]");
+	if (explorer) {
+		const firmTriggers = Array.from(explorer.querySelectorAll<HTMLButtonElement>("[data-firm-trigger]"));
+		const firmPanels = Array.from(explorer.querySelectorAll<HTMLElement>("[data-firm-panel]"));
 
-	const syncBody = (row: HTMLElement, expanded: boolean) => {
-		const body = row.querySelector<HTMLElement>("[data-role-body]");
-		if (!body) return;
-		body.style.maxHeight = expanded ? `${body.scrollHeight}px` : "0px";
-	};
-
-	const setActive = (row: HTMLElement) => {
-		rows.forEach((r) => {
-			const isActive = r === row;
-			r.classList.toggle("is-active", isActive);
-			syncBody(r, isActive);
-		});
-	};
-
-	if ("IntersectionObserver" in window) {
-		const observer = new IntersectionObserver(
-			(entries) => {
-				const visible = entries.filter((e) => e.isIntersecting);
-				if (visible.length === 0) return;
-				const topMost = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
-				setActive(topMost.target as HTMLElement);
-			},
-			{ rootMargin: "-45% 0px -45% 0px", threshold: 0 },
-		);
-		rows.forEach((row) => observer.observe(row));
-	} else {
-		rows.forEach((row) => syncBody(row, true));
-	}
-
-	window.addEventListener("resize", () => {
-		rows.forEach((row) => {
-			if (row.classList.contains("is-active")) syncBody(row, true);
-		});
-	});
-
-	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-	if (!prefersReducedMotion) {
-		let ticking = false;
-		const updateFill = () => {
-			ticking = false;
-			const viewportCenter = window.innerHeight * 0.5;
-			rows.forEach((row) => {
-				const track = row.querySelector<HTMLElement>(".tl-track");
-				if (!track) return;
-				const rect = track.getBoundingClientRect();
-				const progress = (viewportCenter - rect.top) / rect.height;
-				const clamped = Math.min(1, Math.max(0, progress));
-				track.style.setProperty("--fill", `${clamped}`);
+		const activateFirm = (firmId: string, { focus = false }: { focus?: boolean } = {}) => {
+			firmTriggers.forEach((btn) => {
+				const isActive = btn.dataset.firmId === firmId;
+				btn.setAttribute("aria-pressed", String(isActive));
+				if (isActive && focus) btn.focus();
+			});
+			firmPanels.forEach((panel) => {
+				panel.hidden = panel.dataset.firmId !== firmId;
 			});
 		};
-		updateFill();
-		window.addEventListener(
-			"scroll",
-			() => {
-				if (!ticking) {
-					ticking = true;
-					requestAnimationFrame(updateFill);
-				}
-			},
-			{ passive: true },
-		);
-		window.addEventListener("resize", updateFill);
+
+		firmTriggers.forEach((btn) => {
+			btn.addEventListener("click", () => {
+				const id = btn.dataset.firmId;
+				if (!id) return;
+				activateFirm(id);
+				history.replaceState(null, "", `#${id}`);
+			});
+		});
+
+		const initialHash = window.location.hash.replace("#", "");
+		if (initialHash && firmTriggers.some((b) => b.dataset.firmId === initialHash)) {
+			activateFirm(initialHash);
+		}
+
+		firmPanels.forEach((panel) => {
+			const projectTriggers = Array.from(panel.querySelectorAll<HTMLButtonElement>("[data-project-trigger]"));
+			const projectPanels = Array.from(panel.querySelectorAll<HTMLElement>("[data-project-panel]"));
+
+			const activateProject = (projectId: string) => {
+				projectTriggers.forEach((btn) => btn.setAttribute("aria-pressed", String(btn.dataset.projectId === projectId)));
+				projectPanels.forEach((p) => {
+					p.hidden = p.dataset.projectId !== projectId;
+				});
+			};
+
+			projectTriggers.forEach((btn) => {
+				btn.addEventListener("click", () => {
+					const id = btn.dataset.projectId;
+					if (!id) return;
+					activateProject(id);
+				});
+			});
+		});
+
+		const accordionTriggers = Array.from(explorer.querySelectorAll<HTMLButtonElement>(".accordion-trigger"));
+		accordionTriggers.forEach((trigger) => {
+			trigger.addEventListener("click", () => {
+				const expanded = trigger.getAttribute("aria-expanded") === "true";
+				const panel = document.getElementById(trigger.getAttribute("aria-controls") ?? "");
+				const icon = trigger.querySelector<HTMLElement>(".accordion-icon");
+				trigger.setAttribute("aria-expanded", String(!expanded));
+				if (panel) panel.hidden = expanded;
+				if (icon) icon.textContent = expanded ? "+" : "–";
+			});
+		});
 	}
 </script>
