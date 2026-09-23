@@ -189,33 +189,52 @@ A restrained, purposeful motion system, added across the site without introducin
 Defined in `src/styles/tokens.css` `:root`, alongside the existing color/spacing tokens:
 
 ```css
---motion-fast: 150ms;
---motion-base: 220ms;
---motion-enter: 420ms;
---motion-slow: 650ms;
+--motion-fast: 180ms;
+--motion-base: 280ms;
+--motion-enter: 520ms;
+--motion-slow: 1800ms;
 
 --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 ```
 
-`--motion-fast`/`--motion-base` cover hover and state-toggle micro-interactions; `--motion-enter` covers page-load entrance sequences; `--motion-slow` is reserved for the one deliberately slower moment (the homepage intersection-diagram convergence). `--ease-out` is used for anything entering or growing; `--ease-standard` for state toggles (accordion height, icon rotation, nav underline).
+`--motion-fast`/`--motion-base` cover hover and state-toggle micro-interactions; `--motion-enter` covers page-load entrance sequences and viewport-triggered section reveals; `--motion-slow` is reserved for the one deliberately slower moment (the homepage intersection-diagram convergence — bumped from an original 650ms after live review asked for a slower convergence, and kept at 1800ms rather than following the motion-refinement pass's own generic 700–850ms suggestion, since that specific value was an explicit, already-approved decision). `--ease-out` is used for anything entering or growing; `--ease-standard` for state toggles (accordion height, icon rotation, nav underline). The 2026-09 motion-refinement pass bumped fast/base/enter up from their original 150/220/420ms to make motion read as more deliberate without slowing down high-frequency interactions, and moved several previously-hardcoded durations (`0.15s`, `350ms`) onto these tokens so nothing bypasses the shared system.
+
+### Viewport reveal system
+A shared `revealOnce()` helper (`src/scripts/motion-reveal.ts`) backs every scroll-triggered reveal on the site — it replaced two near-identical inline implementations that had grown up independently on the homepage and Career page.
+
+- Adds `motion-pre-reveal` to the container's items (or the container itself, via `{ asUnit: true }`, for a section that should read as one composition rather than several independently-faded children), then adds `is-revealed` to the container the first time `IntersectionObserver` reports it 15% in view (with a `-60px` bottom root margin, so the reveal fires slightly before the section is fully on-screen).
+- Fires once — the observer disconnects immediately, so scrolling back up and down never replays it, and it never re-triggers when Career's firm/project buttons swap panels inside an already-revealed explorer.
+- Progressive enhancement: `motion-pre-reveal` (which sets `opacity: 0`) is only ever added by this script, and only once `IntersectionObserver` is confirmed available — so content is fully visible by default with JS disabled or on browsers without `IntersectionObserver`, with no separate `.no-js` opt-out needed.
+- Section-level reveal is the default; item-level stagger (via a custom `itemsSelector`) is reserved for places where the sequence itself aids scanning — see "Approved stagger use cases" below.
+
+**Where it's used:**
+- Homepage: Quick Facts (light stagger), Capabilities (stagger, sequence aids scanning), Selected Projects (heading + card grid, minimal stagger), Closing CTA (`asUnit`, single reveal). The hero is intentionally excluded — see below.
+- Career: the explorer container (firm list + detail pane) reveals once as a whole; "How I operate" reveals its five steps with a stagger. Firm/project switching keeps its own state-change animation (see below) — it never triggers or replays the scroll reveal.
+- About: the intro (portrait + copy) converts the old always-on page-load slide into a scroll-triggered reveal using the same slide-left/slide-right language on desktop, switching to a shared vertical `motion-fade-up` once the layout stacks below 980px (see Responsive motion rules). The two editorial cards reveal as a group with a small stagger.
+- Built, Internships, Contact: one restrained `asUnit` reveal per page (the placeholder section, the role-detail block, and the contact card respectively) — no item-level animation inside any of them.
 
 ### Component rules
-- **Page-hero entrance:** every page using the shared `PageHero`/`.page-hero` component (Career, About, Built, Internships, Contact) fades its chip → h1 → lede up in sequence on load (~90–150ms stagger). This is the "standard page-heading entrance" — no page adds its own variant.
-- **Homepage hero:** headline, lede, CTA buttons, then the intersection diagram fade up in sequence (`--motion-enter`, ~90ms stagger); the Tech/Product/Business circles additionally converge from slightly offset starting positions into their resting overlap, once, over `--motion-slow`.
-- **Homepage reveals:** the quick-fact strip and capability grid reveal with a light stagger the first time they scroll into view (`IntersectionObserver`, run once, progressive enhancement — content is fully visible without JS).
-- **Career firm/project switching:** the newly active panel fades up (`--motion-base` for firm switch, `--motion-fast` for project switch, since it's the finer-grained navigation); metric tiles get a light `scale(.98→1)` with a 2-step stagger riding on the project-switch entrance. The previously active panel is hidden immediately rather than exit-animated — a deliberate simplification to keep the swap robust and avoid `hidden`-attribute/animation timing races.
+- **Page-hero entrance:** every page using the shared `PageHero`/`.page-hero` component (Career, About, Built, Internships, Contact) fades its chip → h1 → lede up in sequence on load (~90–150ms stagger). This is the "standard page-heading entrance" — no page adds its own variant, and it stays page-load (not scroll-triggered) since it's always above the fold.
+- **Homepage hero:** headline, lede, CTA buttons, then the intersection diagram fade up in sequence (`--motion-enter`, ~90ms stagger); the Tech/Product/Business circles additionally converge from slightly offset starting positions into their resting overlap, once, over `--motion-slow`. Like the page-hero, this stays a page-load sequence rather than a viewport reveal — it's above the fold by definition.
+- **Career firm/project switching:** the newly active panel fades up (`--motion-base` for both firm and project switch, landing both in the plan's overlapping 220–300ms range); metric tiles get a light `scale(.98→1)` with a 2-step stagger riding on the project-switch entrance. The previously active panel is hidden immediately rather than exit-animated — a deliberate simplification to keep the swap robust and avoid `hidden`-attribute/animation timing races.
 - **Career accordions:** the abrupt `hidden`-attribute toggle was replaced with a CSS-grid `0fr → 1fr` height transition (no fixed/measured heights), and the `+`/`–` glyph swap was replaced with a single "+" that rotates 45°. Collapsed panels get `inert` (not just `hidden`) so they drop out of the tab order without needing extra ARIA.
-- **Career "How I operate":** the five steps reveal once via `IntersectionObserver` with a ~70ms stagger, progressive enhancement (visible by default without JS).
 - **Nav active/hover state:** the old instant `border-bottom-color` swap was replaced with a `scaleX(0→1)` underline on a `::after` pseudo-element, `hover` and `focus-visible` both trigger it.
 - **Theme toggle:** the sun/moon icons cross-fade with a `scale + rotate` instead of a `display: none/block` swap — both icons are always in the DOM, absolutely centered, opacity/transform driven by the `data-theme` attribute selector.
 - **Arrow icons:** any `ArrowIcon` inside `.button`, `.header-cta`, `.section-heading > a` or `.case-link` shifts 3px on hover/focus-visible — transform only, so it never affects layout width or causes text reflow.
 - **Card hover:** `.case-card` keeps its existing `translateY(-3px)` + border-color hover, now on shared tokens, plus a `scale(1.015)` on its visual (clipped by the card's own `overflow: hidden`) and a 3px arrow shift.
-- **About page:** the intro portrait slides in from -8px horizontal, the copy from +8px, staggered after the page-hero settles. Editorial card images get a `scale(1.02)` hover rule wired to a real `<img>` selector — inert today (the cards only hold `MediaPlaceholder`s) and activates automatically once real photos replace them, per the placeholder-vs-real-image distinction in the MediaPlaceholder section above.
-- **Built page:** intentionally uses only the shared page-hero entrance — no extra motion was added while the section's content is still a single placeholder block.
+- **About page:** the intro portrait slides in from -8px horizontal, the copy from +8px (vertical on stacked layouts — see Responsive motion rules). Editorial card images get a `scale(1.02)` hover rule wired to a real `<img>` selector — inert today (the cards only hold `MediaPlaceholder`s) and activates automatically once real photos replace them, per the placeholder-vs-real-image distinction in the MediaPlaceholder section above.
+- **Built page:** the single placeholder section gets one restrained reveal; the same reveal pattern will carry future Problem/Solution/Process/Outcome case-study sections without inventing a separate motion language for Built.
+
+### Approved stagger use cases
+Item-level stagger is reserved for sequences where the order itself aids scanning or explains a system: Homepage Capabilities (4 items, numbered), Career "How I operate" (5 steps, numbered), the two-card About editorial grid, and Career's project metric tiles.
+
+### Avoided usage
+No generic reveal is applied to individual paragraphs, buttons, or metrics; to every accordion row; to repeated Career firm/project state changes (those use their own enter animation, not a scroll reveal); or to components already driven by their own interaction animation (case-card hover, theme-toggle, nav underline).
 
 ### Responsive motion rules
-- No motion pattern changes shape across breakpoints — the same opacity/transform treatments run everywhere; only layout (columns → stack) changes, per the existing Responsiveness rules above.
+- Layout changes (columns → stack) don't change duration or easing — only the About intro's horizontal slide direction changes to vertical once its layout stacks below 980px, since opposing left/right motion only reads correctly side by side.
+- Reveal transform distances stay small everywhere (≤10px), so there's no separate "reduce travel on mobile" step needed beyond what's already conservative at desktop sizes.
 - No pointer-tracking or hover-only effects are relied on for content on touch devices — every motion pairs with a tap-equivalent state (`:focus-visible` alongside `:hover` throughout) or is a load/scroll-triggered reveal that doesn't depend on hover at all.
 - The optional desktop-only pointer-response idea for the intersection diagram (2–4px shift per circle on mouse move) was evaluated and omitted — it didn't clearly improve the result over the convergence entrance alone.
 
@@ -236,7 +255,7 @@ Handled by one existing global rule in `tokens.css`, unmodified by this work:
 }
 ```
 
-Every animation and transition added by the motion system — entrances, reveals, accordion height, icon rotation, nav underline, hover treatments — routes through `animation-duration`/`transition-duration`, so this single rule resolves all of them to effectively instant without any per-component reduced-motion code. Content that uses `IntersectionObserver` progressive enhancement (homepage reveals, "How I operate") stays visible without JS or `IntersectionObserver` support, independent of the reduced-motion rule.
+Every animation and transition added by the motion system — entrances, reveals, accordion height, icon rotation, nav underline, hover treatments — routes through `animation-duration`/`transition-duration`, so this single rule resolves all of them to effectively instant without any per-component reduced-motion code. Content that uses the shared `revealOnce()` `IntersectionObserver` reveal (homepage, Career, About, Built, Internships, Contact — see "Viewport reveal system" above) stays visible without JS or `IntersectionObserver` support, independent of the reduced-motion rule.
 
 ## Shapes
 
