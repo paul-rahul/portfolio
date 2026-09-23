@@ -40,7 +40,6 @@ const defaultFirmId = firms[0].id;
 		<section class="operating-model wrap" aria-label="How I operate">
 			<div class="section-heading">
 				<div>
-					<p class="kicker">Operating model</p>
 					<h2>How I operate.</h2>
 				</div>
 			</div>
@@ -157,7 +156,7 @@ const defaultFirmId = firms[0].id;
 															type="button"
 															class="accordion-trigger"
 															id={triggerId}
-															aria-expanded={section.defaultOpen ? "true" : "false"}
+															aria-expanded="false"
 															aria-controls={panelId}
 														>
 															<span class="accordion-number">{String(si + 1).padStart(2, "0")}</span>
@@ -168,11 +167,11 @@ const defaultFirmId = firms[0].id;
 														</button>
 													</h4>
 													<div
-														class:list={["accordion-panel", section.defaultOpen && "is-open"]}
+														class="accordion-panel"
 														id={panelId}
 														role="region"
 														aria-labelledby={triggerId}
-														inert={section.defaultOpen ? undefined : true}
+														inert
 													>
 														<div class:list={["accordion-panel-inner", isEmpty && "accordion-panel-inner--empty"]}>
 															{section.paragraphs?.map((p) => <p>{p}</p>)}
