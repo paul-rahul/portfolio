@@ -660,7 +660,7 @@ img {
 }
 
 .work-section {
-	padding-block: 32px 44px;
+	padding-block: 24px 40px;
 }
 
 .work-section.is-revealed > .motion-pre-reveal {
@@ -675,12 +675,12 @@ img {
 	display: flex;
 	align-items: end;
 	justify-content: space-between;
-	margin-bottom: 26px;
+	margin-bottom: 20px;
 }
 
 .section-heading h2 {
 	font-size: clamp(30px, 3.4vw, 42px);
-	margin: 8px 0 0;
+	margin: 0;
 }
 
 .section-heading > a {
@@ -1492,12 +1492,19 @@ img {
 
 .accordion-panel {
 	display: grid;
-	grid-template-rows: 0fr;
+	/* minmax(0, 0fr), not bare 0fr — a bare 0fr row still respects the content's
+	   intrinsic min-height, so closed panels rendered a few px of text underneath
+	   the trigger. minmax(0, ...) removes that floor so closed is really 0.
+	   contain: paint is a second, independent belt-and-suspenders clip: it stops
+	   the browser from ever painting descendant content outside this box, in case
+	   overflow:hidden on the inner wrapper alone leaves stray pixels visible. */
+	grid-template-rows: minmax(0, 0fr);
+	contain: paint;
 	transition: grid-template-rows var(--motion-base) var(--ease-standard);
 }
 
 .accordion-panel.is-open {
-	grid-template-rows: 1fr;
+	grid-template-rows: minmax(0, 1fr);
 }
 
 .accordion-panel-inner {
@@ -1526,12 +1533,12 @@ img {
 }
 
 .capabilities {
-	padding-block: 36px 28px;
+	padding-block: 28px 24px;
 	border-top: 1px solid var(--border);
 }
 
 .operating-model {
-	padding-block: 20px 44px;
+	padding-block: 12px 36px;
 }
 
 .capability-grid {
@@ -1672,10 +1679,10 @@ img {
 
 .about-intro {
 	display: grid;
-	grid-template-columns: 0.85fr 1.15fr;
-	gap: 40px;
+	grid-template-columns: 0.5fr 1.5fr;
+	gap: 32px;
 	align-items: center;
-	padding: 12px 0 40px;
+	padding: 8px 0 32px;
 }
 
 .about-intro-copy p {
@@ -1704,6 +1711,10 @@ img {
 		opacity: 1;
 		transform: translateX(0);
 	}
+}
+
+.about-intro > .media-placeholder {
+	max-width: 260px;
 }
 
 .about-intro.is-revealed > .media-placeholder.motion-pre-reveal {
