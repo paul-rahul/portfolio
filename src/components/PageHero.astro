@@ -1,15 +1,15 @@
 ---
 interface Props {
-	chip: string;
+	chip?: string;
 	title: string;
-	lede: string;
+	lede?: string;
 }
 
 const { chip, title, lede } = Astro.props;
 ---
 
 <section class="page-hero">
-	<span class="page-chip">{chip}</span>
+	{chip && <span class="page-chip">{chip}</span>}
 	<h1>{title}</h1>
-	<p class="lede">{lede}</p>
+	{lede && <p class="lede">{lede}</p>}
 </section>
