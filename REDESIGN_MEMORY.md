@@ -969,3 +969,53 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 6 — typography/spacing/media system (replace ad hoc responsive patterns with a coherent fluid system)
+
+## Responsive Audit — Stage 06
+
+Status: complete
+
+Branch:
+responsive/06-typography-spacing-media
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- All heading selectors (`.hero h1`, `.page-hero h1`, `.editorial-title`, card/capability/operating-step headings), body/lede copy, base `img` handling, across all 7 routes
+
+Issues found:
+- `.hero h1`, `.page-hero h1`, `.editorial-title` each already used `clamp()` but then had a redundant fixed `font-size` override inside the `≤680px` breakpoint, since each clamp's floor was already above 680px's natural vw value — the fluid curve was dead weight below ~700-870px and the page snapped abruptly at exactly 680px
+
+Implemented:
+- `src/styles/tokens.css`: folded each override's intended value into the clamp's floor, removed the now-redundant breakpoint overrides
+  - `.hero h1`: `clamp(40px, 5vw, 64px)` → `clamp(38px, 5vw, 64px)`
+  - `.page-hero h1`: `clamp(34px, 4.6vw, 54px)` → `clamp(40px, 4.6vw, 54px)`
+  - `.editorial-title`: `clamp(32px, 4.4vw, 48px)` → `clamp(36px, 4.4vw, 48px)`
+- `RESPONSIVE_AUDIT.md` updated: Stage 6 section added
+
+Responsive decisions:
+- No visual change at either extreme (320px or 1920px) intended or measured — this is purely collapsing a curve-then-snap into one continuous curve, matching the plan's "avoid breakpoint-specific font overrides" principle
+- Base `img` reset, body/lede line-length max-widths, and spacing scale were reviewed and found already coherent — no further changes made
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free on all 7 routes
+- Heading font-size scaling spot-checked at 320, 430, 600, 680, 700, 760, 900, 1080, 1200, 1440 on `/` and `/career` — confirmed flat floor through mobile/tablet, smooth transition, no discontinuity at 680px
+
+Theme validation:
+- Day: PASS (typography-only change, theme-independent)
+- Night: PASS (not re-screenshotted; consistent with prior stages' theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix
+- keyboard/accessibility: not tested this stage (deferred to Stage 7 per plan)
+
+Known issues / deferred items:
+- Spacing-scale and SVG/diagram-legibility checklist items not deeply re-audited — existing spacing already looked consistent and no mobile-problematic diagrams were found; flag any specific spacing inconsistency Rahul spots during manual review as a new audit row rather than assuming it's covered
+
+Next stage:
+- Stage 7 — cross-theme/accessibility/interaction QA (Day/Night at all breakpoints, keyboard, touch targets — including the nav tap-target gap logged in Stage 5 — focus states, reduced motion)
