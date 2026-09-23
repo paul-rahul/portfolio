@@ -1177,6 +1177,10 @@ img {
 	line-height: 1.6;
 }
 
+.accordion-panel-inner--empty {
+	padding: 0 4px 6px 40px;
+}
+
 .accordion-panel-inner p + p,
 .accordion-panel-inner p + ul {
 	margin-top: 12px;

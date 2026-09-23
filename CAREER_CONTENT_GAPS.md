@@ -1,55 +1,53 @@
 # Career Content Gaps
 
-Internal tracker for the Career page content-population pass. Source of truth for what's
-confirmed vs. missing is `career-section-content.md` (not in this repo — lives in Rahul's
-Downloads). Do not expose this file publicly; it exists to make gaps visible, not to describe
-them on the live site.
+Internal tracker for the Career page content-population pass (v2). Source of truth is
+`career-section-content(2).md` (not in this repo — lives in Rahul's Downloads). Do not expose
+this file publicly; the live site never shows "coming soon"/"TBD"/gap-notice text — every
+project's six accordion sections always render, and an unconfirmed one simply expands to an
+empty body (see `DESIGN.md`'s "Blank accordion section rule").
 
 Legend: 🟢 = confirmed and published. 🟡 = flagged in the source as needing Rahul's input, not
-published. Sections/metrics not listed as "confirmed" below were intentionally omitted from the
-live page rather than filled with inferred or invented content.
+published — the accordion row exists but is blank when expanded.
 
-## Gap tracker
+## Count note
+
+The source's own summary line says "13 projects," but explicitly names 14: Cisco (2), Dream11
+(2), Samagra (2), Media.net (5), Samsung Research (3). All 14 are represented on the site — the
+plan is explicit that this is a source counting/documentation slip, not a signal to drop a named
+project, so nothing was omitted to force the count to match.
+
+## Gap tracker (priority order from the source)
 
 | Priority | Firm | Project | Section | Missing input |
 |---|---|---|---|---|
-| 1 | Samagra | Student Assessment App Launch | All (01–06) | Only the 0→200K-teacher fresh-launch framing is confirmed. Problem, Rahul's specific role, how the app worked, what drove the adoption curve, tools/decisions, and learnings all need his input. Highest-priority gap — this project currently shows a summary + one metric and no accordion at all. |
-| 2 | Media.net | B2B Ad Traffic Optimizer | 04 Tools and product decisions | What the traffic-shaping mechanism itself was built on (rules engine, a separate model, a different stack) — not yet confirmed. Also 01 The problem and 02 How I approached it. |
-| 3 | Samsung Research | Camera Intelligence | 02 How I approached it, 03 How the product works, 04 Tools and product decisions | Rahul's strongest technical story is currently the thinnest section on the site. What specifically differentiated the mass-market approach from a lab-only model is the one worth his actual time to answer. |
-| 4 | Dream11 | ML Application Platform | 02–06 (everything past the problem statement) | What the interface actually let operators do, what Rahul built vs. spec'd, and what broke scaling from 8 to 100+ users. Nothing beyond the two stats has surfaced yet. |
-| 5 | All projects | — | 06 What I learned | Every single project's "What I learned" is unconfirmed — reflective content only Rahul can write. None are published; none should be drafted speculatively. |
-| 6 | Cisco | AI Sales Enablement Agent | 01 The problem, 03 How the product works, 04 Tools and product decisions | What gap the Agent actually closed, what it did for a rep day-to-day, and which tools/decisions shaped it. |
-| 7 | Cisco | Translation Validator | 01 The problem, 04 Tools and product decisions | The problem framing is a reasonable inference but not confirmed in Rahul's own words. The "lightweight validation over full re-translation, to hit 15% token reduction" design-intent read is plausible but unconfirmed. |
-| 8 | Samagra | LLM Platform Go-to-Market | 03 (contextual: "How the research translated to GTM direction"), 04 Tools and product decisions | No confirmed content exists for either — section 03 is omitted entirely rather than shown with a relabeled empty body. |
-| 9 | Media.net | Feature-Flag Experimentation Platform | 01 The problem, 02 How I approached it, 05 Impact to users | Problem framing (siloed/ungoverned experimentation) is a likely inference, not confirmed. No dashboard/BI/reporting-efficiency metric is confirmed for impact — do not add one without checking with Rahul first. |
-| 10 | Media.net | APAC Go-to-Market Launch | 01 The problem, 03 (contextual: "Launch approach"), 04 Tools and product decisions | Section 03 omitted — no confirmed launch-process content beyond the competitive-analysis work already shown under 02. Specific channel tactics and partnership terms still need input. |
-| 11 | Media.net | Ad Pricing Optimizer: Dynamic Margin Management | 01 The problem, 05 Impact to users | Problem framing (dynamic margins vs. static/manual) is a reasonable inference, not confirmed. No impact metric confirmed for this project specifically — see conflict below. |
+| 1 | Samsung Research | Super Slow-Motion Feature | 01 The problem, 03 How the product works, 04 Tools and product decisions | Almost entirely blank below the impact line despite being a headline, cross-border, 1-of-20-selected story — currently the least developed project on the page relative to how distinctive it is. |
+| 2 | Media.net | AI User Targeting Module | 01 The problem, 03 How the product works, 04 Tools and product decisions | What targeting gap the module closed and how it actually worked. Only the business-case/spec/3-person-team approach and the ROAS/ranking impact are confirmed. |
+| 3 | Samsung Research | Night Mode | 03 How the product works, 04 Tools and product decisions | Actual mechanics of the low-light capture approach — the strongest technical story on the page, currently thin below the approach line. |
+| 4 | Media.net | B2B Ad Traffic Optimizer | 01 The problem, 02 How I approached it, 04 Tools and product decisions | Still genuinely empty apart from how-it-works/impact — what the traffic-shaping mechanism was actually built on (rules engine, separate model, different stack) is unconfirmed. |
+| 5 | Samagra | Student Assessment App Launch | 03 How the product works | Explicitly a GTM/rollout project, not a build — what "tailoring the strategy" meant in practice (per-district materials, direct outreach, etc.) is unconfirmed. |
+| 6 | Samsung Research | Color-Tuning Module | 01 The problem, 03 How the product works, 04 Tools and product decisions | The latency/quality tradeoff is confirmed as the problem being solved, but how it was solved, and what Rahul owned vs. the Korean/Vietnamese teams, is not. |
+| 7 | Cisco | AI Sales Enablement Agent | 01 The problem, 03 How the product works, 04 Tools and product decisions | What gap the Agent closed and what it did for a rep day-to-day. |
+| 8 | Cisco | Translation Validator | 01 The problem, 04 Tools and product decisions | Problem framing is a plausible inference, not confirmed in Rahul's words; the "lightweight validation vs. full re-translation" design-intent read is likewise plausible but unconfirmed. |
+| 9 | Dream11 | In-App Advertising Launch | 01 The problem, 04 Tools and product decisions | Why ML-driven targeting specifically, over simpler static placement, still needs Rahul's framing. |
+| 10 | Dream11 | ML Application Platform | 03 How the product works, 04 Tools and product decisions | What the redesigned developer experience actually let an operator do that the old workflow didn't. |
+| 11 | Samagra | LLM Platform Go-to-Market | 04 Tools and product decisions | Actual research method and what changed as a result — section 03 uses the contextual label "How the research translated to GTM direction" but has no additional confirmed body beyond what's already under 02. |
+| 12 | Media.net | Feature-Flag Experimentation Platform | 01 The problem, 02 How I approached it, 05 Impact to users | Problem framing (siloed/ungoverned experimentation) is a likely inference, not confirmed. No dashboard/BI/reporting-efficiency metric is confirmed for impact — do not add one without checking with Rahul first. |
+| 13 | Media.net | APAC Go-to-Market Launch | 01 The problem, 04 Tools and product decisions | Section 03 uses the contextual label "Launch approach" but has no confirmed body beyond the competitive-analysis content already under 02. Specific channel tactics and partnership terms are unconfirmed. |
+| 14 | Media.net | Ad Pricing Optimizer: Dynamic Margin Management | 01 The problem, 05 Impact to users | Problem framing (dynamic vs. static/manual margins) is a reasonable inference, not confirmed. No impact metric confirmed for this specific project — the $35M/70% figure belongs to the Traffic Optimizer instead. |
+| 15 | All 14 projects | — | 06 What I learned | Every single project's "What I learned" is unconfirmed — reflective content only Rahul can write. None are published; none should be drafted speculatively. |
 
-## Flagged conflicts with previously-published content
+## Resolved since v1 of this tracker
 
-These three figures were live on the Career page before this content-population pass, sourced
-from an earlier, less granular memory file (`experience_data_reconciled.md`). The new source
-(`career-section-content.md`) is explicitly authoritative for this task and does not confirm any
-of them for the projects they were previously attached to — so they were removed rather than
-carried forward. Flagging instead of silently dropping, per the plan's "stop and document
-conflicts rather than reconcile silently" rule:
+- **Media.net APAC Go-to-Market — revenue figure.** v1 flagged a conflict over a previously
+  -published $40M figure the older source didn't confirm. The new source explicitly confirms
+  $40M in revenue across 11 new customers within 6 months — restored to the site, no longer a
+  conflict.
+- **Samsung "$1B device-line sales."** v1 flagged this as unconfirmed for the combined "Camera
+  Intelligence" project. The new source splits Samsung into three distinct projects and
+  explicitly confirms $1B contribution specifically for **Night Mode** (not Color-Tuning or
+  Super Slow-Motion) — published there, no longer a conflict.
 
-- **Media.net APAC Go-to-Market Launch — $40M revenue.** Previously shown alongside "11 new
-  customers." The new source confirms only the customer count; no revenue figure is confirmed for
-  this project. Removed pending Rahul's confirmation of which figure (if any) is accurate.
-- **Media.net Ad Pricing Optimizer — $80M revenue over 12 months.** Previously attributed to the
-  bid-prediction model. The new source explicitly states no impact stat is confirmed for this
-  project (the $35M/70% figure belongs to the Traffic Optimizer instead) and asks what the actual
-  measurable outcome of the margin-management work was. Removed; only the 5TB/day processing
-  volume remains as a metric.
-- **Samsung Research — "$1B device-line sales, contributed."** Previously shown as a softened
-  secondary metric alongside 25M+ devices. The new source confirms only the 25M+ device-shipment
-  figure for this project's impact section. Removed pending confirmation of whether the $1B
-  framing should be reinstated.
+## Still unresolved from v1
 
-## Not yet built (structural, not content)
-
-- Samagra's Student Assessment App Launch has an intentionally empty accordion (`sections: []`)
-  rather than six unpopulated headings — the Astro template (`src/pages/career/index.astro`) now
-  skips rendering the accordion block entirely when a project has zero confirmed sections, so no
-  misleading "coming soon" copy or empty panel shells appear on the live page.
+- **Media.net Ad Pricing Optimizer — no confirmed impact metric.** Still true in the new source;
+  the project shows only the 5TB/day processing-volume metric.
