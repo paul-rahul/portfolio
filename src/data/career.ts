@@ -66,7 +66,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						paragraphs: [
 							"Cisco's AI sales enablement work depended on translated content staying faithful to its source meaning across languages and audiences — a mismatch anywhere in that chain risked shipping messaging sales couldn't trust.",
 						],
@@ -104,7 +104,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: [
 							"15% reduction in token cost from the validation approach.",
 							"Messaging work shaped the CMO's global keynote (Aug 2026) — Cisco's messaging, informed by this work.",
@@ -153,7 +153,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: [
 							"User challenge: introduce advertising without eroding the product experience users already trusted.",
 							"Business impact: the company needed a new, ML-informed monetization line distinct from existing revenue streams.",
@@ -183,7 +183,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: ["$8M in revenue within the first 60 days.", "$20M in revenue at the 1-year mark.", "5% lift in retention."],
 					},
 					{
@@ -209,7 +209,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: [
 							"User challenge: operators needed to work with ML models without needing ML expertise to do it.",
 							"Business impact: manual, ad hoc model workflows were costing time and money at scale.",
@@ -236,7 +236,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: ["Scaled from 8 to 100+ daily active users.", "Approximately $500K in annual savings."],
 					},
 					{
@@ -279,7 +279,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: [
 							"User challenge: government and enterprise buyers needed a clear case for adopting an LLM platform in contexts with real institutional constraints.",
 							"Business impact: without clear decision criteria, high-value use cases were hard to prioritize or sell.",
@@ -308,7 +308,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: ["$700K in new ARR attributable to the go-to-market direction."],
 					},
 					{
@@ -357,7 +357,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: [
 							"User challenge: teams across the org needed to run experiments reliably without stepping on each other's changes.",
 							"Business impact: without a shared platform, experimentation stayed ad hoc and slow.",
@@ -384,7 +384,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: ["30 experiments run in 6 months.", "Role-based access controls in place org-wide."],
 					},
 					{
@@ -411,7 +411,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: [
 							"User challenge: advertising teams needed traffic routed more efficiently to control cost while protecting revenue.",
 							"Business impact: inefficient traffic allocation directly ate into margin.",
@@ -438,7 +438,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: ["$35M in revenue from the traffic optimizer.", "70% reduction in cost."],
 					},
 					{
@@ -465,7 +465,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						paragraphs: ["Expanding into APAC required a go-to-market narrative that new customers in the region would find credible and relevant."],
 					},
 					{
@@ -489,7 +489,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: ["$40M in revenue from the APAC launch.", "11 new customers onboarded."],
 					},
 					{
@@ -516,7 +516,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						paragraphs: ["Advertising pricing needed a reliable way to predict bids at scale, built on data pipelines that could keep up with the volume."],
 					},
 					{
@@ -540,7 +540,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: ["$80M in revenue over 12 months.", "5TB/day processed through HDFS pipelines."],
 					},
 					{
@@ -582,7 +582,7 @@ export const firms: Firm[] = [
 					{
 						id: "problem",
 						title: "The problem",
-						defaultOpen: true,
+						defaultOpen: false,
 						paragraphs: ["A flagship camera line needed low-light performance and color accuracy that held up at mass-market scale, not just in a lab."],
 					},
 					{
@@ -606,7 +606,7 @@ export const firms: Firm[] = [
 					{
 						id: "impact",
 						title: "Impact to users",
-						defaultOpen: true,
+						defaultOpen: false,
 						bullets: [
 							"Color-tuning capability shipped across 25M+ flagship devices.",
 							"Contributed to Night Mode work on a device line associated with $1B in sales.",
