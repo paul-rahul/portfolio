@@ -1386,3 +1386,55 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 3 — homepage projects (replace Career-duplicating case cards with a Selected Projects preview using `MediaPlaceholder`)
+
+---
+
+## Content & Visual Refinement — Stage 03
+
+Status: complete
+
+Branch:
+refinement/03-homepage-projects
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Removed the homepage's `.work-section` career-duplication: the Dream11/Media.net case cards (which repeated `/career` metrics almost verbatim — same employer, same numbers, same framing) are gone. `roles.ts` import removed from `index.astro` entirely.
+- Replaced with a **Selected Projects** section: 2 structurally-complete `MediaPlaceholder`-backed preview cards, reusing the existing `.case-card` visual pattern (already the established click-affordance convention — whole-card link + explicit trailing CTA). Both cards are honestly marked pending — "In progress" (green status dot) and "Queued" (neutral dot) — no fabricated project names, outcomes, or screenshots.
+- Section heading link changed from "Full career →" (redundant with hero's existing "Explore my work →" CTA into `/career`) to "See Built →" pointing at `/built`.
+- New `.status-chip`/`.status-active`/`.status-queued`/`.project-desc` styles added to `tokens.css`; removed now-dead `.case-mark` and `.metrics`/`.metrics span`/`.metrics b` rules (no longer referenced anywhere after this change — confirmed via grep before removal).
+
+Content decisions:
+- Two pending-status project slots (not one, not a fabricated pair of named projects) — preserves the plan's required 2-column `.case-grid` layout for when real Built projects exist, while staying honest that nothing has shipped yet. Copy pulls directly from Built's own existing "workshop is open" framing rather than inventing new claims.
+
+Design decisions:
+- New `.status-chip` component style (dot + mono uppercase label) — same visual language as the hero's existing `.eyebrow` dot pattern, generalized into a reusable pattern. To be documented in DESIGN.md at Stage 9.
+
+Image placeholder decisions:
+- `MediaPlaceholder` placed live for the first time: IMG-02 and IMG-03 (`VISUAL_ASSETS.md`) now render on `/` inside the Selected Projects cards, 16:10 ratio, matching the card's existing 240px visual row.
+
+Files materially changed:
+- `src/pages/index.astro`
+- `src/styles/tokens.css`
+- `VISUAL_ASSETS.md` (placement confirmed for IMG-02/IMG-03, still `Needed`)
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — deferred to Stage 9 along with the Stage 2 MediaPlaceholder entry and this stage's `.status-chip` pattern
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS
+- Day mode: PASS — screenshotted, cards render correctly, dashed placeholders + status chips legible
+- Night mode: PASS — screenshotted, contrast holds on dark tokens
+- mobile/tablet/desktop: not independently re-verified this stage (only card *content* changed, not the `.case-grid`/`.case-card` responsive rules, which were already verified end-to-end in the prior responsive audit — PR #34/#33); full sweep still scheduled for Stage 8
+
+Known issues / deferred items:
+- None new
+
+Next stage:
+- Stage 4 — project/case-study structure (Problem→Solution→How→Outcome template for Built project pages)
