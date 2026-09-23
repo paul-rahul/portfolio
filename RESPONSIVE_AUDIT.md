@@ -36,8 +36,13 @@ changes color tokens, not layout), so these are not theme-specific.
 
 | ID | Route | Width | Severity | Issue | Likely Cause | Proposed Fix | Status |
 |----|-------|-------|----------|-------|--------------|--------------|--------|
-| R001 | global (all routes) | ≤320px | P1 | Page-level horizontal overflow (~21px at 320px); `.site-header` `scrollWidth` (341px) exceeds viewport (320px) | `.site-header` grid is `grid-template-columns: auto 1fr` below 980px; `.brand` (logo + "AI · Product · GTM" subtitle) has no shrink constraint, so its column claims its full natural content width (~181px at 320px), leaving too little room for `nav` and forcing overall header wider than the viewport | Give `.brand` column a `minmax(0, auto)` (or similar) track / `min-width: 0` on the brand so it can shrink below content width; consider hiding or truncating the subtitle below ~360px | Fixed (Stage 2) |
-| R002 | `/` (homepage) | 320–430px | P1 | Homepage overflows horizontally — 119px at 320px, 49px at 390px, 9px at 430px | The Engineer → Product → Market progression module (`.progression-step`) does not have an intentional narrow-mobile layout; content forces width beyond viewport | Build the explicit mobile vertical flow described in the plan's Stage 3 (stacked steps with connector, no forced horizontal min-width) rather than shrinking the desktop layout | Fixed (Stage 3) |
+| R001 | global (all routes) | ≤320px | P1 | Page-level horizontal overflow (~21px at 320px); `.site-header` `scrollWidth` (341px) exceeds viewport (320px) | `.site-header` grid is `grid-template-columns: auto 1fr` below 980px; `.brand` (logo + "AI · Product · GTM" subtitle) has no shrink constraint, so its column claims its full natural content width (~181px at 320px), leaving too little room for `nav` and forcing overall header wider than the viewport | Give `.brand` column a `minmax(0, auto)` (or similar) track / `min-width: 0` on the brand so it can shrink below content width; consider hiding or truncating the subtitle below ~360px | FIXED (Stage 2) |
+| R002 | `/` (homepage) | 320–430px | P1 | Homepage overflows horizontally — 119px at 320px, 49px at 390px, 9px at 430px | The Engineer → Product → Market progression module (`.progression-step`) does not have an intentional narrow-mobile layout; content forces width beyond viewport | Build the explicit mobile vertical flow described in the plan's Stage 3 (stacked steps with connector, no forced horizontal min-width) rather than shrinking the desktop layout | FIXED (Stage 3) |
+| R003 | `/career` | 681–980px | P2 | `.role-detail` squeezed to ~370px usable width; `.tl-year`/`.tl-dot` sticky offsets risked tucking under the taller wrapped tablet header | `.tl-row`'s sticky-year column kept its full 220px desktop width through tablet; sticky `top` offsets were tuned for the 66px desktop header, not the ~126-138px wrapped tablet header | Narrow the sidebar column, raise sticky offsets to clear the actual measured tablet header height, add an intermediate `.metric-row` 2-column step | FIXED (Stage 4, offsets re-tuned again in Stage 7) |
+| R004 | `/resume` | 681–980px | P2 | "Download PDF"/"Open" buttons stretched to ~149px tall (should be 44px) | `.resume-card`'s 2-column grid defaulted to `align-items: stretch`; the flex `.actions` container and its button children (also default-stretch) matched the taller paragraph column's height | Add `align-items: center` to `.resume-card` | FIXED (Stage 5) |
+| R005 | global (mobile/tablet nav) | ≤980px | P2 | Primary nav tap targets ~35.7px tall, under the ~44px comfortable-touch guideline | `.site-header nav a` used a tight 6px vertical padding tuned for desktop mouse use, unchanged at the breakpoint where nav becomes a touch-scrollable row | Add `padding-block: 12px` + flex centering inside `≤980px` only (desktop nav stays compact) | FIXED (Stage 7) |
+| R006 | global (mobile/tablet nav) | ≤980px | P3 | Focus-visible ring could clip against the nav row's scroll-container edge on the first/last item | `.site-header nav`'s `overflow-x: auto` row had no horizontal padding to accommodate the outline + offset | Add `padding-inline: 5px` (matches 2px outline + 3px offset) | FIXED (Stage 7) |
+| R007 | global (header, all widths) | all | P3 | `.site-header` used a fixed `height: 66px`; couldn't grow if a user's browser/OS text-size settings increased independent of page zoom | Fixed `height` instead of `min-height` on a text-holding container | Change to `min-height: 66px` | FIXED (Stage 7) |
 
 No other structural overflow found in the 320–1920px sweep. This is a partial inventory (overflow-focused, per the methodology note above) — Stage 1 should be revisited with a visual pass (clipped text, overlaps, dense layouts, tap targets, CTA misalignment) before Stage 2 fixes are considered complete for sign-off.
 
@@ -254,3 +259,48 @@ keyboard tab-order walkthrough, real browser zoom at 125/150/200%, and screen-re
 were not exercised — the session's browser-automation profile can't reliably drive
 viewport-independent zoom or keyboard focus traversal. Re-verified the full required matrix
 (320-1920px) overflow-free on all 7 routes after all Stage 7 changes.
+
+## Stage 9 — Final regression QA
+
+Full required-matrix sweep after all Stages 2-8 landed: **91/91 route × width combinations**
+(7 routes × 13 widths: 320, 375, 390, 430, 680, 768, 820, 980, 1024, 1280, 1440, 1728, 1920) —
+**zero overflow found anywhere.** `npm run build` and dev mode both pass.
+
+Interaction spot-checks (top-level page, not iframes):
+- Nav links (`/career`, `/built`, `/about`, `/resume`) resolve correctly
+- Resume PDF link (`/Rahul_Paul_Resume.pdf`) returns HTTP 200
+- Contact page `mailto:` and LinkedIn links have correct hrefs
+- Theme toggle clicked live twice across this audit (Stage 7 and again this stage): `data-theme`
+  flips and persists to `localStorage` reliably both directions
+- Career page: all 5 `.tl-row`/`.tl-dot` timeline rows render
+
+**Known tooling limitation, not a site defect:** programmatic `window.scrollTo`/`scrollTop`
+assignment did not move the automated tab's scroll position in this session (`scrollY` stayed 0
+despite a 2459px-tall document) — likely no user-activation on the extension-driven tab. This is
+the same category of limitation already documented since Stage 1 (`resize_window` not changing
+real `innerWidth`, no keyboard/zoom automation available). It means the pinned-timeline's
+scroll-driven `IntersectionObserver`/`--fill` JS (documented in `DESIGN.md`'s "Pinned scroll
+timeline" section) was not exercised via a real scroll gesture this session — it was previously
+verified by code review only (see Stage 07/08 `REDESIGN_MEMORY.md` entries predating this audit).
+**Recommend Rahul manually verify scroll-driven career-timeline behavior** (dot/period color
+change, connector fill) during the local review — this is the one interactive behavior this
+audit could not exercise end-to-end.
+
+## Audit status summary
+
+All 7 structural/polish issues found during this audit (R001-R007) are FIXED and merged into
+`feature/responsive-audit`. No P0/P1 issue remains open. Deferred items, with reasons, are:
+
+| Item | Reason deferred |
+|---|---|
+| Full visual screenshot audit (clipped text, dense layouts, exact spacing rhythm) | No reliable viewport-resize/screenshot tooling available in this session's browser-automation profile (documented since Stage 1) |
+| Real keyboard tab-order walkthrough | Same tooling limitation — no keyboard-focus-traversal automation available |
+| Real browser zoom at 125/150/200% | Page-zoom keyboard shortcuts explicitly unsupported by available browser-automation tools |
+| Screen-reader behavior | No screen-reader automation available in this session |
+| Scroll-driven career-timeline interaction (dot/period highlight, connector fill) | Programmatic scroll did not register in the automated tab this session (see above) — needs a manual check |
+
+None of these are P0/P1 — every P0/P1 structural issue found (R001, R002) is fixed and
+re-verified. The deferred items are all either visual-polish or interaction-verification items
+that need human eyes/hands rather than automated tooling. Recommend Rahul spend a few minutes on
+a manual pass covering these before final sign-off, particularly the career-timeline scroll
+interaction.
