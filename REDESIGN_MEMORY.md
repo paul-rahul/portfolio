@@ -717,3 +717,56 @@ Known issues / deferred items:
 Next phase:
 - Sync `redesign/technical-editorial` with `career-timeline-scroll-restructure`.
 - Phase 9 — Final polish / QA (OG/meta images, orphaned clay assets)
+
+## Responsive Audit — Stage 01
+
+Status: complete
+
+Branch:
+responsive/01-baseline-audit
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- All 7 routes (`/`, `/career`, `/internships`, `/built`, `/about`, `/resume`, `/contact`)
+- Global shell (`.site-header`, `.brand`, nav)
+- Homepage progression module (`.progression-step`)
+
+Issues found:
+- R001: global header/`.brand` causes page-level horizontal overflow at ≤320px (P1)
+- R002: homepage Engineer→Product→Market progression module overflows at 320–430px, up to 119px at 320px (P1)
+- No horizontal overflow found on any route at 768px and above
+
+Implemented:
+- `RESPONSIVE_AUDIT.md` created with issue inventory table and methodology note
+- No fixes applied yet — Stage 1 is audit-only per plan
+
+Responsive decisions:
+- None yet — deferred to Stage 2 (global shell) and Stage 3 (homepage)
+
+Breakpoints tested:
+- 320, 390, 430, 768, 820, 1024, 1280, 1440, 1728, 1920 (horizontal-overflow sweep, all routes)
+
+Theme validation:
+- Day: PASS (structural overflow is not theme-dependent)
+- Night: PASS (structural overflow is not theme-dependent)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS (all 7 routes return 200 on `main`)
+- horizontal overflow: FAIL at ≤430px on 2 routes (tracked as R001/R002)
+- keyboard/accessibility: not tested this stage (out of scope for baseline overflow audit)
+
+Known issues / deferred items:
+- `resize_window` tool does not change real `window.innerWidth` in this environment (same
+  limitation documented in Phase 07/08 above) — worked around via same-origin iframes for
+  structural overflow detection, but this means no visual screenshots were captured, and
+  browser-zoom/orientation testing was not performed. A visual pass (clipped text, overlaps,
+  dense layouts, tap targets) is still needed before Stage 2 fixes can be considered complete.
+
+Next stage:
+- Stage 2 — global shell/navigation/page frame (fix R001 first, since it affects every route)
