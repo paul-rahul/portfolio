@@ -102,7 +102,7 @@ img {
 }
 
 .site-header {
-	height: 66px;
+	min-height: 66px;
 	display: grid;
 	grid-template-columns: auto 1fr auto;
 	align-items: center;
@@ -1205,6 +1205,15 @@ img {
 		justify-content: flex-start;
 		gap: 20px;
 		padding-bottom: 10px;
+		/* room for the focus-visible outline (2px + 3px offset) so it isn't clipped
+		   by the scroll container at the first/last item */
+		padding-inline: 5px;
+	}
+	.site-header nav a {
+		/* comfortable touch target now that nav is a touch-scrollable row */
+		padding-block: 12px;
+		display: inline-flex;
+		align-items: center;
 	}
 	.site-header {
 		height: auto;
@@ -1264,11 +1273,12 @@ img {
 		gap: 20px;
 	}
 	.tl-year {
-		/* header wraps to two rows (~126px) below 980px; clear it before sticking */
-		top: 138px;
+		/* header wraps to two rows below 980px (~138px incl. Stage 7's larger nav
+		   touch targets); clear it before sticking */
+		top: 150px;
 	}
 	.tl-dot {
-		top: 144px;
+		top: 156px;
 	}
 	.metric-row {
 		grid-template-columns: repeat(2, 1fr);
