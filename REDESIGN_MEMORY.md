@@ -1488,3 +1488,48 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 5 — density and visual hierarchy
+
+---
+
+## Content & Visual Refinement — Stage 05
+
+Status: complete
+
+Branch:
+refinement/05-density-and-hierarchy
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Density/hierarchy audit pass across all 7 routes (hero height, section padding, vertical gaps, card padding, redundant labels, CTA spacing) as required by the plan.
+- One candidate fix investigated and **rejected after verification**: Career page's `.closing-cta` section is missing the `.wrap` class that its sibling sections (`.capabilities`, `.operating-model`) carry. Initially looked like a width-constraint bug. On inspection, `career/index.astro`'s `<main class="wrap">` already constrains all its children — adding a redundant nested `.wrap` to `.closing-cta` would make it compute `min(1180px, calc(100% - 40px))` against an *already-1180px-capped* container, i.e. **1140px**, 20px narrower than `.reading-frame`/`.career-timeline` (which rely on `main.wrap` directly and render at the full 1180px). Applying the "fix" would have traded one inconsistency for a different one, not resolved anything. Reverted before commit — confirmed via `git status` that this stage has no code diff.
+
+Content decisions:
+- None
+
+Design decisions:
+- None — see rejected fix above. Noting for future awareness: `.capabilities`/`.operating-model` on the career page already carry this same redundant-nested-`.wrap` pattern (pre-existing, not introduced this stage) and render 20px narrower than `.reading-frame`/`.career-timeline`. The 20px difference is imperceptible in practice; not worth a special-case fix that would touch several already-audited sections for no visible benefit. Left as-is.
+
+Image placeholder decisions:
+- None
+
+Files materially changed:
+- None (audit-only; the one candidate fix was investigated, found not to be a real bug, and reverted)
+
+DESIGN.md updated:
+- NO
+
+Validation:
+- npm run build: PASS (7/7 routes, unchanged)
+- dev mode: N/A (no code changed)
+- Day mode / Night mode / mobile / tablet / desktop: N/A (no code changed)
+
+Known issues / deferred items:
+- **About page's `.editorial-card.large` (580px min-height) has more whitespace than its current text content fills** — flagged in the Stage 1 audit as a density concern. Deliberately **not fixed here**: Stage 6 adds real image placeholder slots to About, which will use that space meaningfully rather than requiring a min-height reduction now that would just need to be undone next stage.
+
+Next stage:
+- Stage 6 — personality and About page (image placeholder slots; also resolves the deferred whitespace item above)
