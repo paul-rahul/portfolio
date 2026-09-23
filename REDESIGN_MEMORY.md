@@ -1121,3 +1121,61 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 9 — final regression QA (full route × width × theme matrix, update RESPONSIVE_AUDIT.md issue statuses to FIXED/DEFERRED/WONTFIX, then the FINAL REVIEW GATE — stop and wait for Rahul's explicit sign-off before any merge toward main)
+
+## Responsive Audit — Stage 09 (FINAL)
+
+Status: complete — all 9 stages of the responsive audit plan done; awaiting Rahul's explicit sign-off (FINAL REVIEW GATE) before any merge toward `main`
+
+Branch:
+responsive/09-final-regression-qa
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- All 7 routes at all 13 required widths (91 combinations) — full regression sweep
+- Nav links, resume PDF link, contact mailto/LinkedIn links, theme toggle, career timeline row rendering
+
+Issues found:
+- Zero new overflow issues — 91/91 combinations pass
+- All 7 issues found across the whole audit (R001-R007) confirmed FIXED and merged
+- One interaction (career-timeline scroll-driven highlight/fill) could not be exercised via automation this session (programmatic scroll didn't register in the automated tab — same tooling-limitation category noted since Stage 1) — flagged for Rahul's manual review
+
+Implemented:
+- `RESPONSIVE_AUDIT.md`: added R003-R007 rows documenting the polish-level issues found and fixed in Stages 4/5/7 (previously only described in prose), normalized all statuses to FIXED/DEFERRED vocabulary, added a Stage 9 section with the full regression sweep results and a deferred-items table with reasons
+
+Responsive decisions:
+- None — this stage is verification-only, no CSS/layout changes
+
+Breakpoints tested:
+- Full required matrix: 320, 375, 390, 430, 680, 768, 820, 980, 1024, 1280, 1440, 1728, 1920 × all 7 routes = 91 combinations, 0 failures
+
+Theme validation:
+- Day: PASS
+- Night: PASS — toggle exercised live (click + localStorage persistence check)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS (91/91)
+- keyboard/accessibility: focus-visible outline present and unclipped (verified in Stage 7); real keyboard walkthrough, zoom, and screen-reader QA still deferred to a manual pass
+
+Known issues / deferred items (see RESPONSIVE_AUDIT.md's full table for reasons):
+- Full visual screenshot audit — no viewport-resize/screenshot tooling this session
+- Real keyboard tab-order walkthrough — no keyboard-automation tooling this session
+- Real browser zoom 125/150/200% — zoom shortcuts unsupported by available tools
+- Screen-reader behavior — no screen-reader automation available
+- Career-timeline scroll-driven interaction (dot/period highlight, connector fill) — programmatic scroll didn't register this session, needs manual verification
+
+Next stage:
+- **FINAL REVIEW GATE.** Per the plan, `main` and the parent design branches remain untouched. `feature/responsive-audit` is the fully responsive candidate branch, ready for Rahul's local review. To inspect locally:
+  ```
+  git checkout feature/responsive-audit
+  git pull
+  npm install
+  npm run dev
+  ```
+  Widths tested this audit: 320, 375, 390, 430, 680, 768, 820, 980, 1024, 1280, 1440, 1728, 1920px, across all 7 routes, in both Day and Night themes (structural fixes are theme-independent; color-token behavior itself was not touched). Waiting for Rahul's explicit sign-off before any merge toward `redesign/technical-editorial` or `main` — successful QA, a successful build, or "looks good" in conversation does not count as that sign-off per the plan's own rule.
