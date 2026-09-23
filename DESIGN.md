@@ -119,7 +119,7 @@ Content is constrained to a `min(1180px, calc(100% - 40px))` wrap, centered. The
 
 ## Responsiveness
 
-Established by a dedicated responsive audit/remediation pass (see `RESPONSIVE_AUDIT.md` for the
+Established by a dedicated responsive audit/remediation pass (see `docs/RESPONSIVE_AUDIT.md` for the
 QA record). The system uses two structural breakpoints plus one narrow tablet-only refinement
 band — semantic ranges, not device presets:
 
@@ -218,8 +218,8 @@ Primary assets, served from `public/`:
 - **Component:** `src/components/MediaPlaceholder.astro`. Props: `id` (string, e.g. `IMG-04`), `label` (e.g. "Portrait"), `description` (e.g. "Professional portrait / candid"), `aspectRatio` (one of `16:9`/`16:10`/`3:2`/`4:3`/`4:5`/`1:1`, default `16:10`), optional `class`.
 - **Styling:** sits on `--background` (not `--surface`, so it reads as "recessed/pending" rather than a populated card), **1px dashed** `--border` — a deliberate, intentional deviation from the system's solid-border rule for real cards/panels, so a placeholder is visually distinguishable from real content at a glance. No shadow (Flat-By-Default rule still applies). Content is centered: mono `id`, mono uppercase `label`, secondary-color `description`, small mono ratio indicator.
 - **Theme behavior:** uses semantic tokens only (`--background`, `--border`, `--ink-secondary`) — verified in both Day and Night.
-- **Replacement process:** when a real asset exists, swap the `MediaPlaceholder` for a real `<img>` (or a wrapping `.image-frame` if crop/radius treatment is needed) and remove its row from `VISUAL_ASSETS.md`, or mark it `Retained`/fulfilled.
-- **Relationship to `VISUAL_ASSETS.md`:** every placeholder instance in the codebase must have a corresponding row there (page, placement, asset needed, ratio, status). `VISUAL_ASSETS.md` is the authoritative inventory; this section is the component spec.
+- **Replacement process:** when a real asset exists, swap the `MediaPlaceholder` for a real `<img>` (or a wrapping `.image-frame` if crop/radius treatment is needed) and remove its row from `docs/VISUAL_ASSETS.md`, or mark it `Retained`/fulfilled.
+- **Relationship to `docs/VISUAL_ASSETS.md`:** every placeholder instance in the codebase must have a corresponding row there (page, placement, asset needed, ratio, status). `docs/VISUAL_ASSETS.md` is the authoritative inventory; this section is the component spec.
 
 ### Status chip
 
@@ -261,7 +261,7 @@ Primary assets, served from `public/`:
 - **Do** set anything numeric, dated, or systemic in JetBrains Mono, uppercase, with letter-spacing.
 - **Do** separate surfaces with a 1px border + background step, not a shadow.
 - **Do** let scroll position — not a click toggle — drive reveal state for the career timeline; keep content in the DOM and visible by default so it works without JS.
-- **Do** use `MediaPlaceholder` (dashed border) for any planned-but-missing visual, and log it in `VISUAL_ASSETS.md` — never leave an unexplained empty gap and never fabricate a stand-in image.
+- **Do** use `MediaPlaceholder` (dashed border) for any planned-but-missing visual, and log it in `docs/VISUAL_ASSETS.md` — never leave an unexplained empty gap and never fabricate a stand-in image.
 
 ### Don't:
 - **Don't** introduce a second saturated accent color.

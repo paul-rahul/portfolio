@@ -30,3 +30,6 @@ pnpm-debug.log*
 
 # impeccable skill working state (surface briefs, mocks) — not shipped code
 .impeccable/
+
+# Claude Code local session/worktree state — machine-specific, not shipped code
+.claude/
