@@ -1585,3 +1585,49 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 7 — Career/Built separation clarity
+
+---
+
+## Content & Visual Refinement — Stage 07
+
+Status: complete
+
+Branch:
+refinement/07-career-built-separation
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Primary nav label renamed from "Work" to "Career" (`src/components/Nav.astro`) — sitting directly next to "Built" in the nav list, "Work" was genuinely ambiguous (built projects are also "work"); "Career" matches the `/career` route and removes the ambiguity outright.
+- Audited the rest of the site for similar ambiguity: hero CTA "Explore my work →" (`index.astro`) left unchanged — it's a standalone button, not sitting in a list next to "Built", and reads naturally as a CTA rather than a category label.
+
+Content decisions:
+- No other copy changes — Career/Built/Home separation was already substantially achieved by Stage 3 (removing Home's Career-duplicating cards) and by the pages' own existing content boundaries (Career = employers/metrics, Built = personal projects, confirmed in Stage 1 audit). This stage's one finding (the nav label) was the only remaining genuine ambiguity.
+
+Design decisions:
+- None (text-only change, no layout/CSS impact — confirmed nav renders correctly with the new, similar-length label)
+
+Image placeholder decisions:
+- None
+
+Files materially changed:
+- `src/components/Nav.astro`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO (no design-system rule changed)
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS — confirmed "Career" renders in the nav via rendered HTML
+- Day mode / Night mode / mobile / tablet / desktop: not independently re-verified (text-only nav label swap, no layout change); nav responsive behavior itself is unchanged from the already-audited system
+
+Known issues / deferred items:
+- None
+
+Next stage:
+- Stage 8 — cross-theme responsive QA (full breakpoint × theme matrix)
