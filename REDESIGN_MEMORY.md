@@ -1275,3 +1275,62 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 1 — audit and content map (branch `refinement/01-audit-and-content-map`)
+
+---
+
+## Content & Visual Refinement — Stage 01
+
+Status: complete
+
+Branch:
+refinement/01-audit-and-content-map
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Full route-by-route audit (all 7 live routes: `/`, `/career`, `/built`, `/internships`, `/about`, `/resume`, `/contact`) — no code changes, documentation only.
+
+Content decisions (audit findings):
+- **Confirmed the plan's core hypothesis**: Home's `.work-section` ("Selected evidence / Work that moved a number") duplicates Dream11 + Media.net content that already lives fully on `/career` — same employer, same metrics, same framing, just truncated. This is the Stage 3 target.
+- **Built (`/built`) is a single honest placeholder paragraph** — no MediaPlaceholder system, no case-study structure, no project content. Matches project memory: Rahul hasn't listed real vibe-coding projects yet. Do not invent any.
+- **Career (`/career`) is dense, complete, and recently audited** (pinned timeline, capabilities grid, operating-model steps, all responsive-audited in PR #34/#33). Preserve as-is structurally — only in scope for Stage 5 spacing polish if something concrete surfaces, not a redesign target.
+- **About (`/about`) has strong copy bones** (through-line story, McCombs context, "off the clock" interests) but **zero visual slots** — pure text, three editorial cards. This is the main personality/imagery gap (Stage 6 target).
+- **Click affordance is already well-established**: `.case-card` pattern (whole-card clickable + explicit "Read case study →" trailing link) is the existing convention and should be reused for any new preview cards, not reinvented.
+- **Whitespace/density is already reasonably tight** — this site went through a dedicated responsive/density-aware audit in PR #34 before this plan started, so Stage 5 is expected to find fewer issues than a from-scratch density audit would.
+
+Design decisions:
+- None yet — audit only, no visual/system changes this stage.
+
+Image placeholder decisions (future image locations identified):
+1. **Home hero `.intersection-diagram`** — this is a deliberate diagram (Tech/Product/Market venn), not an empty gap; an HTML comment already documents how to swap in a real portrait later. Decision: leave as-is, not a "missing image" to placeholder over.
+2. **Home "Selected Projects" preview cards (Stage 3, new)** — will need MediaPlaceholder visual slots per project, replacing the current `.case-mark` text-wordmark treatment.
+3. **Built project case-study template (Stage 4, new)** — hero / product-flow / supporting-visual placeholder slots per the Problem→Solution→How→Outcome structure. Built as a reusable pattern; no live project pages yet since no real project content exists.
+4. **About page (Stage 6)** — professional portrait, McCombs/Austin context image, badminton, personal/candid slot. Zero image infrastructure exists today; this is the biggest concrete gap found in the audit.
+5. **Career/Internships** — no forced image additions. Per plan guidance ("use visuals only where they improve comprehension"), defer unless a specific role clearly benefits.
+
+Likely project-preview structure (for Stage 3):
+- Reuse the existing `.case-card` visual/markup pattern (visual → eyebrow → title → 2 supporting facts → "Read case study →"), backed by `MediaPlaceholder` instead of a text wordmark, with an honest "pending" status badge since no real projects exist yet.
+
+Likely case-study structure (for Stage 4):
+- Problem → Solution → How I got there → Outcome, as a reusable template/layout, documented in DESIGN.md. No fabricated example project — the template ships ready for the first real Built entry.
+
+Files materially changed:
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — audit stage, no system changes yet
+
+Validation:
+- npm run build: PASS (unchanged from Stage 0, no code touched)
+- dev mode: N/A (no code touched)
+- Day mode / Night mode / mobile / tablet / desktop: N/A (no code touched)
+
+Known issues / deferred items:
+- None
+
+Next stage:
+- Stage 2 — image placeholder system (`MediaPlaceholder` component + `VISUAL_ASSETS.md`)
