@@ -28,7 +28,7 @@
 	--motion-fast: 150ms;
 	--motion-base: 220ms;
 	--motion-enter: 420ms;
-	--motion-slow: 650ms;
+	--motion-slow: 1800ms;
 
 	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 	--ease-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -461,7 +461,7 @@ img {
 	top: 8%;
 	right: 8%;
 	animation: motion-converge-product var(--motion-slow) var(--ease-out) both;
-	animation-delay: 340ms;
+	animation-delay: 480ms;
 }
 
 .intersection-circle.market {
@@ -470,7 +470,7 @@ img {
 	border-color: var(--accent);
 	color: var(--accent);
 	animation: motion-converge-market var(--motion-slow) var(--ease-out) both;
-	animation-delay: 380ms;
+	animation-delay: 660ms;
 }
 
 @keyframes motion-converge-tech {
