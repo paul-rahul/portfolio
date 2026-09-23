@@ -920,3 +920,52 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 5 — secondary pages (About, Internships, Built, Resume, Contact)
+
+## Responsive Audit — Stage 05
+
+Status: complete
+
+Branch:
+responsive/05-secondary-pages
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- `/about`, `/internships`, `/built`, `/resume`, `/contact`
+
+Issues found:
+- No horizontal overflow at any width (320-1920px) on any of the 5 routes
+- `.resume-card`'s 2-column grid (`1fr auto`) defaulted to `align-items: stretch`, so at tablet widths where the paragraph column is taller than the actions column, the `.actions` flex container and its `<a class="button">` children (flex also defaults to stretch) stretched vertically — measured 149px-tall "Download PDF"/"Open" buttons at 820px (should be 44px)
+- Primary nav items measured ~35.7px tall at 320px — under the ~44px comfortable tap-target guideline; site-wide concern, not secondary-page-specific, logged but not fixed here
+
+Implemented:
+- `src/styles/tokens.css`: added `align-items: center` to `.resume-card`
+- `RESPONSIVE_AUDIT.md` updated: Stage 5 section added
+
+Responsive decisions:
+- None beyond the resume-card fix — About/Internships/Built/Contact needed no changes this pass
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free on all 5 routes
+- Resume button height spot-checked at 320, 680, 768, 820, 980, 1280, 1920 (all now 44px)
+
+Theme validation:
+- Day: PASS (layout-only change, theme-independent)
+- Night: PASS (not re-screenshotted; consistent with prior stages' theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix, all 5 routes
+- keyboard/accessibility: not tested this stage (nav tap-target gap logged, deferred to Stage 7)
+
+Known issues / deferred items:
+- Nav tap-target height (~35.7px at 320px, site-wide) — deferred to Stage 7
+- Visual-only concerns (spacing rhythm, card density) not screenshot-audited — same tooling limitation since Stage 1, deferred to Stage 7 or manual pass
+
+Next stage:
+- Stage 6 — typography/spacing/media system (replace ad hoc responsive patterns with a coherent fluid system)

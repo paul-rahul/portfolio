@@ -133,3 +133,32 @@ Verified `.role-detail` usable width across the new tablet band: 446px (700px vi
 Visual-only concerns (line-length feel, capability/operating-step density, exact spacing
 rhythm) were not screenshot-audited this stage — same tooling limitation noted since Stage 1,
 deferred to Stage 7 or a manual pass.
+
+## Stage 5 — Secondary page responsiveness
+
+Reviewed `/about`, `/internships`, `/built`, `/resume`, `/contact`. No horizontal overflow at
+any width in the full required matrix (320-1920px) on any of the 5 routes. Fluid typography via
+`clamp()` was already in place on `.contact-card h2` and `.built-placeholder h2` — no
+oversized-text issue on small phones for either.
+
+One real issue found via computed-style inspection (not overflow-visible, so missed by the
+sweep): `.resume-card` used a 2-column CSS Grid (`1fr auto`) with the default
+`align-items: stretch`. At tablet widths where the paragraph column is taller than the actions
+column's natural content, the `.actions` flex container — and the `<a class="button">` elements
+inside it, since flex also defaults to `align-items: stretch` — stretched to match, producing
+149px-tall "Download PDF"/"Open" buttons at 820px width (should be 44px). Visible tap targets
+technically still worked but looked broken.
+
+Fix, in `src/styles/tokens.css`: added `align-items: center` to `.resume-card`. Re-verified
+button height is a consistent 44px at every tested width (320, 680, 768, 820, 980, 1280, 1920)
+with 0 overflow at each.
+
+Spot-checked tap target sizes at 320px via computed `getBoundingClientRect()`: resume actions
+44px tall, contact-card links 58.8px tall — both comfortable. Primary nav items measured ~35.7px
+tall at 320px, which is under the ~44px comfortable-touch-target guideline — this is a
+site-wide nav concern (not secondary-page-specific), so it's logged here but deferred to Stage 7
+(cross-theme/accessibility/interaction QA) rather than fixed in this stage.
+
+No other structural or visual issues found on About, Internships, Built, or Contact this pass —
+these were reviewed via the same overflow-sweep + spot computed-style technique, not a full
+screenshot visual audit (same tooling limitation as prior stages).
