@@ -717,3 +717,514 @@ Known issues / deferred items:
 Next phase:
 - Sync `redesign/technical-editorial` with `career-timeline-scroll-restructure`.
 - Phase 9 — Final polish / QA (OG/meta images, orphaned clay assets)
+
+## Responsive Audit — Stage 01
+
+Status: complete
+
+Branch:
+responsive/01-baseline-audit
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- All 7 routes (`/`, `/career`, `/internships`, `/built`, `/about`, `/resume`, `/contact`)
+- Global shell (`.site-header`, `.brand`, nav)
+- Homepage progression module (`.progression-step`)
+
+Issues found:
+- R001: global header/`.brand` causes page-level horizontal overflow at ≤320px (P1)
+- R002: homepage Engineer→Product→Market progression module overflows at 320–430px, up to 119px at 320px (P1)
+- No horizontal overflow found on any route at 768px and above
+
+Implemented:
+- `RESPONSIVE_AUDIT.md` created with issue inventory table and methodology note
+- No fixes applied yet — Stage 1 is audit-only per plan
+
+Responsive decisions:
+- None yet — deferred to Stage 2 (global shell) and Stage 3 (homepage)
+
+Breakpoints tested:
+- 320, 390, 430, 768, 820, 1024, 1280, 1440, 1728, 1920 (horizontal-overflow sweep, all routes)
+
+Theme validation:
+- Day: PASS (structural overflow is not theme-dependent)
+- Night: PASS (structural overflow is not theme-dependent)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS (all 7 routes return 200 on `main`)
+- horizontal overflow: FAIL at ≤430px on 2 routes (tracked as R001/R002)
+- keyboard/accessibility: not tested this stage (out of scope for baseline overflow audit)
+
+Known issues / deferred items:
+- `resize_window` tool does not change real `window.innerWidth` in this environment (same
+  limitation documented in Phase 07/08 above) — worked around via same-origin iframes for
+  structural overflow detection, but this means no visual screenshots were captured, and
+  browser-zoom/orientation testing was not performed. A visual pass (clipped text, overlaps,
+  dense layouts, tap targets) is still needed before Stage 2 fixes can be considered complete.
+
+Next stage:
+- Stage 2 — global shell/navigation/page frame (fix R001 first, since it affects every route)
+
+## Responsive Audit — Stage 02
+
+Status: complete
+
+Branch:
+responsive/02-global-shell
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- Global shell (`.site-header`, `.brand`, `.site-header nav`, `.header-actions`, footer) across all 7 routes
+
+Issues found:
+- Confirmed R001 (from Stage 1): `.brand` had no shrink constraint below 980px, forcing header wider than viewport at ≤320px
+- No other global-shell-level overflow found (footer clean at 320px on all routes; no blanket `overflow-x: hidden` in use)
+
+Implemented:
+- `src/styles/tokens.css`: `.brand` and `.brand div` gained `min-width: 0`; `.brand div`/`.brand small` gained `overflow: hidden; text-overflow: ellipsis`
+- `≤980px` `.site-header` grid track changed from `auto 1fr` to `minmax(0, auto) minmax(0, 1fr)` so the brand column can actually shrink
+- `≤680px` breakpoint hides `.brand small` (subtitle) — no room for it next to logo + nav at that width
+- `RESPONSIVE_AUDIT.md` updated: R001 marked Fixed, Stage 2 section added with re-verification notes
+
+Responsive decisions:
+- Prefer allowing the brand lockup to shrink/truncate over shrinking the header height or hiding nav items; subtitle drop happens only below 680px, name text never truncates in practice at any tested width once the grid track can shrink
+
+Breakpoints tested:
+- Header/footer overflow re-verified at 320, 375, 390, 430, 680, 768 (iframe scrollWidth technique) across all 7 routes
+
+Theme validation:
+- Day: PASS (structural fix, theme-independent — confirmed data-theme="light" default still renders correctly)
+- Night: PASS (not re-screenshotted; fix is layout-only, no color-token changes, consistent with Stage 1's theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS (all 7 routes served 200 during verification)
+- horizontal overflow: PASS for global shell (header + footer) on all routes at 320px; homepage body overflow (R002) remains, out of scope for this stage
+- keyboard/accessibility: not tested this stage (deferred to Stage 7 per plan)
+
+Known issues / deferred items:
+- R002 (homepage progression module overflow) still open — Stage 3
+- Visual-only issues (clipped text, dense layouts, tap targets) still not screenshot-audited — same tooling limitation as Stage 1, deferred to Stage 7 or manual pass
+- Sticky-header/anchor-offset behavior and mobile-nav horizontal-scroll usability not deeply audited this stage — nav already uses an intentional `overflow-x: auto` row below 980px per existing design; revisit in Stage 7 (accessibility/interaction pass) if it proves hard to use by touch
+
+Next stage:
+- Stage 3 — homepage responsiveness (fix R002: build the intentional mobile vertical flow for the Engineer→Product→Market module)
+
+## Responsive Audit — Stage 03
+
+Status: complete
+
+Branch:
+responsive/03-home
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- Homepage (`/`) — Engineer→Product→Market progression module specifically; full-page overflow re-swept across the required width matrix
+
+Issues found:
+- Confirmed R002 root cause: `.progression-grid` was a fixed `repeat(3, 1fr)` grid with no responsive override; unbreakable tag words exceeded each column's min-content budget at narrow widths, forcing all 3 tracks (and the page) wider than the viewport — a textbook "desktop layout shrunk to mobile" case
+- No other structural overflow found on the homepage in the 320–1920px sweep
+
+Implemented:
+- `src/styles/tokens.css`: added `.progression-grid { grid-template-columns: 1fr; gap: 14px; }` inside the existing `≤680px` breakpoint (intentional single-column stack, matching the pattern already used for `.editorial-grid`/`.fact-strip` at `≤980px`)
+- Added `min-width: 0` to `.progression-step` as a grid-item safety net
+- `RESPONSIVE_AUDIT.md` updated: R002 marked Fixed, Stage 3 section added with root-cause explanation and re-verification notes
+
+Responsive decisions:
+- Progression module stacks to 1 column below 680px rather than 2, since it's a 3-item set (no clean 2-column split) and the existing card language already reads fine stacked without needing a custom connector graphic like the "How I operate" stepper
+- Kept the 3-column desktop/tablet layout untouched above 680px — Stage 1 already confirmed no overflow there, and re-verified again this stage
+
+Breakpoints tested:
+- Homepage full-page overflow re-verified at 320, 375, 390, 430, 680, 681, 768, 820, 980, 1024, 1280, 1440, 1728, 1920 (iframe scrollWidth technique)
+
+Theme validation:
+- Day: PASS (structural fix, theme-independent)
+- Night: PASS (not re-screenshotted; layout-only change, no color-token changes, consistent with Stage 1/2's theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS — homepage bodyOverflow is 0 at every required width, 320–1920px
+- keyboard/accessibility: not tested this stage (deferred to Stage 7 per plan)
+
+Known issues / deferred items:
+- Only the R002 structural-overflow item was addressed this stage. The rest of the Stage 3 checklist (hero typography scaling, hero media order, CTA wrap behavior, quick facts layout, featured-work card density) has not been independently visually reviewed — still deferred to Stage 7 or a manual pass, same tooling limitation as Stage 1/2 (no reliable viewport-resize/screenshot tooling this session)
+
+Next stage:
+- Stage 4 — Career page responsiveness (most important recruiter page; sticky sidebar/role navigation, metrics, "What I'm known for", "How I operate")
+
+## Responsive Audit — Stage 04
+
+Status: complete
+
+Branch:
+responsive/04-career
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- `/career` — pinned-scroll timeline (`.tl-row`/`.tl-year`/`.tl-dot`), metric tiles, capability grid ("What I'm known for"), operating steps ("How I operate")
+
+Issues found:
+- No horizontal overflow at any tested width (320-1920px) — most of the plan's intended mobile/tablet composition already existed from the original redesign
+- Tablet range (681-980px): `.tl-row`'s sticky-year column stayed at its full desktop width (220px), squeezing `.role-detail` to ~370px usable width — cramped, not overflowing, so Stage 1's overflow-only sweep missed it
+- Tablet range: `.tl-year`/`.tl-dot` sticky `top` offsets were tuned for the 66px desktop header; the wrapped tablet header is ~126px, so the sticky label could tuck under it while scrolling
+
+Implemented:
+- `src/styles/tokens.css`: new `@media (max-width: 980px) and (min-width: 681px)` block
+  - `.tl-row` first column narrowed 220px → 150px
+  - `.tl-year`/`.tl-dot` sticky `top` raised to 138px/144px (measured actual tablet header height via iframe technique, not guessed)
+  - `.metric-row` set to 2 columns at tablet width (previously 3→1 with no intermediate step)
+- `RESPONSIVE_AUDIT.md` updated: Stage 4 section added
+
+Responsive decisions:
+- Kept the pinned-scroll sticky timeline concept intact through tablet rather than collapsing it early to the mobile stacked layout — narrowing the sidebar column and fixing the sticky offset was enough to remove the squeeze without changing the interaction model
+- `.capability-grid` (4→2→1) and `.operating-steps` (5→vertical-with-connector) were already correct per the plan's spec and left untouched
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free
+- Tablet band specifically probed at 681, 700, 768, 820, 900, 979, 980, 981 for header height, sticky offset clearance, and `.role-detail`/`.metric-row` computed widths
+
+Theme validation:
+- Day: PASS (structural/layout change only, theme-independent)
+- Night: PASS (not re-screenshotted; consistent with prior stages' theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix
+- keyboard/accessibility: not tested this stage (deferred to Stage 7 per plan)
+
+Known issues / deferred items:
+- Visual-only concerns (line-length feel, capability/operating-step density, exact spacing rhythm) not screenshot-audited — same tooling limitation since Stage 1, deferred to Stage 7 or manual pass
+
+Next stage:
+- Stage 5 — secondary pages (About, Internships, Built, Resume, Contact)
+
+## Responsive Audit — Stage 05
+
+Status: complete
+
+Branch:
+responsive/05-secondary-pages
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- `/about`, `/internships`, `/built`, `/resume`, `/contact`
+
+Issues found:
+- No horizontal overflow at any width (320-1920px) on any of the 5 routes
+- `.resume-card`'s 2-column grid (`1fr auto`) defaulted to `align-items: stretch`, so at tablet widths where the paragraph column is taller than the actions column, the `.actions` flex container and its `<a class="button">` children (flex also defaults to stretch) stretched vertically — measured 149px-tall "Download PDF"/"Open" buttons at 820px (should be 44px)
+- Primary nav items measured ~35.7px tall at 320px — under the ~44px comfortable tap-target guideline; site-wide concern, not secondary-page-specific, logged but not fixed here
+
+Implemented:
+- `src/styles/tokens.css`: added `align-items: center` to `.resume-card`
+- `RESPONSIVE_AUDIT.md` updated: Stage 5 section added
+
+Responsive decisions:
+- None beyond the resume-card fix — About/Internships/Built/Contact needed no changes this pass
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free on all 5 routes
+- Resume button height spot-checked at 320, 680, 768, 820, 980, 1280, 1920 (all now 44px)
+
+Theme validation:
+- Day: PASS (layout-only change, theme-independent)
+- Night: PASS (not re-screenshotted; consistent with prior stages' theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix, all 5 routes
+- keyboard/accessibility: not tested this stage (nav tap-target gap logged, deferred to Stage 7)
+
+Known issues / deferred items:
+- Nav tap-target height (~35.7px at 320px, site-wide) — deferred to Stage 7
+- Visual-only concerns (spacing rhythm, card density) not screenshot-audited — same tooling limitation since Stage 1, deferred to Stage 7 or manual pass
+
+Next stage:
+- Stage 6 — typography/spacing/media system (replace ad hoc responsive patterns with a coherent fluid system)
+
+## Responsive Audit — Stage 06
+
+Status: complete
+
+Branch:
+responsive/06-typography-spacing-media
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- All heading selectors (`.hero h1`, `.page-hero h1`, `.editorial-title`, card/capability/operating-step headings), body/lede copy, base `img` handling, across all 7 routes
+
+Issues found:
+- `.hero h1`, `.page-hero h1`, `.editorial-title` each already used `clamp()` but then had a redundant fixed `font-size` override inside the `≤680px` breakpoint, since each clamp's floor was already above 680px's natural vw value — the fluid curve was dead weight below ~700-870px and the page snapped abruptly at exactly 680px
+
+Implemented:
+- `src/styles/tokens.css`: folded each override's intended value into the clamp's floor, removed the now-redundant breakpoint overrides
+  - `.hero h1`: `clamp(40px, 5vw, 64px)` → `clamp(38px, 5vw, 64px)`
+  - `.page-hero h1`: `clamp(34px, 4.6vw, 54px)` → `clamp(40px, 4.6vw, 54px)`
+  - `.editorial-title`: `clamp(32px, 4.4vw, 48px)` → `clamp(36px, 4.4vw, 48px)`
+- `RESPONSIVE_AUDIT.md` updated: Stage 6 section added
+
+Responsive decisions:
+- No visual change at either extreme (320px or 1920px) intended or measured — this is purely collapsing a curve-then-snap into one continuous curve, matching the plan's "avoid breakpoint-specific font overrides" principle
+- Base `img` reset, body/lede line-length max-widths, and spacing scale were reviewed and found already coherent — no further changes made
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free on all 7 routes
+- Heading font-size scaling spot-checked at 320, 430, 600, 680, 700, 760, 900, 1080, 1200, 1440 on `/` and `/career` — confirmed flat floor through mobile/tablet, smooth transition, no discontinuity at 680px
+
+Theme validation:
+- Day: PASS (typography-only change, theme-independent)
+- Night: PASS (not re-screenshotted; consistent with prior stages' theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix
+- keyboard/accessibility: not tested this stage (deferred to Stage 7 per plan)
+
+Known issues / deferred items:
+- Spacing-scale and SVG/diagram-legibility checklist items not deeply re-audited — existing spacing already looked consistent and no mobile-problematic diagrams were found; flag any specific spacing inconsistency Rahul spots during manual review as a new audit row rather than assuming it's covered
+
+Next stage:
+- Stage 7 — cross-theme/accessibility/interaction QA (Day/Night at all breakpoints, keyboard, touch targets — including the nav tap-target gap logged in Stage 5 — focus states, reduced motion)
+
+## Responsive Audit — Stage 07
+
+Status: complete
+
+Branch:
+responsive/07-cross-theme-accessibility
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- Global nav/header (touch targets, focus states, fixed-height risk), Career pinned-scroll timeline (regression fix), Day/Night toggle, reduced-motion query — across all routes
+
+Issues found:
+- Nav tap targets ~35.7px at ≤980px (Stage 5 finding) — under ~44px comfortable-touch guideline
+- Mobile/tablet nav row (`overflow-x: auto`, no horizontal padding) could clip the focus-visible ring on first/last item
+- `.site-header` used fixed `height: 66px` — risk of clipping nav text if a user increases browser/OS text size independent of page zoom
+- Self-inflicted regression: fixing the nav tap-target height grew the tablet header from ~126px to ~138.4px, which nearly flush-collided with Stage 4's sticky `.tl-year`/`.tl-dot` offsets (138px/144px) — caught and fixed in the same stage
+
+Implemented:
+- `src/styles/tokens.css`:
+  - `.site-header nav a` gains `padding-block: 12px; display: inline-flex; align-items: center` inside `≤980px` only (desktop nav stays compact/unchanged) — measured height now 47.7px at 320-980px
+  - `.site-header nav` gains `padding-inline: 5px` inside `≤980px` so the focus ring isn't clipped at the scroll edges
+  - `.site-header` changed from fixed `height: 66px` to `min-height: 66px`
+  - `.tl-year`/`.tl-dot` sticky `top` raised from 138px/144px to 150px/156px to clear the now-taller (~138.4px) tablet header
+- `RESPONSIVE_AUDIT.md` updated: Stage 7 section added
+
+Responsive decisions:
+- Scoped the touch-target fix to the breakpoint where nav actually becomes a touch-scrollable row, rather than inflating the desktop nav's tight editorial padding
+- Verified theme toggle live (clicked it, checked `data-theme` + `localStorage`), not just inspected computed styles
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free on all 7 routes after every change this stage
+- Header height / sticky-offset clearance re-measured across 681-980px tablet band after the nav padding regression
+
+Theme validation:
+- Day: PASS
+- Night: PASS — all Stage 7 changes are layout/spacing-only, no color-token changes; theme toggle exercised live (click + localStorage check), consistent with prior stages' theme-independence finding
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix
+- keyboard/accessibility: focus-visible outline confirmed present and unclipped by computed measurement; actual keyboard tab-order walkthrough, real browser zoom (125/150/200%), and screen-reader behavior NOT exercised this session — browser-automation profile can't reliably drive viewport-independent zoom or keyboard focus traversal; still needs a manual pass by Rahul
+
+Known issues / deferred items:
+- Real keyboard navigation, browser zoom, and screen-reader QA deferred to a manual pass — same tooling limitation noted since Stage 1
+- Visual-only polish (density, spacing rhythm) still not screenshot-audited
+
+Next stage:
+- Stage 8 — update DESIGN.md with the responsive system now that all structural stages are complete
+
+## Responsive Audit — Stage 08
+
+Status: complete
+
+Branch:
+responsive/08-design-documentation
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- `DESIGN.md` — full document review and update
+
+Issues found:
+- `DESIGN.md`'s Layout section described the header as "a sticky 76px bar" — stale since Stage 7 changed it to `min-height: 66px`
+- No responsive/breakpoint system was documented at all prior to this stage
+
+Implemented:
+- `DESIGN.md`: fixed the stale 76px header claim
+- Added a new **Responsiveness** section covering: semantic breakpoint table (Compact ≤680px / Comfortable-tablet 681-980px / Desktop 981-1279px / Wide 1280px+), Global shell, Typography (documents the exact clamp() values from Stage 6), Navigation, Grids (documents the 4/2/1, 3/1, 5/vertical patterns from Stages 2-4), Career (pinned-timeline sticky-offset pairing note from Stage 7), Media, and Accessibility
+- Extended the existing "Don't" list with 8 responsive-specific anti-patterns (no blanket `overflow-x: hidden`, no shrunk-desktop-to-mobile, no hiding content to fit, no clamp+override duplication, no fixed-height text containers, no absolute-positioned core content, no horizontal-scroll-for-prose, no theme-divergent responsive logic)
+
+Responsive decisions:
+- Documented breakpoints as semantic ranges (Compact/Comfortable/Desktop/Wide) per the plan's explicit instruction to avoid device-specific-only documentation
+- Every value recorded in the doc is one actually shipped in `tokens.css` during Stages 2-7, not aspirational — cross-checked against the real CSS before writing
+
+Breakpoints tested:
+- N/A (documentation-only stage); `npm run build` re-confirmed passing
+
+Theme validation:
+- N/A (documentation-only stage, no CSS/component changes)
+
+Validation:
+- npm run build: PASS
+- dev mode: not re-tested this stage (no code changes)
+- horizontal overflow: N/A this stage
+- keyboard/accessibility: N/A this stage
+
+Known issues / deferred items:
+- None — Stage 8 is documentation-only and complete
+
+Next stage:
+- Stage 9 — final regression QA (full route × width × theme matrix, update RESPONSIVE_AUDIT.md issue statuses to FIXED/DEFERRED/WONTFIX, then the FINAL REVIEW GATE — stop and wait for Rahul's explicit sign-off before any merge toward main)
+
+## Responsive Audit — Stage 09 (FINAL)
+
+Status: complete — all 9 stages of the responsive audit plan done; awaiting Rahul's explicit sign-off (FINAL REVIEW GATE) before any merge toward `main`
+
+Branch:
+responsive/09-final-regression-qa
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- All 7 routes at all 13 required widths (91 combinations) — full regression sweep
+- Nav links, resume PDF link, contact mailto/LinkedIn links, theme toggle, career timeline row rendering
+
+Issues found:
+- Zero new overflow issues — 91/91 combinations pass
+- All 7 issues found across the whole audit (R001-R007) confirmed FIXED and merged
+- One interaction (career-timeline scroll-driven highlight/fill) could not be exercised via automation this session (programmatic scroll didn't register in the automated tab — same tooling-limitation category noted since Stage 1) — flagged for Rahul's manual review
+
+Implemented:
+- `RESPONSIVE_AUDIT.md`: added R003-R007 rows documenting the polish-level issues found and fixed in Stages 4/5/7 (previously only described in prose), normalized all statuses to FIXED/DEFERRED vocabulary, added a Stage 9 section with the full regression sweep results and a deferred-items table with reasons
+
+Responsive decisions:
+- None — this stage is verification-only, no CSS/layout changes
+
+Breakpoints tested:
+- Full required matrix: 320, 375, 390, 430, 680, 768, 820, 980, 1024, 1280, 1440, 1728, 1920 × all 7 routes = 91 combinations, 0 failures
+
+Theme validation:
+- Day: PASS
+- Night: PASS — toggle exercised live (click + localStorage persistence check)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS (91/91)
+- keyboard/accessibility: focus-visible outline present and unclipped (verified in Stage 7); real keyboard walkthrough, zoom, and screen-reader QA still deferred to a manual pass
+
+Known issues / deferred items (see RESPONSIVE_AUDIT.md's full table for reasons):
+- Full visual screenshot audit — no viewport-resize/screenshot tooling this session
+- Real keyboard tab-order walkthrough — no keyboard-automation tooling this session
+- Real browser zoom 125/150/200% — zoom shortcuts unsupported by available tools
+- Screen-reader behavior — no screen-reader automation available
+- Career-timeline scroll-driven interaction (dot/period highlight, connector fill) — programmatic scroll didn't register this session, needs manual verification
+
+Next stage:
+- **FINAL REVIEW GATE.** Per the plan, `main` and the parent design branches remain untouched. `feature/responsive-audit` is the fully responsive candidate branch, ready for Rahul's local review. To inspect locally:
+  ```
+  git checkout feature/responsive-audit
+  git pull
+  npm install
+  npm run dev
+  ```
+  Widths tested this audit: 320, 375, 390, 430, 680, 768, 820, 980, 1024, 1280, 1440, 1728, 1920px, across all 7 routes, in both Day and Night themes (structural fixes are theme-independent; color-token behavior itself was not touched). Waiting for Rahul's explicit sign-off before any merge toward `redesign/technical-editorial` or `main` — successful QA, a successful build, or "looks good" in conversation does not count as that sign-off per the plan's own rule.
+
+## Review fixes 01
+
+Status: complete
+
+Branch:
+responsive/review-fixes-01
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- `/code-review` run against the full `feature/responsive-audit` diff; 2 findings — `.brand small` ellipsis (Nav.astro/tokens.css) and `.tl-year`/`.tl-dot` sticky-offset/header-height coupling (Career page)
+
+Issues found:
+- RF01: reviewer flagged `.brand small`'s `text-overflow: ellipsis` as inert because `<small>` defaults to `display: inline` — **investigated and found to be a false positive**: CSS Grid blockification promotes it to `display: block` automatically since it's a grid item; verified via computed style + a live screenshot with forced overflow content (ellipsis renders correctly)
+- RF02: reviewer correctly identified that Stage 7's `.site-header` fixed-height → `min-height` change (to prevent text-scaling clipping) made the header's height variable, while `.tl-year`/`.tl-dot`'s sticky `top` offsets stayed hardcoded against a height snapshot — a real regression risk if a viewer's text-size settings grow the header past the hardcoded buffer
+
+Implemented:
+- No change for RF01 (false positive, confirmed not assumed)
+- RF02: `src/components/Nav.astro` gained a script that measures `.site-header`'s real height and sets `--header-h` on `:root`, with a `resize`/`ResizeObserver` listener to keep it current
+- `src/styles/tokens.css`: `.tl-year`/`.tl-dot` sticky `top` (both the base/desktop and the 681-980px tablet rules) changed from hardcoded pixel values to `calc(var(--header-h, <fallback>) + <gap>px)`, with the previous hardcoded values kept as the `var()` fallback for graceful no-JS degradation
+- `RESPONSIVE_AUDIT.md` updated with a "Review fixes 01" section documenting both findings, the false-positive verification method, and the fix
+
+Responsive decisions:
+- Chose a runtime-measured CSS custom property over a larger static buffer — matches the plan's "fix the cause, not the symptom" principle; the previous hardcoded offsets were themselves already a symptom-level fix (Stage 7 had to re-tune them once after its own nav-padding change grew the header — exactly the fragility this fix removes)
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free on all 7 routes
+- Sticky offset values re-confirmed matching real measured header height at 700, 820, 980, 1024, 1440, 1920px (all correct: 150/156px tablet, 108/114px desktop)
+
+Theme validation:
+- Day: PASS (layout-only change, theme-independent)
+- Night: PASS (not re-screenshotted; consistent with prior stages' theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix
+- keyboard/accessibility: N/A this pass (no touch-target/focus changes)
+
+Known issues / deferred items:
+- **Tooling limitation, not a code defect:** this session's browser-automation profile does not fire `ResizeObserver` callbacks at all (confirmed with a minimal isolated repro — not even the spec-guaranteed initial callback fires). The *initial* `--header-h` sync (which fixes the actually-reported bug) was verified correct at every breakpoint; the *live update* path (`resize`/`ResizeObserver` re-firing if the header grows after page load, e.g. from a text-size setting change) could not be exercised end-to-end this session. Both are standard, well-supported browser APIs — flagged for Rahul to spot-check manually (bump text-size/zoom on `/career` at a tablet width, confirm the sticky year label still clears the header) rather than assumed correct.
+
+Next stage:
+- None — this was a post-Stage-9 review-fix cycle per the plan's "REVIEW FIXES AFTER RAHUL FEEDBACK" section. Still waiting on Rahul's explicit sign-off before any promotion toward `redesign/technical-editorial`/`main`.

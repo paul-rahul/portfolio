@@ -102,7 +102,7 @@ img {
 }
 
 .site-header {
-	height: 66px;
+	min-height: 66px;
 	display: grid;
 	grid-template-columns: auto 1fr auto;
 	align-items: center;
@@ -123,6 +123,7 @@ img {
 	font-weight: 600;
 	letter-spacing: -0.01em;
 	white-space: nowrap;
+	min-width: 0;
 }
 
 .brand > span {
@@ -142,6 +143,9 @@ img {
 	display: grid;
 	line-height: 1.15;
 	font-family: var(--font-heading);
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .brand small {
@@ -152,6 +156,8 @@ img {
 	margin-top: 3px;
 	text-transform: uppercase;
 	font-family: var(--font-mono);
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .site-header nav {
@@ -268,7 +274,7 @@ img {
 }
 
 .hero h1 {
-	font-size: clamp(40px, 5vw, 64px);
+	font-size: clamp(38px, 5vw, 64px);
 	margin: 20px 0 24px;
 	max-width: 720px;
 }
@@ -400,6 +406,7 @@ img {
 	border-radius: var(--radius-lg);
 	background: var(--surface);
 	padding: 20px 20px;
+	min-width: 0;
 }
 
 .progression-number {
@@ -622,7 +629,7 @@ img {
 }
 
 .page-hero h1 {
-	font-size: clamp(34px, 4.6vw, 54px);
+	font-size: clamp(40px, 4.6vw, 54px);
 	max-width: 900px;
 	margin: 10px 0 16px;
 }
@@ -695,7 +702,7 @@ img {
 
 .tl-year {
 	position: sticky;
-	top: 108px;
+	top: calc(var(--header-h, 66px) + 42px);
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
@@ -768,7 +775,7 @@ img {
 
 .tl-dot {
 	position: sticky;
-	top: 114px;
+	top: calc(var(--header-h, 66px) + 48px);
 	display: block;
 	width: 12px;
 	height: 12px;
@@ -1078,7 +1085,7 @@ img {
 }
 
 .editorial-title {
-	font-size: clamp(32px, 4.4vw, 48px);
+	font-size: clamp(36px, 4.4vw, 48px);
 	margin: 0;
 }
 
@@ -1104,6 +1111,7 @@ img {
 	margin-bottom: 40px;
 	display: grid;
 	grid-template-columns: 1fr auto;
+	align-items: center;
 	gap: 22px;
 }
 
@@ -1188,7 +1196,7 @@ img {
 
 @media (max-width: 980px) {
 	.site-header {
-		grid-template-columns: auto 1fr;
+		grid-template-columns: minmax(0, auto) minmax(0, 1fr);
 	}
 	.site-header nav {
 		grid-column: 1 / -1;
@@ -1197,6 +1205,15 @@ img {
 		justify-content: flex-start;
 		gap: 20px;
 		padding-bottom: 10px;
+		/* room for the focus-visible outline (2px + 3px offset) so it isn't clipped
+		   by the scroll container at the first/last item */
+		padding-inline: 5px;
+	}
+	.site-header nav a {
+		/* comfortable touch target now that nav is a touch-scrollable row */
+		padding-block: 12px;
+		display: inline-flex;
+		align-items: center;
 	}
 	.site-header {
 		height: auto;
@@ -1250,6 +1267,25 @@ img {
 	}
 }
 
+@media (max-width: 980px) and (min-width: 681px) {
+	.tl-row {
+		grid-template-columns: 150px 24px 1fr;
+		gap: 20px;
+	}
+	.tl-year {
+		/* header wraps to two rows below 980px; --header-h (set in Nav.astro)
+		   tracks its real measured height so this clears it even if the
+		   header grows (larger text-size settings, longer nav labels, etc.) */
+		top: calc(var(--header-h, 138px) + 12px);
+	}
+	.tl-dot {
+		top: calc(var(--header-h, 138px) + 18px);
+	}
+	.metric-row {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
 @media (max-width: 680px) {
 	.wrap {
 		width: min(100% - 28px, 1180px);
@@ -1258,6 +1294,9 @@ img {
 		padding-inline: 14px;
 		gap: 10px;
 	}
+	.brand small {
+		display: none;
+	}
 	.header-cta {
 		padding: 8px 10px;
 		font-size: 13px;
@@ -1265,13 +1304,14 @@ img {
 	.site-header nav {
 		gap: 16px;
 	}
+	.progression-grid {
+		grid-template-columns: 1fr;
+		gap: 14px;
+	}
 	.hero {
 		padding-block: 46px;
 		gap: 38px;
 		min-height: auto;
-	}
-	.hero h1 {
-		font-size: 38px;
 	}
 	.lede {
 		font-size: 16px;
@@ -1326,9 +1366,6 @@ img {
 	.page-hero {
 		padding-top: 28px;
 	}
-	.page-hero h1 {
-		font-size: 40px;
-	}
 	.career-shell {
 		padding-bottom: 70px;
 	}
@@ -1379,9 +1416,6 @@ img {
 	}
 	.editorial-card.large {
 		min-height: 400px;
-	}
-	.editorial-title {
-		font-size: 36px;
 	}
 	.resume-card {
 		grid-template-columns: 1fr;
