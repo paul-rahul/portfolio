@@ -426,7 +426,7 @@ img {
 }
 
 .work-section {
-	padding-block: 44px;
+	padding-block: 32px 44px;
 }
 
 .section-heading {
@@ -1193,7 +1193,11 @@ img {
 	gap: 8px;
 }
 
-.capabilities,
+.capabilities {
+	padding-block: 36px 28px;
+	border-top: 1px solid var(--border);
+}
+
 .operating-model {
 	padding-block: 60px 44px;
 	border-top: 1px solid var(--border);
@@ -1741,7 +1745,9 @@ img {
 	.built-placeholder {
 		padding: 34px 26px;
 	}
-	.capabilities,
+	.capabilities {
+		padding-block: 28px 24px;
+	}
 	.operating-model {
 		padding-block: 44px 32px;
 	}
