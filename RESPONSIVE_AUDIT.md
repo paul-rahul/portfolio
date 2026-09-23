@@ -97,3 +97,39 @@ iframe scrollWidth technique used instead catches overflow but not visual polish
 Re-verified via same-origin iframe technique: homepage `bodyOverflow` (document.scrollWidth −
 viewport width) is 0 at every width in the full required matrix — 320, 390, 430, 768, 820,
 1024, 1280, 1440, 1728, 1920.
+
+## Stage 4 — Career page responsiveness
+
+`/career` had **no horizontal overflow at any width** in the full required matrix (320–1920px)
+going into this stage — much of the plan's intended composition already existed from the
+original redesign: `.tl-row` (pinned-scroll timeline) restructures to a stacked layout below
+680px, `.metric-row` collapses 3→1 column below 680px, `.capability-grid` ("What I'm known
+for") already goes 4→2→1 at 980px/680px, and `.operating-steps` ("How I operate") already
+collapses from 5 columns to an intentional vertical flow with a left-border connector below
+680px (no horizontal scroll, no broken connectors).
+
+The one real gap found: **the tablet range (681–980px) squeezed the sticky pinned-scroll
+timeline.** `.tl-row`'s first column (`.tl-year`, the sticky year/company label) stayed at its
+desktop width (220px) all the way down to 680px, leaving `.role-detail` as little as ~370px of
+usable width once padding is subtracted — cramped but not overflowing, which is why Stage 1's
+overflow-only sweep didn't catch it. Additionally, `.tl-year`/`.tl-dot`'s sticky `top` offsets
+(108px/114px) were tuned for the 66px desktop header; at ≤980px the header wraps to a taller
+~126px (measured), which would let the sticky label tuck partially under the header — the exact
+"sticky headers must not obscure anchored content" anti-pattern the plan calls out.
+
+Fix, in `src/styles/tokens.css` — new `@media (max-width: 980px) and (min-width: 681px)` block:
+
+- `.tl-row` first column narrowed from `220px` to `150px` (frees ~70px for `.role-detail`)
+- `.tl-year`/`.tl-dot` sticky `top` raised to `138px`/`144px` — measured the actual tablet
+  header height (126px) via the iframe technique rather than guessing, so the sticky label now
+  reliably clears the wrapped header
+- `.metric-row` set to 2 columns at tablet width (previously jumped straight from 3→1 only at
+  680px, with no intermediate step)
+
+Verified `.role-detail` usable width across the new tablet band: 446px (700px viewport) → 726px
+(980px viewport) — no longer squeezed, and `bodyOverflow` remains 0 at every width tested (681,
+700, 768, 820, 900, 979, 980, 981, plus the full required matrix).
+
+Visual-only concerns (line-length feel, capability/operating-step density, exact spacing
+rhythm) were not screenshot-audited this stage — same tooling limitation noted since Stage 1,
+deferred to Stage 7 or a manual pass.
