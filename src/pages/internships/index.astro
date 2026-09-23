@@ -29,3 +29,9 @@ import PageHero from "../../components/PageHero.astro";
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	import { revealOnce } from "../../scripts/motion-reveal.ts";
+
+	revealOnce(".role-detail", { asUnit: true });
+</script>

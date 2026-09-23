@@ -25,9 +25,9 @@
 
 	--shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.05);
 
-	--motion-fast: 150ms;
-	--motion-base: 220ms;
-	--motion-enter: 420ms;
+	--motion-fast: 180ms;
+	--motion-base: 280ms;
+	--motion-enter: 520ms;
 	--motion-slow: 1800ms;
 
 	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -240,7 +240,7 @@ img {
 	background: var(--surface);
 	color: var(--ink);
 	cursor: pointer;
-	transition: background-color 0.15s ease, border-color 0.15s ease;
+	transition: background-color var(--motion-fast) ease, border-color var(--motion-fast) ease;
 }
 
 .theme-toggle:hover {
@@ -374,7 +374,7 @@ img {
 	border-radius: var(--radius-sm);
 	font-weight: 600;
 	font-size: 14px;
-	transition: background-color 0.15s ease, border-color 0.15s ease;
+	transition: background-color var(--motion-fast) ease, border-color var(--motion-fast) ease;
 }
 
 .button.primary {
@@ -560,6 +560,14 @@ img {
 
 .work-section {
 	padding-block: 32px 44px;
+}
+
+.work-section.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.work-section.is-revealed > .case-grid {
+	animation-delay: 80ms;
 }
 
 .section-heading {
@@ -1012,7 +1020,7 @@ img {
 @keyframes motion-fade-up {
 	from {
 		opacity: 0;
-		transform: translateY(6px);
+		transform: translateY(8px);
 	}
 	to {
 		opacity: 1;
@@ -1036,7 +1044,7 @@ img {
 }
 
 .motion-project-enter {
-	animation: motion-fade-up var(--motion-fast) var(--ease-out);
+	animation: motion-fade-up var(--motion-base) var(--ease-out);
 }
 
 .motion-project-enter .metric-tile {
@@ -1133,7 +1141,7 @@ img {
 	border-radius: var(--radius-md);
 	background: var(--surface);
 	cursor: pointer;
-	transition: border-color 0.15s ease, background-color 0.15s ease;
+	transition: border-color var(--motion-fast) ease, background-color var(--motion-fast) ease;
 }
 
 .firm-card:hover {
@@ -1271,7 +1279,7 @@ img {
 	border-radius: var(--radius-md);
 	background: var(--surface);
 	cursor: pointer;
-	transition: border-color 0.15s ease, background-color 0.15s ease;
+	transition: border-color var(--motion-fast) ease, background-color var(--motion-fast) ease;
 }
 
 .project-chip:hover {
@@ -1360,7 +1368,7 @@ img {
 	flex: 1;
 	font-weight: 600;
 	font-size: 15px;
-	transition: color 0.15s ease;
+	transition: color var(--motion-fast) ease;
 }
 
 .accordion-trigger:hover .accordion-title {
@@ -1464,7 +1472,7 @@ img {
 }
 
 .capability-grid.is-revealed .motion-pre-reveal {
-	animation: motion-fade-up 350ms var(--ease-out) forwards;
+	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
 }
 
 .capability-grid.is-revealed .capability-item:nth-child(2) {
@@ -1528,6 +1536,19 @@ img {
 	transform: translateY(10px);
 }
 
+/* Self-unit reveal: container carries both classes at once (see revealOnce's `asUnit` option). */
+.motion-pre-reveal.is-revealed {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.career-explorer.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
+}
+
+.career-explorer.is-revealed > .firm-detail-pane {
+	animation-delay: 60ms;
+}
+
 .operating-steps.is-revealed .motion-pre-reveal {
 	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
 }
@@ -1584,21 +1605,21 @@ img {
 	}
 }
 
-.about-intro > .media-placeholder {
-	animation: motion-slide-left var(--motion-enter) var(--ease-out) both;
-	animation-delay: 260ms;
+.about-intro.is-revealed > .media-placeholder.motion-pre-reveal {
+	animation: motion-slide-left var(--motion-enter) var(--ease-out) forwards;
 }
 
-.about-intro-copy {
-	animation: motion-slide-right var(--motion-enter) var(--ease-out) both;
-	animation-delay: 340ms;
+.about-intro.is-revealed > .about-intro-copy.motion-pre-reveal {
+	animation: motion-slide-right var(--motion-enter) var(--ease-out) forwards;
+	animation-delay: 80ms;
 }
 
-.no-js .about-intro > .media-placeholder,
-.no-js .about-intro-copy {
-	animation: none;
-	opacity: 1;
-	transform: none;
+.editorial-grid.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.editorial-grid.is-revealed > .editorial-card:nth-child(2) {
+	animation-delay: 70ms;
 }
 
 .editorial-card img {
@@ -1687,7 +1708,7 @@ img {
 	font-weight: 600;
 	display: flex;
 	justify-content: space-between;
-	transition: border-color 0.15s ease;
+	transition: border-color var(--motion-fast) ease;
 }
 
 .contact-links a:hover {
@@ -1858,6 +1879,13 @@ img {
 	.about-intro .media-placeholder {
 		max-width: 320px;
 		margin-inline: auto;
+	}
+	/* Layout stacks below 980px, so the reveal switches from opposing
+	   horizontal slides to a shared vertical direction — desktop's
+	   left/right choreography only makes sense side by side. */
+	.about-intro.is-revealed > .media-placeholder.motion-pre-reveal,
+	.about-intro.is-revealed > .about-intro-copy.motion-pre-reveal {
+		animation-name: motion-fade-up;
 	}
 	.editorial-grid {
 		grid-template-columns: 1fr;
