@@ -162,3 +162,49 @@ site-wide nav concern (not secondary-page-specific), so it's logged here but def
 No other structural or visual issues found on About, Internships, Built, or Contact this pass —
 these were reviewed via the same overflow-sweep + spot computed-style technique, not a full
 screenshot visual audit (same tooling limitation as prior stages).
+
+## Stage 6 — Typography / spacing / media system
+
+Audited every major heading selector (`.hero h1`, `.page-hero h1`, `.section-heading h2`,
+`.editorial-title`, `.editorial-card h2`, `.capability-item h3`, `.operating-step h3`, body/lede
+text, nav text, labels/captions) for fluid vs. fixed sizing, and checked media/image handling.
+
+Found the exact anti-pattern the plan calls out ("avoid dozens of breakpoint-specific font
+overrides"): three headings — `.hero h1`, `.page-hero h1`, `.editorial-title` — already used
+`clamp()` for fluid sizing, but then had a **second, redundant fixed `font-size` override**
+inside the `≤680px` breakpoint. Since each clamp's own minimum already floors the size well
+above 680px's natural `vw` value, the override was the only thing actually setting the mobile
+size — meaning the fluid clamp was dead weight below ~700-870px, and the page snapped abruptly
+from the clamp curve to the fixed value exactly at 680px.
+
+Fix, in `src/styles/tokens.css`: folded each override's intended value into the clamp's own
+floor, then deleted the now-redundant breakpoint override:
+
+- `.hero h1`: `clamp(40px, 5vw, 64px)` → `clamp(38px, 5vw, 64px)` (was overridden to 38px at
+  ≤680px)
+- `.page-hero h1`: `clamp(34px, 4.6vw, 54px)` → `clamp(40px, 4.6vw, 54px)` (was overridden to
+  40px at ≤680px)
+- `.editorial-title`: `clamp(32px, 4.4vw, 48px)` → `clamp(36px, 4.4vw, 48px)` (was overridden to
+  36px at ≤680px)
+
+No visual change at either extreme (320px or 1920px) — same floor/ceiling values as before, just
+expressed as one continuous curve instead of a curve-then-snap. Verified via computed
+`getBoundingClientRect`/`getComputedStyle` on live iframes that each heading now holds its floor
+value flat through the low end and transitions smoothly with no discontinuity at 680px (e.g.
+homepage h1: 38px flat 320-760px, 45px at 900px, 54px at 1080px, 64px at 1440px+).
+
+Other findings:
+- Base `img { width: 100%; height: 100%; object-fit: cover }` already bounds all images to their
+  container — no image-overflow risk found.
+- Body/lede copy max-widths (640-760px) were already well within a comfortable reading measure
+  at every checked selector — no line-length fix needed.
+- `.brand div`/`.brand small` (Stage 2) and other text-overflow guards were left as-is; no
+  further typography-scale rework needed beyond the three clamp consolidations above.
+
+Re-verified full required matrix (320-1920px) overflow-free on all 7 routes after these changes.
+
+Spacing-scale and SVG/diagram-legibility items on the plan's Stage 6 checklist were not deeply
+re-audited this pass (existing spacing already uses a consistent set of values across the
+stylesheet, and no diagram-heavy components were found needing mobile-specific treatment) — if
+Rahul spots a specific spacing inconsistency during manual review, it should be logged as a new
+row in this table rather than assumed fixed by this stage.
