@@ -69,10 +69,13 @@ const defaultFirmId = firms[0].id;
 									data-firm-trigger
 									data-firm-id={firm.id}
 									aria-pressed={firm.id === defaultFirmId ? "true" : "false"}
+									aria-expanded={firm.id === defaultFirmId ? "true" : "false"}
+									aria-controls={firm.id}
 								>
 									<span class="firm-card-name">{firm.name}</span>
 									<span class="firm-card-role">{firm.roleSummary}</span>
 									<span class="firm-card-period">{firm.period}</span>
+									<span class="firm-card-chevron" aria-hidden="true"></span>
 								</button>
 							</li>
 						))
@@ -213,10 +216,43 @@ const defaultFirmId = firms[0].id;
 			el.classList.add(className);
 		};
 
+		const firmDetailPane = explorer.querySelector<HTMLElement>(".firm-detail-pane");
+		const firmPanelOrder = firmPanels.map((p) => p.dataset.firmId);
+		const compactQuery = window.matchMedia("(max-width: 680px)");
+		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+		const getFirmLi = (firmId: string) => {
+			const btn = firmTriggers.find((b) => b.dataset.firmId === firmId);
+			return btn ? btn.closest("li") : null;
+		};
+
+		const getPanel = (firmId: string) => firmPanels.find((p) => p.dataset.firmId === firmId);
+
+		const placePanelInline = (firmId: string) => {
+			const li = getFirmLi(firmId);
+			const panel = getPanel(firmId);
+			if (li && panel && panel.parentElement !== li) li.appendChild(panel);
+		};
+
+		const restorePanelToPane = (firmId: string) => {
+			if (!firmDetailPane) return;
+			const panel = getPanel(firmId);
+			if (!panel || panel.parentElement === firmDetailPane) return;
+			const idx = firmPanelOrder.indexOf(firmId);
+			const nextId = firmPanelOrder[idx + 1];
+			const nextPanel = nextId ? getPanel(nextId) : undefined;
+			if (nextPanel && nextPanel.parentElement === firmDetailPane) {
+				firmDetailPane.insertBefore(panel, nextPanel);
+			} else {
+				firmDetailPane.appendChild(panel);
+			}
+		};
+
 		const activateFirm = (firmId: string, { focus = false }: { focus?: boolean } = {}) => {
 			firmTriggers.forEach((btn) => {
 				const isActive = btn.dataset.firmId === firmId;
 				btn.setAttribute("aria-pressed", String(isActive));
+				btn.setAttribute("aria-expanded", String(isActive));
 				if (isActive && focus) btn.focus();
 			});
 			firmPanels.forEach((panel) => {
@@ -227,19 +263,80 @@ const defaultFirmId = firms[0].id;
 			});
 		};
 
+		const setFirmExpandedCompact = (firmId: string, expand: boolean) => {
+			const btn = firmTriggers.find((b) => b.dataset.firmId === firmId);
+			const panel = getPanel(firmId);
+			if (!btn || !panel) return;
+			btn.setAttribute("aria-expanded", String(expand));
+			btn.setAttribute("aria-pressed", String(expand));
+			if (expand) {
+				placePanelInline(firmId);
+				const wasHidden = panel.hidden;
+				panel.hidden = false;
+				if (wasHidden) playEnter(panel, "motion-firm-enter");
+			} else {
+				panel.hidden = true;
+				restorePanelToPane(firmId);
+			}
+		};
+
 		firmTriggers.forEach((btn) => {
 			btn.addEventListener("click", () => {
 				const id = btn.dataset.firmId;
 				if (!id) return;
-				activateFirm(id);
-				history.replaceState(null, "", `#${id}`);
+
+				if (compactQuery.matches) {
+					const wasExpanded = btn.getAttribute("aria-expanded") === "true";
+					firmTriggers.forEach((other) => {
+						if (other !== btn && other.getAttribute("aria-expanded") === "true") {
+							setFirmExpandedCompact(other.dataset.firmId ?? "", false);
+						}
+					});
+					setFirmExpandedCompact(id, !wasExpanded);
+					history.replaceState(null, "", wasExpanded ? window.location.pathname : `#${id}`);
+					if (!wasExpanded) {
+						requestAnimationFrame(() => {
+							btn.scrollIntoView({ block: "nearest", behavior: prefersReducedMotion.matches ? "auto" : "smooth" });
+						});
+					}
+				} else {
+					activateFirm(id);
+					history.replaceState(null, "", `#${id}`);
+				}
 			});
+		});
+
+		// Sync DOM placement of panels when crossing the compact breakpoint,
+		// rather than reparenting on every resize event.
+		const syncToCompact = () => {
+			const expandedBtn = firmTriggers.find((b) => b.getAttribute("aria-expanded") === "true");
+			firmTriggers.forEach((btn) => {
+				const id = btn.dataset.firmId ?? "";
+				const isExpanded = btn === expandedBtn;
+				btn.setAttribute("aria-expanded", String(isExpanded));
+				if (isExpanded) placePanelInline(id);
+			});
+		};
+
+		const syncToDesktop = () => {
+			firmPanelOrder.forEach((id) => {
+				if (id) restorePanelToPane(id);
+			});
+			const activeId = firmTriggers.find((b) => b.getAttribute("aria-pressed") === "true")?.dataset.firmId;
+			firmTriggers.forEach((btn) => btn.setAttribute("aria-expanded", String(btn.dataset.firmId === activeId)));
+		};
+
+		compactQuery.addEventListener("change", (e) => {
+			if (e.matches) syncToCompact();
+			else syncToDesktop();
 		});
 
 		const initialHash = window.location.hash.replace("#", "");
 		if (initialHash && firmTriggers.some((b) => b.dataset.firmId === initialHash)) {
 			activateFirm(initialHash);
 		}
+
+		if (compactQuery.matches) syncToCompact();
 
 		firmPanels.forEach((panel) => {
 			const projectTriggers = Array.from(panel.querySelectorAll<HTMLButtonElement>("[data-project-trigger]"));
