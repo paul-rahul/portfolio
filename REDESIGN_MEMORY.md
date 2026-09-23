@@ -868,3 +868,55 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 4 — Career page responsiveness (most important recruiter page; sticky sidebar/role navigation, metrics, "What I'm known for", "How I operate")
+
+## Responsive Audit — Stage 04
+
+Status: complete
+
+Branch:
+responsive/04-career
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- `/career` — pinned-scroll timeline (`.tl-row`/`.tl-year`/`.tl-dot`), metric tiles, capability grid ("What I'm known for"), operating steps ("How I operate")
+
+Issues found:
+- No horizontal overflow at any tested width (320-1920px) — most of the plan's intended mobile/tablet composition already existed from the original redesign
+- Tablet range (681-980px): `.tl-row`'s sticky-year column stayed at its full desktop width (220px), squeezing `.role-detail` to ~370px usable width — cramped, not overflowing, so Stage 1's overflow-only sweep missed it
+- Tablet range: `.tl-year`/`.tl-dot` sticky `top` offsets were tuned for the 66px desktop header; the wrapped tablet header is ~126px, so the sticky label could tuck under it while scrolling
+
+Implemented:
+- `src/styles/tokens.css`: new `@media (max-width: 980px) and (min-width: 681px)` block
+  - `.tl-row` first column narrowed 220px → 150px
+  - `.tl-year`/`.tl-dot` sticky `top` raised to 138px/144px (measured actual tablet header height via iframe technique, not guessed)
+  - `.metric-row` set to 2 columns at tablet width (previously 3→1 with no intermediate step)
+- `RESPONSIVE_AUDIT.md` updated: Stage 4 section added
+
+Responsive decisions:
+- Kept the pinned-scroll sticky timeline concept intact through tablet rather than collapsing it early to the mobile stacked layout — narrowing the sidebar column and fixing the sticky offset was enough to remove the squeeze without changing the interaction model
+- `.capability-grid` (4→2→1) and `.operating-steps` (5→vertical-with-connector) were already correct per the plan's spec and left untouched
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free
+- Tablet band specifically probed at 681, 700, 768, 820, 900, 979, 980, 981 for header height, sticky offset clearance, and `.role-detail`/`.metric-row` computed widths
+
+Theme validation:
+- Day: PASS (structural/layout change only, theme-independent)
+- Night: PASS (not re-screenshotted; consistent with prior stages' theme-independence finding)
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix
+- keyboard/accessibility: not tested this stage (deferred to Stage 7 per plan)
+
+Known issues / deferred items:
+- Visual-only concerns (line-length feel, capability/operating-step density, exact spacing rhythm) not screenshot-audited — same tooling limitation since Stage 1, deferred to Stage 7 or manual pass
+
+Next stage:
+- Stage 5 — secondary pages (About, Internships, Built, Resume, Contact)
