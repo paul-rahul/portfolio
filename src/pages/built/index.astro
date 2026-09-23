@@ -15,3 +15,9 @@ import PageHero from "../../components/PageHero.astro";
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	import { revealOnce } from "../../scripts/motion-reveal.ts";
+
+	revealOnce(".built-placeholder", { asUnit: true });
+</script>

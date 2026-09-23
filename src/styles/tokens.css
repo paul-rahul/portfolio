@@ -1605,21 +1605,21 @@ img {
 	}
 }
 
-.about-intro > .media-placeholder {
-	animation: motion-slide-left var(--motion-enter) var(--ease-out) both;
-	animation-delay: 260ms;
+.about-intro.is-revealed > .media-placeholder.motion-pre-reveal {
+	animation: motion-slide-left var(--motion-enter) var(--ease-out) forwards;
 }
 
-.about-intro-copy {
-	animation: motion-slide-right var(--motion-enter) var(--ease-out) both;
-	animation-delay: 340ms;
+.about-intro.is-revealed > .about-intro-copy.motion-pre-reveal {
+	animation: motion-slide-right var(--motion-enter) var(--ease-out) forwards;
+	animation-delay: 80ms;
 }
 
-.no-js .about-intro > .media-placeholder,
-.no-js .about-intro-copy {
-	animation: none;
-	opacity: 1;
-	transform: none;
+.editorial-grid.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.editorial-grid.is-revealed > .editorial-card:nth-child(2) {
+	animation-delay: 70ms;
 }
 
 .editorial-card img {
