@@ -391,55 +391,6 @@ img {
 	mix-blend-mode: normal;
 }
 
-.progression {
-	padding-block: 26px 0;
-}
-
-.progression-grid {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 22px;
-}
-
-.progression-step {
-	border: 1px solid var(--border);
-	border-radius: var(--radius-lg);
-	background: var(--surface);
-	padding: 20px 20px;
-	min-width: 0;
-}
-
-.progression-number {
-	font-family: var(--font-mono);
-	font-size: 13px;
-	font-weight: 700;
-	color: var(--accent);
-}
-
-.progression-step h3 {
-	font-family: var(--font-heading);
-	font-size: 20px;
-	font-weight: 600;
-	margin: 14px 0 6px;
-}
-
-.progression-step p {
-	margin: 0 0 14px;
-	color: var(--ink-secondary);
-	font-size: 15px;
-}
-
-.progression-tags {
-	display: block;
-	font-family: var(--font-mono);
-	font-size: 11px;
-	letter-spacing: 0.05em;
-	text-transform: uppercase;
-	color: var(--ink-secondary);
-	border-top: 1px solid var(--border);
-	padding-top: 12px;
-}
-
 .fact-strip {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -659,34 +610,6 @@ img {
 	letter-spacing: 0.1em;
 	color: var(--accent);
 	font-family: var(--font-mono);
-}
-
-.reading-frame {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	gap: 10px;
-	margin: 0 auto 28px;
-	max-width: 900px;
-}
-
-.frame-pill {
-	font-family: var(--font-mono);
-	font-size: 12px;
-	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: var(--ink);
-	background: var(--surface);
-	border: 1px solid var(--border);
-	border-radius: 999px;
-	padding: 8px 18px;
-}
-
-.frame-arrow {
-	color: var(--accent);
-	font-size: 14px;
 }
 
 .career-shell {
@@ -1127,26 +1050,6 @@ img {
 	color: var(--ink-secondary);
 }
 
-.resume-card {
-	background: var(--surface);
-	border: 1px solid var(--border);
-	border-radius: var(--radius-lg);
-	padding: 26px;
-	margin-bottom: 40px;
-	display: grid;
-	grid-template-columns: 1fr auto;
-	align-items: center;
-	gap: 22px;
-}
-
-.resume-card h2 {
-	font-family: var(--font-heading);
-	font-weight: 600;
-	font-size: 32px;
-	margin: 0 0 16px;
-	letter-spacing: -0.015em;
-}
-
 .contact-card {
 	background: var(--surface);
 	border: 1px solid var(--border);
@@ -1421,10 +1324,6 @@ img {
 	.site-header nav {
 		gap: 16px;
 	}
-	.progression-grid {
-		grid-template-columns: 1fr;
-		gap: 14px;
-	}
 	.hero {
 		padding-block: 46px;
 		gap: 38px;
@@ -1530,10 +1429,6 @@ img {
 	}
 	.editorial-card {
 		padding: 26px;
-	}
-	.resume-card {
-		grid-template-columns: 1fr;
-		padding: 28px;
 	}
 	.contact-card {
 		padding: 36px 24px;
