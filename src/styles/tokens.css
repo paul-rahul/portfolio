@@ -285,6 +285,32 @@ img {
 	font-size: clamp(38px, 5vw, 64px);
 	margin: 20px 0 24px;
 	max-width: 720px;
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) both;
+}
+
+.hero .lede {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) both;
+	animation-delay: 90ms;
+}
+
+.hero .actions {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) both;
+	animation-delay: 180ms;
+}
+
+.hero-art {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) both;
+	animation-delay: 270ms;
+}
+
+.no-js .hero h1,
+.no-js .hero .lede,
+.no-js .hero .actions,
+.no-js .hero-art,
+.no-js .intersection-circle {
+	animation: none;
+	opacity: 1;
+	transform: none;
 }
 
 .hero h1 em {
@@ -381,11 +407,15 @@ img {
 .intersection-circle.tech {
 	top: 8%;
 	left: 8%;
+	animation: motion-converge-tech var(--motion-slow) var(--ease-out) both;
+	animation-delay: 300ms;
 }
 
 .intersection-circle.product {
 	top: 8%;
 	right: 8%;
+	animation: motion-converge-product var(--motion-slow) var(--ease-out) both;
+	animation-delay: 340ms;
 }
 
 .intersection-circle.market {
@@ -393,6 +423,41 @@ img {
 	left: 28%;
 	border-color: var(--accent);
 	color: var(--accent);
+	animation: motion-converge-market var(--motion-slow) var(--ease-out) both;
+	animation-delay: 380ms;
+}
+
+@keyframes motion-converge-tech {
+	from {
+		opacity: 0;
+		transform: translate(-14px, -10px);
+	}
+	to {
+		opacity: 1;
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes motion-converge-product {
+	from {
+		opacity: 0;
+		transform: translate(14px, -10px);
+	}
+	to {
+		opacity: 1;
+		transform: translate(0, 0);
+	}
+}
+
+@keyframes motion-converge-market {
+	from {
+		opacity: 0;
+		transform: translate(0, 14px);
+	}
+	to {
+		opacity: 1;
+		transform: translate(0, 0);
+	}
 }
 
 :root[data-theme="dark"] .intersection-circle {
@@ -433,6 +498,20 @@ img {
 	line-height: 1.35;
 }
 
+.fact-strip.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
+}
+
+.fact-strip.is-revealed > div:nth-child(2) {
+	animation-delay: 60ms;
+}
+.fact-strip.is-revealed > div:nth-child(3) {
+	animation-delay: 120ms;
+}
+.fact-strip.is-revealed > div:nth-child(4) {
+	animation-delay: 180ms;
+}
+
 .work-section {
 	padding-block: 32px 44px;
 }
@@ -471,7 +550,7 @@ img {
 	overflow: hidden;
 	border: 1px solid var(--border);
 	background: var(--surface);
-	transition: border-color 0.2s ease, transform 0.2s ease;
+	transition: border-color var(--motion-base) var(--ease-out), transform var(--motion-base) var(--ease-out);
 }
 
 .case-card:hover {
@@ -485,6 +564,22 @@ img {
 	place-items: center;
 	background: var(--background);
 	border-bottom: 1px solid var(--border);
+}
+
+.case-visual > * {
+	transition: transform var(--motion-base) var(--ease-out);
+}
+
+.case-card:hover .case-visual > * {
+	transform: scale(1.015);
+}
+
+.case-link svg {
+	transition: transform var(--motion-fast) var(--ease-out);
+}
+
+.case-card:hover .case-link svg {
+	transform: translateX(3px);
 }
 
 .case-copy {
@@ -1304,6 +1399,20 @@ img {
 	color: var(--ink-secondary);
 	font-size: 15px;
 	line-height: 1.5;
+}
+
+.capability-grid.is-revealed .motion-pre-reveal {
+	animation: motion-fade-up 350ms var(--ease-out) forwards;
+}
+
+.capability-grid.is-revealed .capability-item:nth-child(2) {
+	animation-delay: 70ms;
+}
+.capability-grid.is-revealed .capability-item:nth-child(3) {
+	animation-delay: 140ms;
+}
+.capability-grid.is-revealed .capability-item:nth-child(4) {
+	animation-delay: 210ms;
 }
 
 .operating-steps {
