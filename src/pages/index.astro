@@ -73,24 +73,30 @@ const projects = [
 			<div class="hero-art">
 				<!-- Placeholder for a real portrait: drop an <img> into .image-frame and remove .intersection-diagram, no other layout changes needed. -->
 				<div class="image-frame intersection-diagram" aria-hidden="true">
-					<span class="intersection-circle engineering">Engineering</span>
-					<span class="intersection-circle design">Design</span>
-					<span class="intersection-circle business">Business</span>
-					<svg class="intersection-accent" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
+					<svg class="venn" viewBox="0 0 100 100" focusable="false">
 						<defs>
-							<marker id="intersection-arrowhead" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse">
+							<marker id="intersection-arrowhead" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="2.4" markerHeight="2.4" orient="auto-start-reverse">
 								<path d="M0,0 L8,4 L0,8 Z" class="intersection-arrowhead-fill" />
 							</marker>
 						</defs>
+						<!-- shared circle size/positions: equal r=26, upper circles symmetric about x=50 at y=38,
+						     lower circle centered at x=50, y=64; the three centers place the true triple-overlap
+						     centroid at ~(50,47), slightly above the diagram's vertical center (50) -->
+						<circle class="venn-ring venn-engineering" cx="35" cy="38" r="26" />
+						<circle class="venn-ring venn-design" cx="65" cy="38" r="26" />
+						<circle class="venn-ring venn-business" cx="50" cy="64" r="26" />
+						<text class="venn-label venn-label-engineering" x="35" y="30">ENGINEERING</text>
+						<text class="venn-label venn-label-design" x="65" y="30">DESIGN</text>
+						<text class="venn-label venn-label-business" x="50" y="61">BUSINESS</text>
 						<path
 							class="intersection-arrow"
-							d="M89,63 C77,66 63,58 52,46.5"
+							d="M61,48 C56.5,50.5 52.5,49 50.6,47.2"
 							fill="none"
 							marker-end="url(#intersection-arrowhead)"
 						/>
-						<circle class="intersection-dot" cx="51" cy="45" r="1.7" />
+						<circle class="intersection-dot" cx="50" cy="47" r="0.8" />
+						<text class="intersection-note" x="63" y="43">This is me</text>
 					</svg>
-					<span class="intersection-note">This is me</span>
 				</div>
 			</div>
 		</section>
