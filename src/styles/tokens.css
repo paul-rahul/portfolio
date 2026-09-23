@@ -25,6 +25,14 @@
 
 	--shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.05);
 
+	--motion-fast: 150ms;
+	--motion-base: 220ms;
+	--motion-enter: 420ms;
+	--motion-slow: 650ms;
+
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
 	color-scheme: light;
 }
 
