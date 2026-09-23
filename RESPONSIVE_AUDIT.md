@@ -208,3 +208,49 @@ re-audited this pass (existing spacing already uses a consistent set of values a
 stylesheet, and no diagram-heavy components were found needing mobile-specific treatment) — if
 Rahul spots a specific spacing inconsistency during manual review, it should be logged as a new
 row in this table rather than assumed fixed by this stage.
+
+## Stage 7 — Cross-theme / accessibility / interaction QA
+
+**Touch targets.** Fixed the primary-nav tap-target gap logged in Stage 5 (~35.7px measured at
+320px, under the ~44px comfortable-touch guideline). Scoped the fix to the `≤980px` breakpoint
+only, where nav becomes a horizontally-scrollable touch row — desktop nav stays visually
+unchanged (compact editorial style, mouse target). `.site-header nav a` gained
+`padding-block: 12px` + `display: inline-flex; align-items: center` inside that breakpoint;
+measured height is now 47.7px at 320-980px, unchanged 35.7px at 1024px+.
+
+**Focus states.** A global `a:focus-visible, button:focus-visible { outline: 2px solid
+var(--accent); outline-offset: 3px }` already existed and uses the same accent token in both
+themes (so it's high-contrast in both). Found one clipping risk: the mobile/tablet nav row
+(`overflow-x: auto`, no horizontal padding) could clip the focus ring on the first/last nav item
+against the scroll container edge. Fixed by adding `padding-inline: 5px` to `.site-header nav`
+in the `≤980px` breakpoint (matches the 2px outline + 3px offset).
+
+**Fixed-height text container.** `.site-header` used a fixed `height: 66px` on desktop. If a
+user increases browser/OS text size (not page zoom — independent text scaling), the header
+can't grow to fit larger nav text, risking clipping — the exact anti-pattern the plan names
+("do not use fixed heights that clip text when font size increases"). Changed to `min-height:
+66px` — no visual change at default sizes, but the header can now grow if needed.
+
+**Regression from the nav padding change.** Increasing nav-link height also grew the tablet
+header from ~126px to ~138.4px (measured). This meant Stage 4's `.tl-year`/`.tl-dot` sticky
+offsets (138px/144px, tuned for the pre-Stage-7 header height) were now nearly flush with the
+new header edge. Caught via the same iframe-measurement technique and fixed by raising the
+offsets to 150px/156px, re-verified against the actual 138.4px header height across the full
+681-980px tablet band.
+
+**Day/Night.** Toggled the theme live (not just inspected computed styles) and confirmed
+`data-theme` flips light↔dark and persists to `localStorage`. All fixes this stage are
+layout/spacing-only (no color-token changes), consistent with every prior stage's
+theme-independence finding.
+
+**Reduced motion.** An existing `@media (prefers-reduced-motion: reduce)` block already zeroes
+`animation-duration`/`transition-duration` globally and sets `scroll-behavior: auto` — confirmed
+still present and untouched. The pinned-timeline scroll-fill (`.tl-track::after`) is
+scroll-position-driven via a CSS custom property, not an autoplaying animation, so it isn't a
+reduced-motion concern.
+
+**Not verified this stage** (tooling limitation, consistent with every prior stage): actual
+keyboard tab-order walkthrough, real browser zoom at 125/150/200%, and screen-reader behavior
+were not exercised — the session's browser-automation profile can't reliably drive
+viewport-independent zoom or keyboard focus traversal. Re-verified the full required matrix
+(320-1920px) overflow-free on all 7 routes after all Stage 7 changes.

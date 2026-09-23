@@ -1019,3 +1019,58 @@ Known issues / deferred items:
 
 Next stage:
 - Stage 7 — cross-theme/accessibility/interaction QA (Day/Night at all breakpoints, keyboard, touch targets — including the nav tap-target gap logged in Stage 5 — focus states, reduced motion)
+
+## Responsive Audit — Stage 07
+
+Status: complete
+
+Branch:
+responsive/07-cross-theme-accessibility
+
+PR:
+(opening now)
+
+Merged into:
+feature/responsive-audit
+
+Pages/components reviewed:
+- Global nav/header (touch targets, focus states, fixed-height risk), Career pinned-scroll timeline (regression fix), Day/Night toggle, reduced-motion query — across all routes
+
+Issues found:
+- Nav tap targets ~35.7px at ≤980px (Stage 5 finding) — under ~44px comfortable-touch guideline
+- Mobile/tablet nav row (`overflow-x: auto`, no horizontal padding) could clip the focus-visible ring on first/last item
+- `.site-header` used fixed `height: 66px` — risk of clipping nav text if a user increases browser/OS text size independent of page zoom
+- Self-inflicted regression: fixing the nav tap-target height grew the tablet header from ~126px to ~138.4px, which nearly flush-collided with Stage 4's sticky `.tl-year`/`.tl-dot` offsets (138px/144px) — caught and fixed in the same stage
+
+Implemented:
+- `src/styles/tokens.css`:
+  - `.site-header nav a` gains `padding-block: 12px; display: inline-flex; align-items: center` inside `≤980px` only (desktop nav stays compact/unchanged) — measured height now 47.7px at 320-980px
+  - `.site-header nav` gains `padding-inline: 5px` inside `≤980px` so the focus ring isn't clipped at the scroll edges
+  - `.site-header` changed from fixed `height: 66px` to `min-height: 66px`
+  - `.tl-year`/`.tl-dot` sticky `top` raised from 138px/144px to 150px/156px to clear the now-taller (~138.4px) tablet header
+- `RESPONSIVE_AUDIT.md` updated: Stage 7 section added
+
+Responsive decisions:
+- Scoped the touch-target fix to the breakpoint where nav actually becomes a touch-scrollable row, rather than inflating the desktop nav's tight editorial padding
+- Verified theme toggle live (clicked it, checked `data-theme` + `localStorage`), not just inspected computed styles
+
+Breakpoints tested:
+- Full required matrix (320-1920px) re-verified overflow-free on all 7 routes after every change this stage
+- Header height / sticky-offset clearance re-measured across 681-980px tablet band after the nav padding regression
+
+Theme validation:
+- Day: PASS
+- Night: PASS — all Stage 7 changes are layout/spacing-only, no color-token changes; theme toggle exercised live (click + localStorage check), consistent with prior stages' theme-independence finding
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS
+- horizontal overflow: PASS across full matrix
+- keyboard/accessibility: focus-visible outline confirmed present and unclipped by computed measurement; actual keyboard tab-order walkthrough, real browser zoom (125/150/200%), and screen-reader behavior NOT exercised this session — browser-automation profile can't reliably drive viewport-independent zoom or keyboard focus traversal; still needs a manual pass by Rahul
+
+Known issues / deferred items:
+- Real keyboard navigation, browser zoom, and screen-reader QA deferred to a manual pass — same tooling limitation noted since Stage 1
+- Visual-only polish (density, spacing rhythm) still not screenshot-audited
+
+Next stage:
+- Stage 8 — update DESIGN.md with the responsive system now that all structural stages are complete
