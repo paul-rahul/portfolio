@@ -26,3 +26,9 @@ import ArrowIcon from "../components/ArrowIcon.astro";
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	import { revealOnce } from "../scripts/motion-reveal.ts";
+
+	revealOnce(".contact-card", { asUnit: true });
+</script>

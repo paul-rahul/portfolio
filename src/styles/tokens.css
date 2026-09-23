@@ -18,6 +18,8 @@
 	--font-heading: "Instrument Sans", "Inter Tight", "Inter", system-ui, sans-serif;
 	--font-body: "Inter", system-ui, sans-serif;
 	--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+	/* reserved for the homepage hero "This is me" annotation only */
+	--font-hand: "Caveat", cursive;
 
 	--radius-sm: 8px;
 	--radius-md: 12px;
@@ -25,9 +27,9 @@
 
 	--shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.05);
 
-	--motion-fast: 150ms;
-	--motion-base: 220ms;
-	--motion-enter: 420ms;
+	--motion-fast: 180ms;
+	--motion-base: 280ms;
+	--motion-enter: 520ms;
 	--motion-slow: 1800ms;
 
 	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -240,7 +242,7 @@ img {
 	background: var(--surface);
 	color: var(--ink);
 	cursor: pointer;
-	transition: background-color 0.15s ease, border-color 0.15s ease;
+	transition: background-color var(--motion-fast) ease, border-color var(--motion-fast) ease;
 }
 
 .theme-toggle:hover {
@@ -337,11 +339,24 @@ img {
 .no-js .hero h1,
 .no-js .hero .lede,
 .no-js .hero .actions,
-.no-js .hero-art,
-.no-js .intersection-circle {
+.no-js .hero-art {
 	animation: none;
 	opacity: 1;
 	transform: none;
+}
+
+.no-js .venn-ring,
+.no-js .venn-label,
+.no-js .intersection-arrow,
+.no-js .intersection-dot,
+.no-js .intersection-note {
+	animation: none;
+	opacity: 1;
+	translate: 0 0;
+}
+
+.no-js .intersection-arrow {
+	stroke-dashoffset: 0;
 }
 
 .hero h1 em {
@@ -374,7 +389,7 @@ img {
 	border-radius: var(--radius-sm);
 	font-weight: 600;
 	font-size: 14px;
-	transition: background-color 0.15s ease, border-color 0.15s ease;
+	transition: background-color var(--motion-fast) ease, border-color var(--motion-fast) ease;
 }
 
 .button.primary {
@@ -433,81 +448,167 @@ img {
 	background: var(--surface);
 }
 
-.intersection-circle {
-	position: absolute;
-	display: grid;
-	place-items: center;
-	width: 52%;
-	aspect-ratio: 1;
-	border-radius: 50%;
-	border: 1.5px solid var(--ink);
-	font-family: var(--font-mono);
-	font-size: 12px;
-	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: var(--ink-secondary);
-	mix-blend-mode: multiply;
+/* Single bounded coordinate system (viewBox 0 0 100 100) for the whole diagram —
+   circle centers/radii, the dot, the arrow, and both label sets are all authored
+   in the same 100-unit space, so geometry stays exact and scales as one unit at
+   any width instead of drifting between independently-positioned pieces. */
+.venn {
+	display: block;
+	width: 100%;
+	height: auto;
 }
 
-.intersection-circle.tech {
-	top: 8%;
-	left: 8%;
-	animation: motion-converge-tech var(--motion-slow) var(--ease-out) both;
+.venn-ring {
+	fill: none;
+	stroke: var(--accent);
+	stroke-width: 2.75;
+	mix-blend-mode: multiply;
+	opacity: 0;
+}
+
+:root[data-theme="dark"] .venn-ring {
+	mix-blend-mode: normal;
+}
+
+.venn-engineering {
+	animation: motion-converge-engineering var(--motion-slow) var(--ease-out) both;
 	animation-delay: 300ms;
 }
 
-.intersection-circle.product {
-	top: 8%;
-	right: 8%;
-	animation: motion-converge-product var(--motion-slow) var(--ease-out) both;
+.venn-design {
+	animation: motion-converge-design var(--motion-slow) var(--ease-out) both;
 	animation-delay: 480ms;
 }
 
-.intersection-circle.market {
-	bottom: 8%;
-	left: 28%;
-	border-color: var(--accent);
-	color: var(--accent);
-	animation: motion-converge-market var(--motion-slow) var(--ease-out) both;
+.venn-business {
+	animation: motion-converge-business var(--motion-slow) var(--ease-out) both;
 	animation-delay: 660ms;
 }
 
-@keyframes motion-converge-tech {
+@keyframes motion-converge-engineering {
 	from {
 		opacity: 0;
-		transform: translate(-14px, -10px);
+		translate: -60px -40px;
 	}
 	to {
 		opacity: 1;
-		transform: translate(0, 0);
+		translate: 0 0;
 	}
 }
 
-@keyframes motion-converge-product {
+@keyframes motion-converge-design {
 	from {
 		opacity: 0;
-		transform: translate(14px, -10px);
+		translate: 60px -40px;
 	}
 	to {
 		opacity: 1;
-		transform: translate(0, 0);
+		translate: 0 0;
 	}
 }
 
-@keyframes motion-converge-market {
+@keyframes motion-converge-business {
 	from {
 		opacity: 0;
-		transform: translate(0, 14px);
+		translate: 0 60px;
 	}
 	to {
 		opacity: 1;
-		transform: translate(0, 0);
+		translate: 0 0;
 	}
 }
 
-:root[data-theme="dark"] .intersection-circle {
-	mix-blend-mode: normal;
+.venn-label {
+	font-family: var(--font-mono);
+	font-size: 23px;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	fill: var(--ink);
+	text-anchor: middle;
+	dominant-baseline: central;
+	opacity: 0;
+}
+
+.venn-label-engineering {
+	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
+	animation-delay: 2100ms;
+}
+
+.venn-label-design {
+	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
+	animation-delay: 2280ms;
+}
+
+.venn-label-business {
+	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
+	animation-delay: 2460ms;
+}
+
+@keyframes motion-fade-up-svg {
+	from {
+		opacity: 0;
+		translate: 0 20px;
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+.intersection-arrow {
+	fill: none;
+	stroke: var(--accent);
+	stroke-width: 3.5;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	opacity: 0;
+	stroke-dasharray: 200;
+	stroke-dashoffset: 200;
+	animation: motion-arrow-draw var(--motion-enter) var(--ease-out) both;
+	animation-delay: 2950ms;
+}
+
+.intersection-arrowhead-fill {
+	fill: var(--accent);
+}
+
+@keyframes motion-arrow-draw {
+	from {
+		opacity: 0;
+		stroke-dashoffset: 200;
+	}
+	to {
+		opacity: 1;
+		stroke-dashoffset: 0;
+	}
+}
+
+.intersection-dot {
+	fill: var(--accent);
+	opacity: 0;
+	filter: drop-shadow(0 0 8px var(--accent));
+	animation: motion-dot-appear var(--motion-base) var(--ease-out) both;
+	animation-delay: 2700ms;
+}
+
+@keyframes motion-dot-appear {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.intersection-note {
+	font-family: var(--font-hand);
+	font-size: 37px;
+	font-weight: 400;
+	font-style: italic;
+	fill: var(--accent);
+	opacity: 0;
+	animation: motion-fade-up-svg var(--motion-enter) var(--ease-out) both;
+	animation-delay: 3300ms;
 }
 
 .fact-strip {
@@ -560,6 +661,14 @@ img {
 
 .work-section {
 	padding-block: 24px 40px;
+}
+
+.work-section.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.work-section.is-revealed > .case-grid {
+	animation-delay: 80ms;
 }
 
 .section-heading {
@@ -1012,7 +1121,7 @@ img {
 @keyframes motion-fade-up {
 	from {
 		opacity: 0;
-		transform: translateY(6px);
+		transform: translateY(8px);
 	}
 	to {
 		opacity: 1;
@@ -1036,7 +1145,7 @@ img {
 }
 
 .motion-project-enter {
-	animation: motion-fade-up var(--motion-fast) var(--ease-out);
+	animation: motion-fade-up var(--motion-base) var(--ease-out);
 }
 
 .motion-project-enter .metric-tile {
@@ -1133,7 +1242,7 @@ img {
 	border-radius: var(--radius-md);
 	background: var(--surface);
 	cursor: pointer;
-	transition: border-color 0.15s ease, background-color 0.15s ease;
+	transition: border-color var(--motion-fast) ease, background-color var(--motion-fast) ease;
 }
 
 .firm-card:hover {
@@ -1271,7 +1380,7 @@ img {
 	border-radius: var(--radius-md);
 	background: var(--surface);
 	cursor: pointer;
-	transition: border-color 0.15s ease, background-color 0.15s ease;
+	transition: border-color var(--motion-fast) ease, background-color var(--motion-fast) ease;
 }
 
 .project-chip:hover {
@@ -1360,7 +1469,7 @@ img {
 	flex: 1;
 	font-weight: 600;
 	font-size: 15px;
-	transition: color 0.15s ease;
+	transition: color var(--motion-fast) ease;
 }
 
 .accordion-trigger:hover .accordion-title {
@@ -1471,7 +1580,7 @@ img {
 }
 
 .capability-grid.is-revealed .motion-pre-reveal {
-	animation: motion-fade-up 350ms var(--ease-out) forwards;
+	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
 }
 
 .capability-grid.is-revealed .capability-item:nth-child(2) {
@@ -1535,6 +1644,19 @@ img {
 	transform: translateY(10px);
 }
 
+/* Self-unit reveal: container carries both classes at once (see revealOnce's `asUnit` option). */
+.motion-pre-reveal.is-revealed {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.career-explorer.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
+}
+
+.career-explorer.is-revealed > .firm-detail-pane {
+	animation-delay: 60ms;
+}
+
 .operating-steps.is-revealed .motion-pre-reveal {
 	animation: motion-fade-up var(--motion-base) var(--ease-out) forwards;
 }
@@ -1593,20 +1715,23 @@ img {
 
 .about-intro > .media-placeholder {
 	max-width: 260px;
-	animation: motion-slide-left var(--motion-enter) var(--ease-out) both;
-	animation-delay: 260ms;
 }
 
-.about-intro-copy {
-	animation: motion-slide-right var(--motion-enter) var(--ease-out) both;
-	animation-delay: 340ms;
+.about-intro.is-revealed > .media-placeholder.motion-pre-reveal {
+	animation: motion-slide-left var(--motion-enter) var(--ease-out) forwards;
 }
 
-.no-js .about-intro > .media-placeholder,
-.no-js .about-intro-copy {
-	animation: none;
-	opacity: 1;
-	transform: none;
+.about-intro.is-revealed > .about-intro-copy.motion-pre-reveal {
+	animation: motion-slide-right var(--motion-enter) var(--ease-out) forwards;
+	animation-delay: 80ms;
+}
+
+.editorial-grid.is-revealed > .motion-pre-reveal {
+	animation: motion-fade-up var(--motion-enter) var(--ease-out) forwards;
+}
+
+.editorial-grid.is-revealed > .editorial-card:nth-child(2) {
+	animation-delay: 70ms;
 }
 
 .editorial-card img {
@@ -1695,7 +1820,7 @@ img {
 	font-weight: 600;
 	display: flex;
 	justify-content: space-between;
-	transition: border-color 0.15s ease;
+	transition: border-color var(--motion-fast) ease;
 }
 
 .contact-links a:hover {
@@ -1866,6 +1991,13 @@ img {
 	.about-intro .media-placeholder {
 		max-width: 320px;
 		margin-inline: auto;
+	}
+	/* Layout stacks below 980px, so the reveal switches from opposing
+	   horizontal slides to a shared vertical direction — desktop's
+	   left/right choreography only makes sense side by side. */
+	.about-intro.is-revealed > .media-placeholder.motion-pre-reveal,
+	.about-intro.is-revealed > .about-intro-copy.motion-pre-reveal {
+		animation-name: motion-fade-up;
 	}
 	.editorial-grid {
 		grid-template-columns: 1fr;

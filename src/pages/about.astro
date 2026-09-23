@@ -33,3 +33,10 @@ import MediaPlaceholder from "../components/MediaPlaceholder.astro";
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	import { revealOnce } from "../scripts/motion-reveal.ts";
+
+	revealOnce(".about-intro");
+	revealOnce(".editorial-grid", { itemsSelector: ".editorial-card" });
+</script>
