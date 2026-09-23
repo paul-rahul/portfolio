@@ -426,7 +426,7 @@ img {
 }
 
 .work-section {
-	padding-block: 44px;
+	padding-block: 32px 44px;
 }
 
 .section-heading {
@@ -592,7 +592,6 @@ img {
 
 .page-hero h1 {
 	font-size: clamp(40px, 4.6vw, 54px);
-	max-width: 900px;
 	margin: 10px 0 16px;
 }
 
@@ -1193,10 +1192,13 @@ img {
 	gap: 8px;
 }
 
-.capabilities,
-.operating-model {
-	padding-block: 60px 44px;
+.capabilities {
+	padding-block: 36px 28px;
 	border-top: 1px solid var(--border);
+}
+
+.operating-model {
+	padding-block: 20px 44px;
 }
 
 .capability-grid {
@@ -1248,25 +1250,17 @@ img {
 
 .operating-step {
 	position: relative;
-	padding: 0 24px 0 0;
+	padding: 0 24px;
+	border-left: 1px solid var(--border);
 }
 
-.operating-step::after {
-	content: "";
-	position: absolute;
-	top: 8px;
-	right: 0;
-	width: 24px;
-	height: 1px;
-	background: var(--border);
+.operating-step:first-child {
+	padding-left: 0;
+	border-left: none;
 }
 
 .operating-step:last-child {
 	padding-right: 0;
-}
-
-.operating-step:last-child::after {
-	display: none;
 }
 
 .operating-number {
@@ -1575,13 +1569,6 @@ img {
 		grid-template-columns: repeat(5, 1fr);
 		gap: 16px;
 	}
-	.operating-step {
-		padding-right: 12px;
-	}
-	.operating-step::after {
-		right: 6px;
-		width: 12px;
-	}
 	.career-explorer {
 		grid-template-columns: 1fr;
 		gap: 24px;
@@ -1741,9 +1728,11 @@ img {
 	.built-placeholder {
 		padding: 34px 26px;
 	}
-	.capabilities,
+	.capabilities {
+		padding-block: 28px 24px;
+	}
 	.operating-model {
-		padding-block: 44px 32px;
+		padding-block: 16px 32px;
 	}
 	.capability-grid {
 		grid-template-columns: 1fr;
@@ -1761,17 +1750,10 @@ img {
 		grid-template-columns: 1fr;
 		row-gap: 24px;
 	}
-	.operating-step {
+	.operating-step,
+	.operating-step:first-child {
 		padding: 0 0 24px 20px;
 		border-left: 1px solid var(--border);
-	}
-	.operating-step::after {
-		top: auto;
-		bottom: 0;
-		left: -1px;
-		right: auto;
-		width: 1px;
-		height: 24px;
 	}
 	.operating-step:last-child {
 		padding-bottom: 0;

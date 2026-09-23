@@ -136,13 +136,13 @@ export const firms: Firm[] = [
 	{
 		id: "dream11",
 		name: "Dream11",
-		period: "Feb — Aug 2025",
-		roleSummary: "Product Manager, ML Applications",
+		period: "Feb 2025 — Aug 2025",
+		roleSummary: "Product Manager",
 		roles: [
 			{
 				id: "dream11-pm",
-				title: "Product Manager, ML Applications",
-				period: "Feb — Aug 2025",
+				title: "Product Manager",
+				period: "Feb 2025 — Aug 2025",
 				summary:
 					"Owned two ML-backed product bets: a new in-app advertising surface and an internal platform that made model workflows easier for operators to use.",
 			},
@@ -152,7 +152,7 @@ export const firms: Firm[] = [
 				id: "dream11-ads",
 				title: "In-App Advertising Launch",
 				descriptor: "New ML-backed monetization surface",
-				period: "Feb — Aug 2025",
+				period: "Feb 2025 — Aug 2025",
 				summary: "A new in-app advertising surface built as a fresh monetization line, led across a 10-person cross-functional team.",
 				metrics: [
 					["$8M", "Revenue · first 60 days"],
@@ -196,7 +196,7 @@ export const firms: Firm[] = [
 				id: "dream11-ml-platform",
 				title: "ML Application Platform",
 				descriptor: "Internal platform for operator-facing model workflows",
-				period: "Feb — Aug 2025",
+				period: "Feb 2025 — Aug 2025",
 				summary: "A separate internal platform that made ML model workflows usable for operators, scaling from 8 to 100+ daily active users.",
 				metrics: [
 					["100+", "Daily active users · from 8"],
