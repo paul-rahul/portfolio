@@ -175,6 +175,69 @@ The system is flat by default — no drop shadows on cards or buttons at rest. D
 ### Named Rules
 **The Flat-By-Default Rule.** Cards and buttons rest without shadow. Separation comes from a 1px border and a background-color step, not elevation.
 
+## Motion
+
+A restrained, purposeful motion system, added across the site without introducing a JS animation library — vanilla CSS transitions/animations plus a handful of `IntersectionObserver` reveals, on top of the existing Astro + CSS + vanilla-JS stack.
+
+### Motion principles
+- Motion explains hierarchy, state change, progression, causality, or interactivity — it never exists just to feel "dynamic."
+- No parallax, floating/bobbing loops, particles, cursor trails, glow-follow effects, 3D tilt, marquee, typing/scramble text, animated gradients, scroll-jacking, or large page wipes.
+- Works identically in Day and Night — motion tokens are theme-independent; only color tokens change.
+- `prefers-reduced-motion: reduce` is mandatory and already handled globally (see Reduced motion below) — no per-component opt-out was needed.
+
+### Motion tokens
+Defined in `src/styles/tokens.css` `:root`, alongside the existing color/spacing tokens:
+
+```css
+--motion-fast: 150ms;
+--motion-base: 220ms;
+--motion-enter: 420ms;
+--motion-slow: 650ms;
+
+--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+--ease-standard: cubic-bezier(0.2, 0, 0, 1);
+```
+
+`--motion-fast`/`--motion-base` cover hover and state-toggle micro-interactions; `--motion-enter` covers page-load entrance sequences; `--motion-slow` is reserved for the one deliberately slower moment (the homepage intersection-diagram convergence). `--ease-out` is used for anything entering or growing; `--ease-standard` for state toggles (accordion height, icon rotation, nav underline).
+
+### Component rules
+- **Page-hero entrance:** every page using the shared `PageHero`/`.page-hero` component (Career, About, Built, Internships, Contact) fades its chip → h1 → lede up in sequence on load (~90–150ms stagger). This is the "standard page-heading entrance" — no page adds its own variant.
+- **Homepage hero:** headline, lede, CTA buttons, then the intersection diagram fade up in sequence (`--motion-enter`, ~90ms stagger); the Tech/Product/Business circles additionally converge from slightly offset starting positions into their resting overlap, once, over `--motion-slow`.
+- **Homepage reveals:** the quick-fact strip and capability grid reveal with a light stagger the first time they scroll into view (`IntersectionObserver`, run once, progressive enhancement — content is fully visible without JS).
+- **Career firm/project switching:** the newly active panel fades up (`--motion-base` for firm switch, `--motion-fast` for project switch, since it's the finer-grained navigation); metric tiles get a light `scale(.98→1)` with a 2-step stagger riding on the project-switch entrance. The previously active panel is hidden immediately rather than exit-animated — a deliberate simplification to keep the swap robust and avoid `hidden`-attribute/animation timing races.
+- **Career accordions:** the abrupt `hidden`-attribute toggle was replaced with a CSS-grid `0fr → 1fr` height transition (no fixed/measured heights), and the `+`/`–` glyph swap was replaced with a single "+" that rotates 45°. Collapsed panels get `inert` (not just `hidden`) so they drop out of the tab order without needing extra ARIA.
+- **Career "How I operate":** the five steps reveal once via `IntersectionObserver` with a ~70ms stagger, progressive enhancement (visible by default without JS).
+- **Nav active/hover state:** the old instant `border-bottom-color` swap was replaced with a `scaleX(0→1)` underline on a `::after` pseudo-element, `hover` and `focus-visible` both trigger it.
+- **Theme toggle:** the sun/moon icons cross-fade with a `scale + rotate` instead of a `display: none/block` swap — both icons are always in the DOM, absolutely centered, opacity/transform driven by the `data-theme` attribute selector.
+- **Arrow icons:** any `ArrowIcon` inside `.button`, `.header-cta`, `.section-heading > a` or `.case-link` shifts 3px on hover/focus-visible — transform only, so it never affects layout width or causes text reflow.
+- **Card hover:** `.case-card` keeps its existing `translateY(-3px)` + border-color hover, now on shared tokens, plus a `scale(1.015)` on its visual (clipped by the card's own `overflow: hidden`) and a 3px arrow shift.
+- **About page:** the intro portrait slides in from -8px horizontal, the copy from +8px, staggered after the page-hero settles. Editorial card images get a `scale(1.02)` hover rule wired to a real `<img>` selector — inert today (the cards only hold `MediaPlaceholder`s) and activates automatically once real photos replace them, per the placeholder-vs-real-image distinction in the MediaPlaceholder section above.
+- **Built page:** intentionally uses only the shared page-hero entrance — no extra motion was added while the section's content is still a single placeholder block.
+
+### Responsive motion rules
+- No motion pattern changes shape across breakpoints — the same opacity/transform treatments run everywhere; only layout (columns → stack) changes, per the existing Responsiveness rules above.
+- No pointer-tracking or hover-only effects are relied on for content on touch devices — every motion pairs with a tap-equivalent state (`:focus-visible` alongside `:hover` throughout) or is a load/scroll-triggered reveal that doesn't depend on hover at all.
+- The optional desktop-only pointer-response idea for the intersection diagram (2–4px shift per circle on mouse move) was evaluated and omitted — it didn't clearly improve the result over the convergence entrance alone.
+
+### Reduced motion
+Handled by one existing global rule in `tokens.css`, unmodified by this work:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	* {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.001ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+```
+
+Every animation and transition added by the motion system — entrances, reveals, accordion height, icon rotation, nav underline, hover treatments — routes through `animation-duration`/`transition-duration`, so this single rule resolves all of them to effectively instant without any per-component reduced-motion code. Content that uses `IntersectionObserver` progressive enhancement (homepage reveals, "How I operate") stays visible without JS or `IntersectionObserver` support, independent of the reduced-motion rule.
+
 ## Shapes
 
 Three radius steps cover the whole system: `8px` (sm — buttons, small badges), `12px` (md — metric tiles), `16px` (lg — cards, panels, image frames). Pills (`999px`) were previously reserved for the career page's reading-frame chips; that component was removed (Review fixes 01) and the pill radius is currently unused — kept in the scale for any future chip need.
