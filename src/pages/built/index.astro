@@ -7,11 +7,17 @@ import PageHero from "../../components/PageHero.astro";
 	<main class="wrap">
 		<PageHero
 			title="Small products, built to learn quickly."
-			lede="This is where my personal vibe-coding projects will live—each with its own product story and, eventually, its own subdomain."
+			lede="This is where my personal vibe-coding projects will live, each with its own product story and, eventually, its own subdomain."
 		/>
 		<section class="built-placeholder">
 			<h2>The workshop is open. The first builds are taking shape.</h2>
-			<p>I'm documenting the problem, product decisions, build process and what changed after shipping — not just the final screen — from problem framing through prototype, build notes and what I learned.</p>
+			<p>I'm documenting the problem, product decisions, build process and what changed after shipping, not just the final screen, from problem framing through prototype, build notes and what I learned.</p>
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	import { revealOnce } from "../../scripts/motion-reveal.ts";
+
+	revealOnce(".built-placeholder", { asUnit: true });
+</script>

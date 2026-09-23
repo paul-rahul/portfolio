@@ -10,7 +10,6 @@ import MediaPlaceholder from "../components/MediaPlaceholder.astro";
 		<section class="about-intro">
 			<MediaPlaceholder id="IMG-04" label="Portrait" description="Professional portrait / candid" aspectRatio="4:5" />
 			<div class="about-intro-copy">
-				<p class="kicker">The through-line</p>
 				<h2 class="editorial-title">I like messy problems with a measurable finish line.</h2>
 				<p>
 					My background spans consumer electronics, ad tech, government technology, fantasy sports and AI. The
@@ -34,3 +33,10 @@ import MediaPlaceholder from "../components/MediaPlaceholder.astro";
 		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	import { revealOnce } from "../scripts/motion-reveal.ts";
+
+	revealOnce(".about-intro");
+	revealOnce(".editorial-grid", { itemsSelector: ".editorial-card" });
+</script>

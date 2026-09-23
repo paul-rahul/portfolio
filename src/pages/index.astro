@@ -67,15 +67,34 @@ const projects = [
 						Explore my work
 						<ArrowIcon size={17} />
 					</a>
-					<a class="button ghost" href="/Rahul_Paul_Resume.pdf" download>Download résumé</a>
 				</div>
 			</div>
 			<div class="hero-art">
 				<!-- Placeholder for a real portrait: drop an <img> into .image-frame and remove .intersection-diagram, no other layout changes needed. -->
 				<div class="image-frame intersection-diagram" aria-hidden="true">
-					<span class="intersection-circle tech">Tech</span>
-					<span class="intersection-circle product">Product</span>
-					<span class="intersection-circle market">Business</span>
+					<svg class="venn" viewBox="0 0 1000 1000" focusable="false">
+						<defs>
+							<marker id="intersection-arrowhead" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="3" markerHeight="3" orient="auto-start-reverse">
+								<path d="M0,0 L8,4 L0,8 Z" class="intersection-arrowhead-fill" />
+							</marker>
+						</defs>
+						<!-- exact target geometry: equal r=245 circles, upper circles symmetric at cy=345
+						     (cx 355/675), lower circle centered at cx=515, cy=650 -->
+						<circle class="venn-ring venn-engineering" cx="355" cy="345" r="245" />
+						<circle class="venn-ring venn-design" cx="675" cy="345" r="245" />
+						<circle class="venn-ring venn-business" cx="515" cy="650" r="245" />
+						<text class="venn-label venn-label-engineering" x="285" y="350">ENGINEERING</text>
+						<text class="venn-label venn-label-design" x="735" y="355">DESIGN</text>
+						<text class="venn-label venn-label-business" x="515" y="650">BUSINESS</text>
+						<path
+							class="intersection-arrow"
+							d="M690,445 C650,470 610,480 528,476"
+							fill="none"
+							marker-end="url(#intersection-arrowhead)"
+						/>
+						<circle class="intersection-dot" cx="515" cy="475" r="12" />
+						<text class="intersection-note" x="720" y="435">This is me</text>
+					</svg>
 				</div>
 			</div>
 		</section>
@@ -85,7 +104,6 @@ const projects = [
 		<section class="capabilities wrap" aria-label="What I'm known for">
 			<div class="section-heading">
 				<div>
-					<p class="kicker">Capabilities</p>
 					<h2>What I'm known for.</h2>
 				</div>
 			</div>
@@ -103,7 +121,7 @@ const projects = [
 		</section>
 		<section class="work-section wrap">
 			<div class="section-heading">
-				<div><p class="kicker">Selected projects</p><h2>What I've been working on.</h2></div>
+				<div><h2>What I've been working on.</h2></div>
 				<a href="/built">
 					See Projects
 					<ArrowIcon size={16} />
@@ -148,26 +166,10 @@ const projects = [
 </BaseLayout>
 
 <script>
-	const revealOnce = (containerSelector: string, itemsSelector?: string) => {
-		const container = document.querySelector<HTMLElement>(containerSelector);
-		if (!container || !("IntersectionObserver" in window)) return;
-		const items = itemsSelector ? Array.from(container.querySelectorAll<HTMLElement>(itemsSelector)) : Array.from(container.children);
-		items.forEach((item) => item.classList.add("motion-pre-reveal"));
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						container.classList.add("is-revealed");
-						observer.disconnect();
-						break;
-					}
-				}
-			},
-			{ threshold: 0.2 },
-		);
-		observer.observe(container);
-	};
+	import { revealOnce } from "../scripts/motion-reveal.ts";
 
 	revealOnce(".fact-strip");
-	revealOnce(".capability-grid", ".capability-item");
+	revealOnce(".capability-grid", { itemsSelector: ".capability-item" });
+	revealOnce(".work-section", { itemsSelector: ".section-heading, .case-grid" });
+	revealOnce(".closing-cta", { asUnit: true });
 </script>
