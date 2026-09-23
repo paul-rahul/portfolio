@@ -1880,6 +1880,13 @@ img {
 		max-width: 320px;
 		margin-inline: auto;
 	}
+	/* Layout stacks below 980px, so the reveal switches from opposing
+	   horizontal slides to a shared vertical direction — desktop's
+	   left/right choreography only makes sense side by side. */
+	.about-intro.is-revealed > .media-placeholder.motion-pre-reveal,
+	.about-intro.is-revealed > .about-intro-copy.motion-pre-reveal {
+		animation-name: motion-fade-up;
+	}
 	.editorial-grid {
 		grid-template-columns: 1fr;
 	}
