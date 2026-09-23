@@ -1,0 +1,19 @@
+---
+interface Props {
+	id: string;
+	label: string;
+	description: string;
+	aspectRatio?: "16:9" | "16:10" | "3:2" | "4:3" | "4:5" | "1:1";
+	class?: string;
+}
+
+const { id, label, description, aspectRatio = "16:10", class: className } = Astro.props;
+const ratio = aspectRatio.replace(":", " / ");
+---
+
+<div class:list={["media-placeholder", className]} style={`aspect-ratio: ${ratio}`} role="img" aria-label={`${label} placeholder — ${description}`}>
+	<span class="media-placeholder-id">{id}</span>
+	<span class="media-placeholder-label">{label}</span>
+	<span class="media-placeholder-desc">{description}</span>
+	<span class="media-placeholder-ratio">{aspectRatio}</span>
+</div>

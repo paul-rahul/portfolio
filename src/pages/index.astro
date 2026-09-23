@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ArrowIcon from "../components/ArrowIcon.astro";
-import { roles } from "../data/roles.ts";
+import MediaPlaceholder from "../components/MediaPlaceholder.astro";
 
 const facts: [string, string][] = [
 	["6+ years", "Engineering → Product"],
@@ -10,14 +10,47 @@ const facts: [string, string][] = [
 	["McCombs '27", "MBA"],
 ];
 
-const progression = [
-	{ n: "01", label: "Engineer", desc: "Build the system", tags: "ML · data · infrastructure" },
-	{ n: "02", label: "Product", desc: "Decide what gets built", tags: "Users · roadmap · economics" },
-	{ n: "03", label: "Market", desc: "Make the value legible", tags: "Positioning · adoption · GTM" },
+const capabilities = [
+	{
+		n: "01",
+		name: "0→1 Product Building",
+		desc: "Turning ambiguous opportunities into products, launches, and measurable business outcomes.",
+	},
+	{
+		n: "02",
+		name: "AI / ML Productization",
+		desc: "Translating technically complex systems into usable products, workflows, and decisions.",
+	},
+	{
+		n: "03",
+		name: "Monetization & Growth",
+		desc: "Connecting product decisions to adoption, experimentation, revenue, and business impact.",
+	},
+	{
+		n: "04",
+		name: "Cross-functional Execution",
+		desc: "Aligning engineering, data, business, and stakeholder teams around clear outcomes.",
+	},
 ];
 
-const dream11 = roles.find((r) => r.id === "dream11")!;
-const medianet = roles.find((r) => r.id === "medianet")!;
+const projects = [
+	{
+		imgId: "IMG-02",
+		status: "In progress",
+		statusTone: "active",
+		title: "The first vibe-coded build.",
+		desc: "Documenting problem framing, build decisions and what changed after shipping — not just the final screen.",
+		cta: "Visit the workshop",
+	},
+	{
+		imgId: "IMG-03",
+		status: "Queued",
+		statusTone: "queued",
+		title: "More builds, queued up.",
+		desc: "Additional personal projects are in the pipeline — each gets its own case study once it ships.",
+		cta: "See what's next",
+	},
+];
 ---
 
 <BaseLayout title="Rahul Paul | Product, AI & ML">
@@ -50,15 +83,20 @@ const medianet = roles.find((r) => r.id === "medianet")!;
 		<section class="fact-strip wrap" aria-label="Quick facts">
 			{facts.map(([big, small]) => <div><strong>{big}</strong><span>{small}</span></div>)}
 		</section>
-		<section class="progression wrap" aria-label="Career progression">
-			<div class="progression-grid">
+		<section class="capabilities wrap" aria-label="What I'm known for">
+			<div class="section-heading">
+				<div>
+					<p class="kicker">Capabilities</p>
+					<h2>What I'm known for.</h2>
+				</div>
+			</div>
+			<div class="capability-grid">
 				{
-					progression.map((step) => (
-						<div class="progression-step">
-							<span class="progression-number">{step.n}</span>
-							<h3>{step.label}</h3>
-							<p>{step.desc}</p>
-							<span class="progression-tags">{step.tags}</span>
+					capabilities.map((c) => (
+						<div class="capability-item">
+							<span class="capability-number">{c.n}</span>
+							<h3>{c.name}</h3>
+							<p>{c.desc}</p>
 						</div>
 					))
 				}
@@ -66,47 +104,38 @@ const medianet = roles.find((r) => r.id === "medianet")!;
 		</section>
 		<section class="work-section wrap">
 			<div class="section-heading">
-				<div><p class="kicker">Selected evidence</p><h2>Work that moved a number.</h2></div>
-				<a href="/career">
-					Full career
+				<div><p class="kicker">Selected projects</p><h2>What I'm building right now.</h2></div>
+				<a href="/built">
+					See Built
 					<ArrowIcon size={16} />
 				</a>
 			</div>
 			<div class="case-grid">
-				<a class="case-card" href="/career#dream11">
-					<div class="case-visual">
-						<span class="case-mark" aria-hidden="true">D11</span>
-					</div>
-					<div class="case-copy">
-						<p>Dream11 · Product Manager</p>
-						<h3>Launched in-app advertising into a new revenue line.</h3>
-						<div class="metrics">
-							<span><b>{dream11.stints[0].metrics[0][0]}</b> {dream11.stints[0].metrics[0][1].toLowerCase()}</span>
-							<span><b>{dream11.stints[0].metrics[1][0]}</b> {dream11.stints[0].metrics[1][1].toLowerCase()}</span>
-						</div>
-						<span class="case-link">
-							Read case study
-							<ArrowIcon size={14} />
-						</span>
-					</div>
-				</a>
-				<a class="case-card" href="/career#medianet">
-					<div class="case-visual">
-						<span class="case-mark" aria-hidden="true">M.</span>
-					</div>
-					<div class="case-copy">
-						<p>Media.net · Associate Product Manager</p>
-						<h3>Made experimentation faster, safer and easier to use.</h3>
-						<div class="metrics">
-							<span><b>{medianet.stints[0].metrics[2][0]}</b> experiments / 6 mo.</span>
-							<span><b>{medianet.stints[0].metrics[0][0]}</b> optimizer revenue</span>
-						</div>
-						<span class="case-link">
-							Read case study
-							<ArrowIcon size={14} />
-						</span>
-					</div>
-				</a>
+				{
+					projects.map((project) => (
+						<a class="case-card" href="/built">
+							<div class="case-visual">
+								<MediaPlaceholder
+									id={project.imgId}
+									label="Project visual"
+									description="Screenshot once shipped"
+									aspectRatio="16:10"
+								/>
+							</div>
+							<div class="case-copy">
+								<p class={`status-chip status-${project.statusTone}`}>
+									<span /> {project.status}
+								</p>
+								<h3>{project.title}</h3>
+								<p class="project-desc">{project.desc}</p>
+								<span class="case-link">
+									{project.cta}
+									<ArrowIcon size={14} />
+								</span>
+							</div>
+						</a>
+					))
+				}
 			</div>
 		</section>
 		<section class="closing-cta wrap">

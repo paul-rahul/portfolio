@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
+import MediaPlaceholder from "../components/MediaPlaceholder.astro";
 ---
 
 <BaseLayout title="About | Rahul Paul">
@@ -10,8 +11,9 @@ import PageHero from "../components/PageHero.astro";
 			title="Engineer by training. Product manager by practice. Marketer by curiosity."
 			lede="I've moved from building models to deciding which problems deserve a product — and I'm currently sharpening that judgment at Texas McCombs."
 		/>
-		<section class="editorial-grid">
-			<article class="editorial-card large">
+		<section class="about-intro">
+			<MediaPlaceholder id="IMG-04" label="Portrait" description="Professional portrait / candid" aspectRatio="4:5" />
+			<div class="about-intro-copy">
 				<p class="kicker">The through-line</p>
 				<h2 class="editorial-title">I like messy problems with a measurable finish line.</h2>
 				<p>
@@ -20,12 +22,16 @@ import PageHero from "../components/PageHero.astro";
 					together around a clear outcome. Start with the user, interrogate the metric, translate the technical,
 					ship and sharpen.
 				</p>
-			</article>
+			</div>
+		</section>
+		<section class="editorial-grid two-col">
 			<article class="editorial-card">
+				<MediaPlaceholder id="IMG-05" label="McCombs / Austin" description="Campus or MBA context" aspectRatio="4:3" />
 				<h2>Texas McCombs</h2>
 				<p>MBA candidate focused on Brand and Product Management, graduating May 2027 — currently based in Austin, TX.</p>
 			</article>
 			<article class="editorial-card">
+				<MediaPlaceholder id="IMG-06" label="Badminton" description="Action photo" aspectRatio="4:3" />
 				<h2>Off the clock</h2>
 				<p>Competitive enough for badminton. Curious enough to always have a book open. Unapologetically invested in reality TV.</p>
 			</article>

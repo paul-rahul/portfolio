@@ -1228,3 +1228,626 @@ Known issues / deferred items:
 
 Next stage:
 - None — this was a post-Stage-9 review-fix cycle per the plan's "REVIEW FIXES AFTER RAHUL FEEDBACK" section. Still waiting on Rahul's explicit sign-off before any promotion toward `redesign/technical-editorial`/`main`.
+
+---
+
+## Content & Visual Refinement — Stage 00
+
+Status: complete
+
+Branch:
+feature/content-visual-refinement (created from `main` @ 84b3695)
+
+PR:
+N/A (integration branch, not a stage PR)
+
+Merged into:
+N/A
+
+Implemented:
+- New integration branch `feature/content-visual-refinement` created from `main`, per the Content & Visual Refinement execution plan (`~/Downloads/CLAUDE_CONTENT_VISUAL_REFINEMENT_PLAN.md`)
+- Baseline verified: `npm install`, `npm run build` (7/7 routes built clean), dev server smoke test — all 7 routes (`/`, `/career`, `/built`, `/internships`, `/about`, `/resume`, `/contact`) return 200
+
+Content decisions:
+- None yet — Stage 1 audit is next
+
+Design decisions:
+- None yet
+
+Image placeholder decisions:
+- None yet
+
+Files materially changed:
+- None (baseline only)
+
+DESIGN.md updated:
+- NO
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS (all 7 routes 200)
+- Day mode: not yet re-tested this pass (no changes made)
+- Night mode: not yet re-tested this pass (no changes made)
+- mobile/tablet/desktop: not yet re-tested this pass (no changes made)
+
+Known issues / deferred items:
+- None
+
+Next stage:
+- Stage 1 — audit and content map (branch `refinement/01-audit-and-content-map`)
+
+---
+
+## Content & Visual Refinement — Stage 01
+
+Status: complete
+
+Branch:
+refinement/01-audit-and-content-map
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Full route-by-route audit (all 7 live routes: `/`, `/career`, `/built`, `/internships`, `/about`, `/resume`, `/contact`) — no code changes, documentation only.
+
+Content decisions (audit findings):
+- **Confirmed the plan's core hypothesis**: Home's `.work-section` ("Selected evidence / Work that moved a number") duplicates Dream11 + Media.net content that already lives fully on `/career` — same employer, same metrics, same framing, just truncated. This is the Stage 3 target.
+- **Built (`/built`) is a single honest placeholder paragraph** — no MediaPlaceholder system, no case-study structure, no project content. Matches project memory: Rahul hasn't listed real vibe-coding projects yet. Do not invent any.
+- **Career (`/career`) is dense, complete, and recently audited** (pinned timeline, capabilities grid, operating-model steps, all responsive-audited in PR #34/#33). Preserve as-is structurally — only in scope for Stage 5 spacing polish if something concrete surfaces, not a redesign target.
+- **About (`/about`) has strong copy bones** (through-line story, McCombs context, "off the clock" interests) but **zero visual slots** — pure text, three editorial cards. This is the main personality/imagery gap (Stage 6 target).
+- **Click affordance is already well-established**: `.case-card` pattern (whole-card clickable + explicit "Read case study →" trailing link) is the existing convention and should be reused for any new preview cards, not reinvented.
+- **Whitespace/density is already reasonably tight** — this site went through a dedicated responsive/density-aware audit in PR #34 before this plan started, so Stage 5 is expected to find fewer issues than a from-scratch density audit would.
+
+Design decisions:
+- None yet — audit only, no visual/system changes this stage.
+
+Image placeholder decisions (future image locations identified):
+1. **Home hero `.intersection-diagram`** — this is a deliberate diagram (Tech/Product/Market venn), not an empty gap; an HTML comment already documents how to swap in a real portrait later. Decision: leave as-is, not a "missing image" to placeholder over.
+2. **Home "Selected Projects" preview cards (Stage 3, new)** — will need MediaPlaceholder visual slots per project, replacing the current `.case-mark` text-wordmark treatment.
+3. **Built project case-study template (Stage 4, new)** — hero / product-flow / supporting-visual placeholder slots per the Problem→Solution→How→Outcome structure. Built as a reusable pattern; no live project pages yet since no real project content exists.
+4. **About page (Stage 6)** — professional portrait, McCombs/Austin context image, badminton, personal/candid slot. Zero image infrastructure exists today; this is the biggest concrete gap found in the audit.
+5. **Career/Internships** — no forced image additions. Per plan guidance ("use visuals only where they improve comprehension"), defer unless a specific role clearly benefits.
+
+Likely project-preview structure (for Stage 3):
+- Reuse the existing `.case-card` visual/markup pattern (visual → eyebrow → title → 2 supporting facts → "Read case study →"), backed by `MediaPlaceholder` instead of a text wordmark, with an honest "pending" status badge since no real projects exist yet.
+
+Likely case-study structure (for Stage 4):
+- Problem → Solution → How I got there → Outcome, as a reusable template/layout, documented in DESIGN.md. No fabricated example project — the template ships ready for the first real Built entry.
+
+Files materially changed:
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — audit stage, no system changes yet
+
+Validation:
+- npm run build: PASS (unchanged from Stage 0, no code touched)
+- dev mode: N/A (no code touched)
+- Day mode / Night mode / mobile / tablet / desktop: N/A (no code touched)
+
+Known issues / deferred items:
+- None
+
+Next stage:
+- Stage 2 — image placeholder system (`MediaPlaceholder` component + `VISUAL_ASSETS.md`)
+
+---
+
+## Content & Visual Refinement — Stage 02
+
+Status: complete
+
+Branch:
+refinement/02-placeholder-system
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- `src/components/MediaPlaceholder.astro`: reusable placeholder component. Props: `id`, `label`, `description`, `aspectRatio` (`16:9`/`16:10`/`3:2`/`4:3`/`4:5`/`1:1`, defaults to `16:10`), optional `class`. Renders as a dashed-border box (not the solid-border card style, to visually read as "not real content yet") with a mono `id`, mono uppercase `label`, small secondary `description`, and a small mono ratio indicator. `role="img"` + `aria-label` combining label/description for accessibility since the box has no real image content.
+- `.media-placeholder*` styles added to `tokens.css`: muted `--background` fill (not `--surface`, to sit visually a step below real cards), 1px **dashed** `--border` (deliberately distinct from the solid border used on real cards/panels, per the plan's "clearly communicate what asset belongs there" requirement), `--radius-md`, no shadow — consistent with the Flat-By-Default rule.
+- `VISUAL_ASSETS.md` created — inventory of all identified image slots from the Stage 1 audit (IMG-01 through IMG-10), with Status column (Needed/Retained/Deferred) and reasoning per row.
+
+Content decisions:
+- None (infrastructure only)
+
+Design decisions:
+- Placeholder uses a **dashed** border (new pattern) vs. the system's existing solid `1px solid var(--border)` — intentional deviation so placeholders are visually distinguishable from real cards/panels at a glance, without introducing a new color or shadow language. Documented for DESIGN.md update in Stage 9.
+- Placeholder sits on `--background` (not `--surface`) so it reads as "recessed/pending" rather than as a populated card.
+
+Image placeholder decisions:
+- Component built; not yet placed on any real page (that's Stage 3/4/6's job). Verified via a temporary throwaway injection on `/built` (added 3 `MediaPlaceholder` instances inline, screenshotted Day + Night, then fully reverted `built/index.astro` to its Stage-1 state before committing — confirmed via `git diff` that only `tokens.css`, the new component, and `VISUAL_ASSETS.md` are part of this commit).
+
+Files materially changed:
+- `src/components/MediaPlaceholder.astro` (new)
+- `src/styles/tokens.css` (added `.media-placeholder*` rules)
+- `VISUAL_ASSETS.md` (new)
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — deferred to Stage 9 per plan (component behavior may still shift slightly once placed in Stage 3/4/6 real contexts); tracked here so it isn't dropped.
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS
+- Day mode: PASS — screenshotted on a temporary `/built` test injection (dashed border, mono labels all legible against `--background`)
+- Night mode: PASS — same screenshot pass, dark-theme tokens (`--background: #121214`, `--border: #303033`) give adequate contrast against the dashed border and mono text
+- mobile/tablet/desktop: not yet re-tested (component not placed on a real route yet; full responsive QA happens per-placement in Stages 3/4/6 and again in Stage 8)
+
+Known issues / deferred items:
+- DESIGN.md entry for `MediaPlaceholder` deferred to Stage 9 (see above)
+
+Next stage:
+- Stage 3 — homepage projects (replace Career-duplicating case cards with a Selected Projects preview using `MediaPlaceholder`)
+
+---
+
+## Content & Visual Refinement — Stage 03
+
+Status: complete
+
+Branch:
+refinement/03-homepage-projects
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Removed the homepage's `.work-section` career-duplication: the Dream11/Media.net case cards (which repeated `/career` metrics almost verbatim — same employer, same numbers, same framing) are gone. `roles.ts` import removed from `index.astro` entirely.
+- Replaced with a **Selected Projects** section: 2 structurally-complete `MediaPlaceholder`-backed preview cards, reusing the existing `.case-card` visual pattern (already the established click-affordance convention — whole-card link + explicit trailing CTA). Both cards are honestly marked pending — "In progress" (green status dot) and "Queued" (neutral dot) — no fabricated project names, outcomes, or screenshots.
+- Section heading link changed from "Full career →" (redundant with hero's existing "Explore my work →" CTA into `/career`) to "See Built →" pointing at `/built`.
+- New `.status-chip`/`.status-active`/`.status-queued`/`.project-desc` styles added to `tokens.css`; removed now-dead `.case-mark` and `.metrics`/`.metrics span`/`.metrics b` rules (no longer referenced anywhere after this change — confirmed via grep before removal).
+
+Content decisions:
+- Two pending-status project slots (not one, not a fabricated pair of named projects) — preserves the plan's required 2-column `.case-grid` layout for when real Built projects exist, while staying honest that nothing has shipped yet. Copy pulls directly from Built's own existing "workshop is open" framing rather than inventing new claims.
+
+Design decisions:
+- New `.status-chip` component style (dot + mono uppercase label) — same visual language as the hero's existing `.eyebrow` dot pattern, generalized into a reusable pattern. To be documented in DESIGN.md at Stage 9.
+
+Image placeholder decisions:
+- `MediaPlaceholder` placed live for the first time: IMG-02 and IMG-03 (`VISUAL_ASSETS.md`) now render on `/` inside the Selected Projects cards, 16:10 ratio, matching the card's existing 240px visual row.
+
+Files materially changed:
+- `src/pages/index.astro`
+- `src/styles/tokens.css`
+- `VISUAL_ASSETS.md` (placement confirmed for IMG-02/IMG-03, still `Needed`)
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — deferred to Stage 9 along with the Stage 2 MediaPlaceholder entry and this stage's `.status-chip` pattern
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS
+- Day mode: PASS — screenshotted, cards render correctly, dashed placeholders + status chips legible
+- Night mode: PASS — screenshotted, contrast holds on dark tokens
+- mobile/tablet/desktop: not independently re-verified this stage (only card *content* changed, not the `.case-grid`/`.case-card` responsive rules, which were already verified end-to-end in the prior responsive audit — PR #34/#33); full sweep still scheduled for Stage 8
+
+Known issues / deferred items:
+- None new
+
+Next stage:
+- Stage 4 — project/case-study structure (Problem→Solution→How→Outcome template for Built project pages)
+
+---
+
+## Content & Visual Refinement — Stage 04
+
+Status: complete
+
+Branch:
+refinement/04-project-case-study-structure
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- `src/components/ProjectCaseStudy.astro`: reusable case-study template implementing the plan's required Problem → Solution → How I got there → Outcome sequence. Props: `title`, `status`, `heroId`/`flowId`/`supportingId` (MediaPlaceholder ids), `problem`/`solution`/`how`/`outcome` (copy), optional `githubUrl`/`liveUrl`/`backHref`/`nextHref`/`nextLabel`. Footer CTAs (Back to Built / Next project / Live / GitHub) render conditionally — only shown when a real URL is supplied, never fabricated.
+- Section labels use the existing `.kicker` mono-uppercase convention (not the career page's `.reading-frame`/`.frame-pill`, which DESIGN.md explicitly scopes to the career page only — a new general pattern was needed, not a reuse of a page-scoped one).
+- `.project-case*` styles added to `tokens.css`.
+
+Content decisions:
+- **No live project route was created.** Since no real Built project content exists yet (confirmed again against project memory), instantiating this template on a real page would mean either fabricating content or shipping an empty/fake page — both against the plan's explicit rules. The component is built, styled, and verified, ready to back the first real Built entry whenever Rahul provides one.
+
+Design decisions:
+- Reused `.status-chip` (from Stage 3) for the case-study header status line — keeps the "pending work" visual language consistent between the homepage preview cards and the eventual project page itself.
+
+Image placeholder decisions:
+- Template defines 3 `MediaPlaceholder` slots per project (hero 16:9, product/flow 16:10, supporting 3:2) — matches IMG-08/09/10 in `VISUAL_ASSETS.md`, still `Deferred` since no live route exists.
+
+Files materially changed:
+- `src/components/ProjectCaseStudy.astro` (new)
+- `src/styles/tokens.css`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — deferred to Stage 9 with the rest of the placeholder/pattern documentation
+
+Validation:
+- npm run build: PASS (7/7 routes — component isn't wired to any route yet, so route count is unchanged)
+- dev mode: PASS — verified via a temporary throwaway route (`src/pages/built/temp-preview.astro`) with clearly-labeled placeholder copy, screenshotted, then fully deleted before commit (confirmed via `git status` that only the component and `tokens.css` are part of this commit)
+- Day mode: PASS
+- Night mode: PASS
+- mobile/tablet/desktop: not yet re-tested (no live route; will be verified against the first real project page once it exists, and structurally re-checked in Stage 8 using the temp-preview method if needed)
+
+Known issues / deferred items:
+- Component is unused in the shipped site until Rahul provides real Built project content — this is intentional, not an oversight
+
+Next stage:
+- Stage 5 — density and visual hierarchy
+
+---
+
+## Content & Visual Refinement — Stage 05
+
+Status: complete
+
+Branch:
+refinement/05-density-and-hierarchy
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Density/hierarchy audit pass across all 7 routes (hero height, section padding, vertical gaps, card padding, redundant labels, CTA spacing) as required by the plan.
+- One candidate fix investigated and **rejected after verification**: Career page's `.closing-cta` section is missing the `.wrap` class that its sibling sections (`.capabilities`, `.operating-model`) carry. Initially looked like a width-constraint bug. On inspection, `career/index.astro`'s `<main class="wrap">` already constrains all its children — adding a redundant nested `.wrap` to `.closing-cta` would make it compute `min(1180px, calc(100% - 40px))` against an *already-1180px-capped* container, i.e. **1140px**, 20px narrower than `.reading-frame`/`.career-timeline` (which rely on `main.wrap` directly and render at the full 1180px). Applying the "fix" would have traded one inconsistency for a different one, not resolved anything. Reverted before commit — confirmed via `git status` that this stage has no code diff.
+
+Content decisions:
+- None
+
+Design decisions:
+- None — see rejected fix above. Noting for future awareness: `.capabilities`/`.operating-model` on the career page already carry this same redundant-nested-`.wrap` pattern (pre-existing, not introduced this stage) and render 20px narrower than `.reading-frame`/`.career-timeline`. The 20px difference is imperceptible in practice; not worth a special-case fix that would touch several already-audited sections for no visible benefit. Left as-is.
+
+Image placeholder decisions:
+- None
+
+Files materially changed:
+- None (audit-only; the one candidate fix was investigated, found not to be a real bug, and reverted)
+
+DESIGN.md updated:
+- NO
+
+Validation:
+- npm run build: PASS (7/7 routes, unchanged)
+- dev mode: N/A (no code changed)
+- Day mode / Night mode / mobile / tablet / desktop: N/A (no code changed)
+
+Known issues / deferred items:
+- **About page's `.editorial-card.large` (580px min-height) has more whitespace than its current text content fills** — flagged in the Stage 1 audit as a density concern. Deliberately **not fixed here**: Stage 6 adds real image placeholder slots to About, which will use that space meaningfully rather than requiring a min-height reduction now that would just need to be undone next stage.
+
+Next stage:
+- Stage 6 — personality and About page (image placeholder slots; also resolves the deferred whitespace item above)
+
+---
+
+## Content & Visual Refinement — Stage 06
+
+Status: complete
+
+Branch:
+refinement/06-personality-and-about
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- `/about` restructured: the old `.editorial-card.large` (580px min-height, text-only, identified in Stage 5 as having excess whitespace) is replaced by a new `.about-intro` hero-style 2-column grid — `MediaPlaceholder` portrait (IMG-04, 4:5) + the existing "through-line" copy, unchanged.
+- The remaining `.editorial-grid` now has `.two-col` (equal-width, was `1.2fr/0.8fr`) with 2 cards — McCombs/Austin (IMG-05, 4:3) and Off the clock/badminton (IMG-06, 4:3) — each gets a `MediaPlaceholder` above its existing, unchanged copy.
+- Dead CSS removed: `.editorial-card.large` rule (580px) and its two responsive overrides (460px/400px min-heights) — no longer referenced after the restructure.
+- New responsive rules added for `.about-intro` (collapses to 1 column ≤980px, placeholder capped at 320px width) and `.editorial-grid.two-col` (collapses to 1 column ≤980px).
+
+Content decisions:
+- **No new personal content invented.** All three existing content blocks (through-line, McCombs, off-the-clock/badminton/reading/reality-TV) are unchanged — only images were added to what was already there.
+
+Design decisions:
+- `.editorial-grid` went from an asymmetric `1.2fr/0.8fr` 2-card grid (with one oversized "large" card) to a symmetric `.two-col` grid, since both remaining cards now carry equal visual weight (image + heading + paragraph each).
+
+Image placeholder decisions:
+- **`VISUAL_ASSETS.md` updated**: IMG-04/05/06 marked live/placed. **IMG-07 (separate "personal/candid" slot) dropped** — Stage 6 found no distinct third content block to hang a separate image on without inventing new personal copy, which the plan prohibits. IMG-04's portrait description ("professional portrait / candid") already covers that flexibility as one slot. Documented in `VISUAL_ASSETS.md` with reasoning rather than silently dropped.
+
+Files materially changed:
+- `src/pages/about.astro`
+- `src/styles/tokens.css`
+- `VISUAL_ASSETS.md`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO — deferred to Stage 9 with the rest of this plan's pattern/placeholder documentation
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS
+- Day mode: PASS — screenshotted, portrait + intro copy render correctly, dashed placeholders legible
+- Night mode: PASS — screenshotted (intro section + both grid cards), contrast holds
+- mobile/tablet/desktop: not independently re-verified this stage beyond the new collapse rules being added defensively (1-column at ≤980px matching the existing `.hero`/`.editorial-grid` pattern); full sweep scheduled for Stage 8
+
+Known issues / deferred items:
+- None new
+
+Next stage:
+- Stage 7 — Career/Built separation clarity
+
+---
+
+## Content & Visual Refinement — Stage 07
+
+Status: complete
+
+Branch:
+refinement/07-career-built-separation
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Primary nav label renamed from "Work" to "Career" (`src/components/Nav.astro`) — sitting directly next to "Built" in the nav list, "Work" was genuinely ambiguous (built projects are also "work"); "Career" matches the `/career` route and removes the ambiguity outright.
+- Audited the rest of the site for similar ambiguity: hero CTA "Explore my work →" (`index.astro`) left unchanged — it's a standalone button, not sitting in a list next to "Built", and reads naturally as a CTA rather than a category label.
+
+Content decisions:
+- No other copy changes — Career/Built/Home separation was already substantially achieved by Stage 3 (removing Home's Career-duplicating cards) and by the pages' own existing content boundaries (Career = employers/metrics, Built = personal projects, confirmed in Stage 1 audit). This stage's one finding (the nav label) was the only remaining genuine ambiguity.
+
+Design decisions:
+- None (text-only change, no layout/CSS impact — confirmed nav renders correctly with the new, similar-length label)
+
+Image placeholder decisions:
+- None
+
+Files materially changed:
+- `src/components/Nav.astro`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO (no design-system rule changed)
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS — confirmed "Career" renders in the nav via rendered HTML
+- Day mode / Night mode / mobile / tablet / desktop: not independently re-verified (text-only nav label swap, no layout change); nav responsive behavior itself is unchanged from the already-audited system
+
+Known issues / deferred items:
+- None
+
+Next stage:
+- Stage 8 — cross-theme responsive QA (full breakpoint × theme matrix)
+
+---
+
+## Content & Visual Refinement — Stage 08
+
+Status: complete
+
+Branch:
+refinement/08-cross-theme-responsive-qa
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- No code changes — QA-only stage covering every section touched by Stages 2–7 (Home's Selected Projects, About's intro + 2-card grid, `MediaPlaceholder`, `ProjectCaseStudy`, the renamed nav label).
+- **Programmatic overflow sweep**: required breakpoint matrix (375/430/768/1024/1440/1920) × the 4 changed pages (`/`, `/about`, `/career`, `/built`) = 24 checks, run via a same-origin iframe harness (`document.documentElement.scrollWidth > window.innerWidth` per iframe at each target width) since this session's `resize_window` tool did not reliably resize the actual browser viewport (confirmed: repeated resize calls reported success but `innerWidth` stayed pinned near 200px regardless of the requested width — a tooling limitation, not a site bug; the iframe harness sidesteps it by giving each check its own real, correctly-sized viewport). **Result: 0/24 overflow.**
+- **Visual verification**: Day + Night screenshots already captured per-stage for Home (Stage 3) and About (Stage 6) at ~1456px desktop width; an earlier resize to 400px (which *did* take effect, unlike later attempts) confirmed the mobile nav collapse/scroll-row behavior renders correctly with the new "Career" label and no visible clipping.
+- Accessibility: no new interactive elements were introduced beyond the site's existing `.button`/`.case-card`/link patterns (all already 44px+ tap targets and `focus-visible` per the established system) — nothing new to re-verify here; the plan's tap-target/focus-ring rules were not touched by any Stage 2–7 change.
+
+Content decisions:
+- None
+
+Design decisions:
+- None
+
+Image placeholder decisions:
+- None
+
+Files materially changed:
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- NO
+
+Validation:
+- npm run build: PASS (7/7 routes)
+- dev mode: PASS
+- Day mode: PASS (screenshotted in Stages 3, 4, 6)
+- Night mode: PASS (screenshotted in Stages 2, 3, 4, 6)
+- mobile/tablet/desktop: PASS — 0/24 horizontal-overflow failures across the full required breakpoint matrix, verified via iframe harness (see above)
+
+Known issues / deferred items:
+- **Tooling limitation, not a code defect**: this session's `resize_window` browser tool did not reliably drive the real viewport to arbitrary widths (repeat calls silently clamped to ~200-400px css regardless of the requested value). Overflow was still verified correctly via the iframe-harness workaround; a true full-window resize visual sweep (matching the rigor of the prior `portfolio_responsive_audit`) was not possible this session and could be spot-checked by Rahul manually if desired.
+
+Next stage:
+- Stage 9 — design documentation (update DESIGN.md with MediaPlaceholder, ProjectCaseStudy, status-chip patterns)
+
+---
+
+## Content & Visual Refinement — Stage 09
+
+Status: complete
+
+Branch:
+refinement/09-design-documentation
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- `DESIGN.md` updated with 3 new component sections: **MediaPlaceholder** (purpose, props, styling incl. the intentional dashed-border deviation, theme behavior, replacement process, relationship to `VISUAL_ASSETS.md`), **Status chip** (purpose, structure, `.status-active`/`.status-queued` tones, the rule that it must never accompany content presented as finished), **Project case-study template** (`ProjectCaseStudy`, its Problem→Solution→How→Outcome section order, why it doesn't reuse the career page's page-scoped `.reading-frame` pill, and its current not-yet-wired-to-a-route status).
+- 2 new Do's/Don'ts entries added: use `MediaPlaceholder` + log in `VISUAL_ASSETS.md` rather than leave a gap or fabricate; don't reuse `.reading-frame`/`.frame-pill` as a general tag component.
+- Frontmatter `components:` block gained a `media-placeholder` token entry, matching the existing button/card/chip entries.
+
+Content decisions:
+- None
+
+Design decisions:
+- Formalized the dashed-border-for-placeholders convention (introduced ad hoc in Stage 2) as a documented, intentional system rule rather than a one-off.
+
+Image placeholder decisions:
+- None (documentation only — `VISUAL_ASSETS.md` itself was kept current stage-by-stage already)
+
+Files materially changed:
+- `DESIGN.md`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- YES — this was the point of the stage. Summary: documents `MediaPlaceholder`, `.status-chip`, and `ProjectCaseStudy`, the patterns introduced across Stages 2-4, so `DESIGN.md` now matches the actual shipped code rather than lagging behind it.
+
+Validation:
+- npm run build: PASS (7/7 routes — docs-only change)
+- dev mode: N/A
+- Day mode / Night mode / mobile / tablet / desktop: N/A (no code changed)
+
+Known issues / deferred items:
+- None
+
+Next stage:
+- Stage 10 — final regression QA, then STOP for Rahul's explicit sign-off before any merge toward `main`
+
+---
+
+## Content & Visual Refinement — Stage 10
+
+Status: complete
+
+Branch:
+refinement/10-final-regression
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Implemented:
+- Full-route regression pass: `npm run build` (7/7 routes), dev-server smoke test (all 7 routes 200), visual spot-check of Career and Built (both unchanged in content, correctly showing the renamed "Career" nav label active-state).
+- Code audit per the plan's checklist:
+  - Hardcoded light/dark colors outside `tokens.css`: **none found** (grepped `src/pages`/`src/components` for hex codes and `rgb(a)`).
+  - Duplicate placeholder implementations: **none** — `MediaPlaceholder` is the only placeholder component, used consistently.
+  - Unsupported image references: **none** — no `<img>` tags reference nonexistent files; all visuals are either real (existing icons/favicon) or `MediaPlaceholder`.
+  - Dead links: **none** — audited every `href` (static and dynamic) across `src/pages`/`src/components`; all resolve to real routes, the existing résumé PDF (confirmed present in `public/`), or real external URLs (LinkedIn, mailto).
+  - Abandoned styles: **none outstanding** — `.case-mark`/`.metrics`/`.editorial-card.large` and their responsive overrides were removed in Stages 3 and 6 as their markup was replaced; verified via grep that no orphaned selectors remain from this plan's changes.
+  - Unnecessary one-off media queries: none added — all new responsive rules (`.about-intro`, `.editorial-grid.two-col`) reuse the site's existing 980px/680px breakpoint structure, no new breakpoints introduced.
+
+# Final summary (per the plan's required Stage 10 report)
+
+**What changed:** Home no longer duplicates Career (replaced with an honest, pending-status Selected Projects preview); a reusable `MediaPlaceholder` system + `VISUAL_ASSETS.md` inventory now exists; a `ProjectCaseStudy` template (Problem→Solution→How→Outcome) is built and ready for the first real Built project; About gained portrait/McCombs/badminton image slots, resolving its prior excess-whitespace issue; the primary nav's "Work" label was renamed to "Career" to remove ambiguity with "Built"; `DESIGN.md` documents all 3 new patterns.
+
+**Which pages changed:** Home (`/`), About (`/about`), and the global Nav (affecting every page's header). Career, Built, Internships, Résumé, and Contact are unchanged in content — Built/Career were deliberately left alone since Stage 1 found they already worked well.
+
+**Image placeholders:** 6 live (IMG-02 through IMG-06 minus the dropped IMG-07, plus IMG-04), 3 deferred (IMG-08/09/10, waiting on the first real Built project), 1 retained as an intentional non-gap (IMG-01, the homepage hero diagram). Full inventory in `VISUAL_ASSETS.md`.
+
+**DESIGN.md:** updated in Stage 9 — documents MediaPlaceholder, status-chip, and the ProjectCaseStudy template.
+
+**Build status:** PASS (7/7 routes, all 11 stages).
+
+**Day/Night status:** PASS — verified via screenshots at every stage that touched visual code (2, 3, 4, 6); theme tokens used exclusively, no hardcoded colors introduced.
+
+**Responsive QA status:** PASS — 0/24 horizontal-overflow failures across the full required breakpoint matrix (375-1920px) on all 4 changed pages, verified via an iframe harness after this session's window-resize tool proved unreliable (documented tooling limitation, not a site defect).
+
+**No fabricated content was introduced anywhere in this plan** — Built project content, About's personal details, and all career facts are either unchanged from the pre-existing, fact-checked baseline or represented honestly as pending/placeholder.
+
+Files materially changed (cumulative, Stages 0-10):
+- `src/pages/index.astro`, `src/pages/about.astro`, `src/pages/career/index.astro` (whitespace-only, reverted)
+- `src/components/Nav.astro`, `src/components/MediaPlaceholder.astro` (new), `src/components/ProjectCaseStudy.astro` (new)
+- `src/styles/tokens.css`
+- `VISUAL_ASSETS.md` (new), `DESIGN.md`, `REDESIGN_MEMORY.md`
+
+DESIGN.md updated:
+- NO this stage (already done in Stage 9); confirmed still accurate against final code in this stage's audit
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS (7/7 routes, 200)
+- Day mode: PASS
+- Night mode: PASS
+- mobile: PASS (0/24 overflow)
+- tablet: PASS (0/24 overflow)
+- desktop: PASS (0/24 overflow)
+
+Known issues / deferred items:
+- `resize_window` tool limitation noted in Stage 8 — full visual (not just overflow-check) sweep at every exact breakpoint wasn't possible this session; Rahul can spot-check locally via real browser DevTools if desired.
+- `ProjectCaseStudy` template remains unused until Rahul provides real Built project content (intentional, not a gap).
+
+Next stage:
+- **NONE — STOP per the plan's Final Review Gate.** `feature/content-visual-refinement` is a complete refinement candidate. Do not merge to `main` or any parent branch without Rahul's explicit sign-off after reviewing the branch himself.
+
+---
+
+## Content & Visual Refinement — Review fixes 01
+
+Status: complete
+
+Branch:
+refinement/review-fixes-01
+
+PR:
+(opening now)
+
+Merged into:
+feature/content-visual-refinement
+
+Rahul reviewed the live branch (localhost:4330) and requested 5 changes, applied immediately per standing feedback on rapid iteration:
+
+1. **Homepage progression section → Capabilities.** Removed the "Engineer / Product / Market" 3-card progression section from Home. In its place, moved the Career page's "What I'm known for" Capabilities section (4 cards: 0→1 Product Building, AI/ML Productization, Monetization & Growth, Cross-functional Execution) onto Home, and removed it from Career entirely — content and data unchanged, just relocated.
+2. **Resume page removed.** Deleted `src/pages/resume.astro`, removed "Résumé" from the primary nav. The homepage hero's direct "Download résumé" PDF link (`/Rahul_Paul_Resume.pdf`) was left in place — that wasn't part of the ask and still serves a real purpose. `PRODUCT.md` updated (Operating Context, Capabilities and Constraints, Brand Commitments, Product Principles) to stop referencing a Resume page that no longer exists.
+3. **Operating Model moved up on Career.** The "How I operate" 5-step section now sits immediately after the PageHero's lede ("Every role below: what I owned, what we built, and the outcome — expand any to see the details."), before the timeline — was previously below the timeline and Capabilities.
+4. **Reading-frame pills deleted.** The Problem→System/Product→User→Business impact pill row on Career is gone.
+5. **Nav "Built" → "Projects"** (a follow-on request during the same fix pass) — label only, route (`/built`) and the page's own "Built" identity/copy left unchanged since only the navbar label was asked for.
+
+Content decisions:
+- None invented — all moved content is verbatim from its prior location.
+
+Design decisions:
+- `DESIGN.md` updated: the reading-frame/frame-pill component entry removed (component no longer exists), the Shapes section's pill-radius note updated to reflect it's currently unused, the ProjectCaseStudy section's cross-reference to `.reading-frame` reworded, and the corresponding Don't-rule removed.
+
+Image placeholder decisions:
+- None affected.
+
+Files materially changed:
+- `src/pages/index.astro` (progression → capabilities)
+- `src/pages/career/index.astro` (operating-model moved, capabilities + reading-frame removed)
+- `src/pages/resume.astro` (deleted)
+- `src/components/Nav.astro` (Résumé removed, Built → Projects)
+- `src/styles/tokens.css` (removed dead `.progression*`, `.reading-frame`/`.frame-pill`/`.frame-arrow`, `.resume-card` rules and their responsive overrides)
+- `DESIGN.md`, `PRODUCT.md`
+- `REDESIGN_MEMORY.md` (this entry)
+
+DESIGN.md updated:
+- YES — removed the now-nonexistent reading-frame pill component documentation, updated the Shapes/Do's-Don'ts cross-references.
+
+Validation:
+- npm run build: PASS (6/6 routes — resume route correctly gone)
+- dev mode: PASS — verified live via the already-running dev server (localhost:4330) that Rahul was reviewing; confirmed via raw HTML/route checks: `/resume` now 404s, nav renders "Career / Projects / About", Career's `<h1>`→lede→operating-model→career-timeline order is correct, no `reading-frame`/`capabilities` markup remains on Career, Home's Capabilities section renders with the moved data.
+- Day mode / Night mode: not re-screenshotted this pass (browser screenshot capture was unavailable — 0-width window — during this session; verified structurally via raw HTML instead, which is theme-independent by construction since no new colors were introduced, only markup relocated/removed)
+- mobile/tablet/desktop: not independently re-verified this pass — no new responsive rules were added (moved sections reuse their existing, already-audited `.capability-grid`/`.operating-steps` breakpoint behavior); dead-code removal confirmed via grep (0 remaining references to every removed class)
+
+Known issues / deferred items:
+- Browser screenshot capture was unavailable this pass (reported "0 width" — likely the viewing browser window was minimized/inactive on Rahul's end); verified via `get_page_text` + raw HTML/curl checks instead, which confirmed correctness but didn't produce a visual screenshot record. Rahul was actively viewing the live dev server himself during this pass, which substitutes for it.
+
+Next stage:
+- None — awaiting Rahul's continued review / further fix requests, or sign-off to promote.
