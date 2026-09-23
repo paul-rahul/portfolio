@@ -12,8 +12,8 @@ yet — no route/section exists to hold it).
 | ID | Page | Placement | Asset Needed | Recommended Ratio | Status |
 |----|------|-----------|---------------|--------------------|--------|
 | IMG-01 | Home | Hero | Rahul portrait (optional swap-in) | 1:1 | Retained — intentional `.intersection-diagram` graphic, not an empty gap; HTML comment in `index.astro` documents the swap path |
-| IMG-02 | Home | Selected Projects — card 1 | Built project visual | 16:10 | Needed |
-| IMG-03 | Home | Selected Projects — card 2 | Built project visual | 16:10 | Needed |
+| IMG-02 | Home | Selected Projects — card 1 (live) | Built project visual | 16:10 | Needed |
+| IMG-03 | Home | Selected Projects — card 2 (live) | Built project visual | 16:10 | Needed |
 | IMG-04 | About | Hero | Rahul portrait/candid | 4:5 | Needed |
 | IMG-05 | About | McCombs / Austin context | Campus or MBA-context photo | 4:3 | Needed |
 | IMG-06 | About | Badminton | Badminton/action photo | 4:3 | Needed |
