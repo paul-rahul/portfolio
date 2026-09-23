@@ -1228,3 +1228,50 @@ Known issues / deferred items:
 
 Next stage:
 - None — this was a post-Stage-9 review-fix cycle per the plan's "REVIEW FIXES AFTER RAHUL FEEDBACK" section. Still waiting on Rahul's explicit sign-off before any promotion toward `redesign/technical-editorial`/`main`.
+
+---
+
+## Content & Visual Refinement — Stage 00
+
+Status: complete
+
+Branch:
+feature/content-visual-refinement (created from `main` @ 84b3695)
+
+PR:
+N/A (integration branch, not a stage PR)
+
+Merged into:
+N/A
+
+Implemented:
+- New integration branch `feature/content-visual-refinement` created from `main`, per the Content & Visual Refinement execution plan (`~/Downloads/CLAUDE_CONTENT_VISUAL_REFINEMENT_PLAN.md`)
+- Baseline verified: `npm install`, `npm run build` (7/7 routes built clean), dev server smoke test — all 7 routes (`/`, `/career`, `/built`, `/internships`, `/about`, `/resume`, `/contact`) return 200
+
+Content decisions:
+- None yet — Stage 1 audit is next
+
+Design decisions:
+- None yet
+
+Image placeholder decisions:
+- None yet
+
+Files materially changed:
+- None (baseline only)
+
+DESIGN.md updated:
+- NO
+
+Validation:
+- npm run build: PASS
+- dev mode: PASS (all 7 routes 200)
+- Day mode: not yet re-tested this pass (no changes made)
+- Night mode: not yet re-tested this pass (no changes made)
+- mobile/tablet/desktop: not yet re-tested this pass (no changes made)
+
+Known issues / deferred items:
+- None
+
+Next stage:
+- Stage 1 — audit and content map (branch `refinement/01-audit-and-content-map`)
