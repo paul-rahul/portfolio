@@ -181,12 +181,32 @@ img {
 	font-weight: 500;
 	color: var(--ink-secondary);
 	border-bottom: 2px solid transparent;
+	transition: color var(--motion-fast) var(--ease-standard);
+}
+
+.site-header nav a::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -2px;
+	height: 2px;
+	background: var(--accent);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform var(--motion-base) var(--ease-standard);
 }
 
 .site-header nav a:hover,
+.site-header nav a:focus-visible,
 .site-header nav a[aria-current="page"] {
 	color: var(--ink);
-	border-bottom-color: var(--accent);
+}
+
+.site-header nav a:hover::after,
+.site-header nav a:focus-visible::after,
+.site-header nav a[aria-current="page"]::after {
+	transform: scaleX(1);
 }
 
 .header-actions {
@@ -208,6 +228,7 @@ img {
 }
 
 .theme-toggle {
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -231,12 +252,22 @@ img {
 }
 
 .theme-toggle-icon {
-	display: none;
+	display: block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 16px;
+	height: 16px;
+	margin: -8px 0 0 -8px;
+	opacity: 0;
+	transform: scale(0.5) rotate(-90deg);
+	transition: opacity var(--motion-base) var(--ease-standard), transform var(--motion-base) var(--ease-standard);
 }
 
 :root[data-theme="light"] .theme-toggle-icon-sun,
 :root[data-theme="dark"] .theme-toggle-icon-moon {
-	display: block;
+	opacity: 1;
+	transform: scale(1) rotate(0deg);
 }
 
 .hero {
@@ -364,6 +395,21 @@ img {
 
 .button.ghost:hover {
 	border-color: var(--ink);
+}
+
+.button svg,
+.header-cta svg,
+.section-heading > a svg {
+	transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+.button:hover svg,
+.button:focus-visible svg,
+.header-cta:hover svg,
+.header-cta:focus-visible svg,
+.section-heading > a:hover svg,
+.section-heading > a:focus-visible svg {
+	transform: translateX(3px);
 }
 
 .hero-art {
