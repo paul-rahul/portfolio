@@ -322,8 +322,18 @@ const defaultFirmId = firms[0].id;
 			firmPanelOrder.forEach((id) => {
 				if (id) restorePanelToPane(id);
 			});
-			const activeId = firmTriggers.find((b) => b.getAttribute("aria-pressed") === "true")?.dataset.firmId;
-			firmTriggers.forEach((btn) => btn.setAttribute("aria-expanded", String(btn.dataset.firmId === activeId)));
+			// Desktop always shows exactly one panel; fall back to the default
+			// firm if compact mode was left with everything collapsed.
+			const activeId =
+				firmTriggers.find((b) => b.getAttribute("aria-pressed") === "true")?.dataset.firmId ?? firmTriggers[0]?.dataset.firmId;
+			firmTriggers.forEach((btn) => {
+				const isActive = btn.dataset.firmId === activeId;
+				btn.setAttribute("aria-pressed", String(isActive));
+				btn.setAttribute("aria-expanded", String(isActive));
+			});
+			firmPanels.forEach((panel) => {
+				panel.hidden = panel.dataset.firmId !== activeId;
+			});
 		};
 
 		compactQuery.addEventListener("change", (e) => {
@@ -334,9 +344,17 @@ const defaultFirmId = firms[0].id;
 		const initialHash = window.location.hash.replace("#", "");
 		if (initialHash && firmTriggers.some((b) => b.dataset.firmId === initialHash)) {
 			activateFirm(initialHash);
+			if (compactQuery.matches) syncToCompact();
+		} else if (compactQuery.matches) {
+			// Compact/mobile starts with every employer collapsed by default.
+			firmTriggers.forEach((btn) => {
+				btn.setAttribute("aria-expanded", "false");
+				btn.setAttribute("aria-pressed", "false");
+			});
+			firmPanels.forEach((panel) => {
+				panel.hidden = true;
+			});
 		}
-
-		if (compactQuery.matches) syncToCompact();
 
 		firmPanels.forEach((panel) => {
 			const projectTriggers = Array.from(panel.querySelectorAll<HTMLButtonElement>("[data-project-trigger]"));
