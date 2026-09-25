@@ -2,34 +2,9 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import { firms } from "../../data/career.ts";
-
-const operatingSteps = [
-	{
-		n: "01",
-		name: "Understand the system",
-		desc: "Build enough technical and customer context to see what's actually happening.",
-	},
-	{
-		n: "02",
-		name: "Find the constraint",
-		desc: "Identify the problem that matters most rather than optimizing everything at once.",
-	},
-	{
-		n: "03",
-		name: "Align the team",
-		desc: "Make the problem, trade-offs, and desired outcome clear across functions.",
-	},
-	{
-		n: "04",
-		name: "Ship",
-		desc: "Move from analysis to a concrete product decision and get it into users' hands.",
-	},
-	{
-		n: "05",
-		name: "Measure",
-		desc: "Evaluate what changed, learn from the result, and sharpen the next decision.",
-	},
-];
+import desktopOperateSvg from "../../assets/how-i-operate/how-i-operate-desktop.svg?raw";
+import tabletOperateSvg from "../../assets/how-i-operate/how-i-operate-tablet.svg?raw";
+import mobileOperateSvg from "../../assets/how-i-operate/how-i-operate-mobile.svg?raw";
 
 const defaultFirmId = firms[0].id;
 ---
@@ -37,22 +12,20 @@ const defaultFirmId = firms[0].id;
 <BaseLayout title="Career | Rahul Paul">
 	<main class="wrap">
 		<PageHero title="A career built at the intersection of models, markets and people." />
-		<section class="operating-model wrap" aria-label="How I operate">
-			<div class="section-heading">
-				<div>
-					<h2>How I operate.</h2>
-				</div>
-			</div>
-			<ol class="operating-steps" role="list" data-operating-steps>
-				{
-					operatingSteps.map((s) => (
-						<li class="operating-step">
-							<span class="operating-number">{s.n}</span>
-							<h3>{s.name}</h3>
-							<p>{s.desc}</p>
-						</li>
-					))
-				}
+		<section class="operate-section wrap" aria-labelledby="operate-heading">
+			<h2 id="operate-heading" class="visually-hidden">How I operate.</h2>
+
+			<div class="operate-svg operate-svg--desktop" aria-hidden="true" set:html={desktopOperateSvg} />
+			<div class="operate-svg operate-svg--tablet" aria-hidden="true" set:html={tabletOperateSvg} />
+			<div class="operate-svg operate-svg--mobile" aria-hidden="true" set:html={mobileOperateSvg} />
+
+			<ol class="visually-hidden">
+				<li>Understand the system</li>
+				<li>Find the constraint</li>
+				<li>Align the team</li>
+				<li>Ship</li>
+				<li>Measure</li>
+				<li>Seek feedback and iterate back to understanding the system.</li>
 			</ol>
 		</section>
 
@@ -397,6 +370,5 @@ const defaultFirmId = firms[0].id;
 		});
 	}
 
-	revealOnce("[data-operating-steps]");
 	revealOnce("[data-career-explorer]");
 </script>
