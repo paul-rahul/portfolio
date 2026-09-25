@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 780" role="img" aria-labelledby="how-i-operate-mobile-title how-i-operate-mobile-desc">
+<title id="how-i-operate-mobile-title">How I operate</title>
+<desc id="how-i-operate-mobile-desc">A vertical five-step process with a feedback loop returning from Measure to Understand the system.</desc>
+
+  <defs>
+    <marker id="operate-arrow-mobile" markerWidth="8" markerHeight="8" refX="6.5" refY="4"
+            orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,4 L0,8 Z" fill="var(--accent, #7d8cff)"/>
+    </marker>
+    <style>
+      .bg { fill: transparent; }
+      .accent-stroke { stroke: var(--accent, #7d8cff); }
+      .accent-fill { fill: var(--accent, #7d8cff); }
+      .ink { fill: var(--ink, #f2f2f2); }
+      .muted { fill: var(--ink-secondary, #a5a5a5); }
+      .num {
+        font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: .05em;
+      }
+      .title {
+        font-family: var(--font-heading, Inter, system-ui, sans-serif);
+        font-weight: 700;
+      }
+      .feedback {
+        font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .icon {
+        stroke: var(--accent, #7d8cff);
+        fill: none;
+        stroke-width: 2.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+
+<rect class="bg" width="480" height="780"/>
+<text x="24" y="60" class="ink title" font-size="38">How I operate.</text>
+
+<!-- feedback loop -->
+<path d="M190 720
+         C120 720 85 690 85 635
+         L85 190
+         C85 145 105 125 145 125"
+      class="accent-stroke" fill="none" stroke-width="2"
+      stroke-dasharray="4 8" marker-end="url(#operate-arrow-mobile)"/>
+
+<rect x="34" y="335" width="100" height="96" rx="22"
+      fill="var(--background, #121214)" stroke="var(--accent, #7d8cff)" stroke-width="1.5"/>
+<text x="84" y="360" text-anchor="middle" class="accent-fill feedback" font-size="13">
+  <tspan x="84" dy="0">Seek</tspan>
+  <tspan x="84" dy="18">feedback</tspan>
+  <tspan x="84" dy="18">&amp;</tspan>
+  <tspan x="84" dy="18">iterate</tspan>
+</text>
+
+<!-- main vertical connector -->
+<g class="accent-stroke" fill="none" stroke-width="2" marker-end="url(#operate-arrow-mobile)">
+  <line x1="190" y1="205" x2="190" y2="250"/>
+  <line x1="190" y1="325" x2="190" y2="370"/>
+  <line x1="190" y1="445" x2="190" y2="490"/>
+  <line x1="190" y1="565" x2="190" y2="610"/>
+</g>
+
+<!-- steps -->
+<g>
+  <circle cx="190" cy="170" r="30" class="accent-stroke" fill="none" stroke-width="2"/>
+  
+        <g transform="translate(175.6 155.6) scale(0.9)" class="icon">
+          <circle cx="10" cy="18" r="5"/><circle cx="22" cy="18" r="5"/>
+          <path d="M9 13l3-7h4l2 7M23 13l-3-7h-4l-2 7M15 18h2"/>
+        </g>
+  <text x="235" y="162" class="accent-fill num" font-size="13">01</text>
+  <text x="275" y="172" class="ink title" font-size="20">Understand the system</text>
+
+  <circle cx="190" cy="290" r="30" class="accent-stroke" fill="none" stroke-width="2"/>
+  
+        <g transform="translate(175.6 275.6) scale(0.9)" class="icon">
+          <rect x="8" y="5" width="13" height="20" rx="2"/>
+          <line x1="11" y1="10" x2="18" y2="10"/>
+          <circle cx="22" cy="21" r="4"/>
+          <line x1="25" y1="24" x2="29" y2="28"/>
+        </g>
+  <text x="235" y="282" class="accent-fill num" font-size="13">02</text>
+  <text x="275" y="292" class="ink title" font-size="20">Find the constraint</text>
+
+  <circle cx="190" cy="410" r="30" class="accent-stroke" fill="none" stroke-width="2"/>
+  
+        <g transform="translate(176.24 396.24) scale(0.86)" class="icon">
+          <circle cx="11" cy="12" r="4"/><circle cx="21" cy="12" r="4"/>
+          <path d="M4 26c0-5 3-8 7-8s7 3 7 8"/>
+          <path d="M14 26c0-5 3-8 7-8s7 3 7 8"/>
+        </g>
+  <text x="235" y="402" class="accent-fill num" font-size="13">03</text>
+  <text x="275" y="412" class="ink title" font-size="20">Align the team</text>
+
+  <circle cx="190" cy="530" r="30" class="accent-stroke" fill="none" stroke-width="2"/>
+  
+        <g transform="translate(176.24 516.24) scale(0.86)" class="icon">
+          <path d="M4 15L28 5 19 28 14 19 4 15Z"/>
+          <path d="M14 19L28 5"/>
+        </g>
+  <text x="235" y="522" class="accent-fill num" font-size="13">04</text>
+  <text x="275" y="532" class="ink title" font-size="20">Ship</text>
+
+  <circle cx="190" cy="650" r="30" class="accent-stroke" fill="none" stroke-width="2"/>
+  
+        <g transform="translate(176.24 636.24) scale(0.86)" class="icon">
+          <line x1="5" y1="27" x2="29" y2="27"/>
+          <line x1="8" y1="27" x2="8" y2="18"/>
+          <line x1="15" y1="27" x2="15" y2="12"/>
+          <line x1="22" y1="27" x2="22" y2="7"/>
+        </g>
+  <text x="235" y="642" class="accent-fill num" font-size="13">05</text>
+  <text x="275" y="652" class="ink title" font-size="20">Measure</text>
+</g>
+</svg>
