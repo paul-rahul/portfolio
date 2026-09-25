@@ -12,7 +12,7 @@ const defaultFirmId = firms[0].id;
 <BaseLayout title="Career | Rahul Paul">
 	<main class="wrap">
 		<PageHero title="A career built at the intersection of models, markets and people." />
-		<section class="operate-section wrap" aria-labelledby="operate-heading">
+		<section class="operate-section wrap" aria-labelledby="operate-heading" data-operate-reveal>
 			<h2 id="operate-heading" class="visually-hidden">How I operate.</h2>
 
 			<div class="operate-svg operate-svg--desktop" aria-hidden="true" set:html={desktopOperateSvg} />
@@ -370,5 +370,6 @@ const defaultFirmId = firms[0].id;
 		});
 	}
 
+	revealOnce("[data-operate-reveal]", { asUnit: true });
 	revealOnce("[data-career-explorer]");
 </script>
