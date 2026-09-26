@@ -1564,11 +1564,11 @@ img {
 	min-width: 0;
 }
 
-.how-i-operate-asset img {
+.how-i-operate-asset svg {
 	display: block;
 	width: 100%;
+	max-width: 100%;
 	height: auto;
-	object-fit: contain;
 }
 
 :root[data-theme="dark"] .how-i-operate--desktop-dark,
@@ -1599,6 +1599,7 @@ img {
 		display: block;
 	}
 }
+
 
 .capability-grid {
 	display: grid;
