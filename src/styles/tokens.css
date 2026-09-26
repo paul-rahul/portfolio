@@ -1348,15 +1348,12 @@ img {
 }
 
 .project-nav {
-	margin-top: 28px;
-	padding-top: 24px;
-	border-top: 1px solid var(--border);
+	margin-top: 32px;
 }
 
 .project-selector {
 	display: grid;
 	gap: 10px;
-	margin-top: 14px;
 }
 
 .project-chip {
@@ -1400,7 +1397,9 @@ img {
 }
 
 .project-detail {
-	margin-top: 32px;
+	margin-top: 28px;
+	padding-top: 24px;
+	border-top: 1px solid var(--border);
 }
 
 .project-detail-head h3 {
