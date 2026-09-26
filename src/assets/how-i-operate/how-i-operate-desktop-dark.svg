@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 369" role="img" aria-labelledby="how-i-operate-desktop-dark-title how-i-operate-desktop-dark-desc">
+<title id="how-i-operate-desktop-dark-title">How I operate</title>
+<desc id="how-i-operate-desktop-dark-desc">Five-step operating model with a feedback loop from Measure back to Understand the system.</desc>
+<defs>
+  <marker id="operate-arrow-desktop-dark" markerWidth="10" markerHeight="10" refX="8.8" refY="5"
+          orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M0 0 L10 5 L0 10 Z" fill="#6F84FF"/>
+  </marker>
+</defs>
+<rect width="2048" height="369" fill="transparent"/>
+
+<g fill="#6F84FF" font-family="JetBrains Mono, Menlo, monospace" font-size="21" font-weight="700" text-anchor="middle">
+  <text x="166" y="34">01</text>
+  <text x="596" y="34">02</text>
+  <text x="1021" y="34">03</text>
+  <text x="1449" y="34">04</text>
+  <text x="1892" y="34">05</text>
+</g>
+
+<g fill="none" stroke="#6F84FF" stroke-width="2.4">
+  <circle cx="166" cy="109" r="61"/>
+  <circle cx="596" cy="109" r="61"/>
+  <circle cx="1021" cy="109" r="61"/>
+  <circle cx="1449" cy="109" r="61"/>
+  <circle cx="1892" cy="109" r="61"/>
+</g>
+
+<g transform="translate(141.2,84.2) scale(1.55)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="18" r="5"/><circle cx="22" cy="18" r="5"/><path d="M9 13l3-7h4l2 7M23 13l-3-7h-4l-2 7M15 18h2"/></g>
+<g transform="translate(571.2,84.2) scale(1.55)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="13" height="20" rx="2"/><line x1="11" y1="10" x2="18" y2="10"/><circle cx="22" cy="21" r="4"/><line x1="25" y1="24" x2="29" y2="28"/></g>
+<g transform="translate(997.32,85.32) scale(1.48)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="12" r="4"/><circle cx="21" cy="12" r="4"/><path d="M4 26c0-5 3-8 7-8s7 3 7 8"/><path d="M14 26c0-5 3-8 7-8s7 3 7 8"/></g>
+<g transform="translate(1425.32,85.32) scale(1.48)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15L28 5 19 28 14 19 4 15Z"/><path d="M14 19L28 5"/></g>
+<g transform="translate(1868.32,85.32) scale(1.48)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="27" x2="29" y2="27"/><line x1="8" y1="27" x2="8" y2="18"/><line x1="15" y1="27" x2="15" y2="12"/><line x1="22" y1="27" x2="22" y2="7"/></g>
+
+<g stroke="#6F84FF" stroke-width="2.4" fill="none" marker-end="url(#operate-arrow-desktop-dark)">
+  <line x1="262" y1="109" x2="490" y2="109"/>
+  <line x1="692" y1="109" x2="914" y2="109"/>
+  <line x1="1117" y1="109" x2="1342" y2="109"/>
+  <line x1="1545" y1="109" x2="1781" y2="109"/>
+</g>
+
+<g fill="#F2F2F0" font-family="Instrument Sans, Inter, Arial, sans-serif" font-size="31" font-weight="700" text-anchor="middle">
+  <text x="166" y="211"><tspan x="166">Understand</tspan><tspan x="166" dy="37">the system</tspan></text>
+  <text x="596" y="211"><tspan x="596">Find the</tspan><tspan x="596" dy="37">constraint</tspan></text>
+  <text x="1021" y="218">Align the team</text>
+  <text x="1449" y="218">Ship</text>
+  <text x="1892" y="218">Measure</text>
+</g>
+
+<path d="M1968 126
+         C2015 145 2022 174 2022 210
+         C2022 286 1974 319 1890 319
+         L157 319
+         C80 319 34 287 34 222
+         C34 167 48 136 88 120"
+      fill="none"
+      stroke="#6F84FF"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      stroke-dasharray="6 7"
+      marker-end="url(#operate-arrow-desktop-dark)"/>
+
+<rect x="839" y="294" width="370" height="52" rx="26"
+      fill="#111214" stroke="#6F84FF" stroke-width="1.8"/>
+<text x="1024" y="327"
+      fill="#6F84FF"
+      text-anchor="middle"
+      font-family="JetBrains Mono, Menlo, monospace"
+      font-size="19"
+      font-weight="600">Seek feedback &amp; iterate</text>
+</svg>
