@@ -2,12 +2,12 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import { firms } from "../../data/career.ts";
-import desktopDark from "../../assets/how-i-operate/how-i-operate-desktop-dark.svg";
-import desktopLight from "../../assets/how-i-operate/how-i-operate-desktop-light.svg";
-import tabletDark from "../../assets/how-i-operate/how-i-operate-tablet-dark.svg";
-import tabletLight from "../../assets/how-i-operate/how-i-operate-tablet-light.svg";
-import mobileDark from "../../assets/how-i-operate/how-i-operate-mobile-dark.svg";
-import mobileLight from "../../assets/how-i-operate/how-i-operate-mobile-light.svg";
+import desktopDarkSvg from "../../assets/how-i-operate/how-i-operate-desktop-dark.svg?raw";
+import desktopLightSvg from "../../assets/how-i-operate/how-i-operate-desktop-light.svg?raw";
+import tabletDarkSvg from "../../assets/how-i-operate/how-i-operate-tablet-dark.svg?raw";
+import tabletLightSvg from "../../assets/how-i-operate/how-i-operate-tablet-light.svg?raw";
+import mobileDarkSvg from "../../assets/how-i-operate/how-i-operate-mobile-dark.svg?raw";
+import mobileLightSvg from "../../assets/how-i-operate/how-i-operate-mobile-light.svg?raw";
 
 const defaultFirmId = firms[0].id;
 ---
@@ -16,26 +16,18 @@ const defaultFirmId = firms[0].id;
 	<main class="wrap">
 		<PageHero title="A career built at the intersection of models, markets and people." />
 		<section class="operate-section wrap" aria-labelledby="operate-heading" data-operate-reveal>
-			<h2 id="operate-heading" class="visually-hidden">How I operate.</h2>
+			<div class="section-heading">
+				<div>
+					<h2 id="operate-heading">How I operate.</h2>
+				</div>
+			</div>
 
-			<div class="how-i-operate-asset how-i-operate--desktop-dark">
-				<img src={desktopDark.src} width={desktopDark.width} height={desktopDark.height} alt="" aria-hidden="true" />
-			</div>
-			<div class="how-i-operate-asset how-i-operate--desktop-light">
-				<img src={desktopLight.src} width={desktopLight.width} height={desktopLight.height} alt="" aria-hidden="true" />
-			</div>
-			<div class="how-i-operate-asset how-i-operate--tablet-dark">
-				<img src={tabletDark.src} width={tabletDark.width} height={tabletDark.height} alt="" aria-hidden="true" />
-			</div>
-			<div class="how-i-operate-asset how-i-operate--tablet-light">
-				<img src={tabletLight.src} width={tabletLight.width} height={tabletLight.height} alt="" aria-hidden="true" />
-			</div>
-			<div class="how-i-operate-asset how-i-operate--mobile-dark">
-				<img src={mobileDark.src} width={mobileDark.width} height={mobileDark.height} alt="" aria-hidden="true" />
-			</div>
-			<div class="how-i-operate-asset how-i-operate--mobile-light">
-				<img src={mobileLight.src} width={mobileLight.width} height={mobileLight.height} alt="" aria-hidden="true" />
-			</div>
+			<div class="how-i-operate-asset how-i-operate--desktop-dark" aria-hidden="true" set:html={desktopDarkSvg} />
+			<div class="how-i-operate-asset how-i-operate--desktop-light" aria-hidden="true" set:html={desktopLightSvg} />
+			<div class="how-i-operate-asset how-i-operate--tablet-dark" aria-hidden="true" set:html={tabletDarkSvg} />
+			<div class="how-i-operate-asset how-i-operate--tablet-light" aria-hidden="true" set:html={tabletLightSvg} />
+			<div class="how-i-operate-asset how-i-operate--mobile-dark" aria-hidden="true" set:html={mobileDarkSvg} />
+			<div class="how-i-operate-asset how-i-operate--mobile-light" aria-hidden="true" set:html={mobileLightSvg} />
 
 			<ol class="visually-hidden">
 				<li>Understand the system</li>
