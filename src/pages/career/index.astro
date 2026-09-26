@@ -70,11 +70,6 @@ const defaultFirmId = firms[0].id;
 				{
 					firms.map((firm) => (
 						<div class="firm-detail" data-firm-panel data-firm-id={firm.id} id={firm.id} hidden={firm.id !== defaultFirmId}>
-							<header class="firm-detail-head">
-								<h2>{firm.name}</h2>
-								<p class="firm-detail-meta">{firm.period}</p>
-							</header>
-
 							{firm.roles.length > 1 && (
 								<div class="role-history">
 									<p class="kicker">My roles at {firm.name}</p>
@@ -96,7 +91,6 @@ const defaultFirmId = firms[0].id;
 							)}
 
 							<div class="project-nav">
-								<p class="kicker">Projects at {firm.name}</p>
 								<div class="project-selector" role="list">
 									{firm.projects.map((project, i) => (
 										<button

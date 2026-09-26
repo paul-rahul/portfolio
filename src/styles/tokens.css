@@ -1289,24 +1289,6 @@ img {
 	min-width: 0;
 }
 
-.firm-detail-head h2 {
-	font-family: var(--font-heading);
-	font-weight: 600;
-	font-size: clamp(26px, 3vw, 34px);
-	letter-spacing: -0.015em;
-	margin: 0;
-	text-transform: uppercase;
-}
-
-.firm-detail-meta {
-	font-family: var(--font-mono);
-	font-size: 12px;
-	color: var(--ink-secondary);
-	text-transform: uppercase;
-	letter-spacing: 0.06em;
-	margin: 8px 0 0;
-}
-
 .role-history {
 	margin-top: 28px;
 	padding-top: 24px;
@@ -1366,15 +1348,12 @@ img {
 }
 
 .project-nav {
-	margin-top: 28px;
-	padding-top: 24px;
-	border-top: 1px solid var(--border);
+	margin-top: 32px;
 }
 
 .project-selector {
 	display: grid;
 	gap: 10px;
-	margin-top: 14px;
 }
 
 .project-chip {
