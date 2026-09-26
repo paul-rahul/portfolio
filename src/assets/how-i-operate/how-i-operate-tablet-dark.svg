@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1462 510" role="img" aria-labelledby="how-i-operate-tablet-dark-title how-i-operate-tablet-dark-desc">
+<title id="how-i-operate-tablet-dark-title">How I operate</title>
+<desc id="how-i-operate-tablet-dark-desc">Five-step operating model with a feedback loop from Measure back to Understand the system.</desc>
+<defs>
+  <marker id="operate-arrow-tablet-dark" markerWidth="10" markerHeight="10" refX="8.8" refY="5"
+          orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M0 0 L10 5 L0 10 Z" fill="#6F84FF"/>
+  </marker>
+</defs>
+<rect width="1462" height="510" fill="transparent"/>
+
+<g fill="#6F84FF" font-family="JetBrains Mono, Menlo, monospace" font-size="19" font-weight="700" text-anchor="middle">
+  <text x="148" y="57">01</text>
+  <text x="434" y="57">02</text>
+  <text x="718" y="57">03</text>
+  <text x="1006" y="57">04</text>
+  <text x="1298" y="57">05</text>
+</g>
+
+<g fill="none" stroke="#6F84FF" stroke-width="2.4">
+  <circle cx="148" cy="128" r="59"/>
+  <circle cx="434" cy="128" r="59"/>
+  <circle cx="718" cy="128" r="59"/>
+  <circle cx="1006" cy="128" r="59"/>
+  <circle cx="1298" cy="128" r="59"/>
+</g>
+
+<g transform="translate(124.8,104.8) scale(1.45)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="18" r="5"/><circle cx="22" cy="18" r="5"/><path d="M9 13l3-7h4l2 7M23 13l-3-7h-4l-2 7M15 18h2"/></g>
+<g transform="translate(410.8,104.8) scale(1.45)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="13" height="20" rx="2"/><line x1="11" y1="10" x2="18" y2="10"/><circle cx="22" cy="21" r="4"/><line x1="25" y1="24" x2="29" y2="28"/></g>
+<g transform="translate(695.92,105.92) scale(1.38)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="12" r="4"/><circle cx="21" cy="12" r="4"/><path d="M4 26c0-5 3-8 7-8s7 3 7 8"/><path d="M14 26c0-5 3-8 7-8s7 3 7 8"/></g>
+<g transform="translate(983.92,105.92) scale(1.38)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15L28 5 19 28 14 19 4 15Z"/><path d="M14 19L28 5"/></g>
+<g transform="translate(1275.92,105.92) scale(1.38)" stroke="#6F84FF" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="27" x2="29" y2="27"/><line x1="8" y1="27" x2="8" y2="18"/><line x1="15" y1="27" x2="15" y2="12"/><line x1="22" y1="27" x2="22" y2="7"/></g>
+
+<g stroke="#6F84FF" stroke-width="2.4" fill="none" marker-end="url(#operate-arrow-tablet-dark)">
+  <line x1="234" y1="128" x2="340" y2="128"/>
+  <line x1="520" y1="128" x2="624" y2="128"/>
+  <line x1="804" y1="128" x2="912" y2="128"/>
+  <line x1="1092" y1="128" x2="1200" y2="128"/>
+</g>
+
+<g fill="#F2F2F0" font-family="Instrument Sans, Inter, Arial, sans-serif" font-size="29" font-weight="700" text-anchor="middle">
+  <text x="148" y="226"><tspan x="148">Understand</tspan><tspan x="148" dy="34">the system</tspan></text>
+  <text x="434" y="226"><tspan x="434">Find the</tspan><tspan x="434" dy="34">constraint</tspan></text>
+  <text x="718" y="226"><tspan x="718">Align</tspan><tspan x="718" dy="34">the team</tspan></text>
+  <text x="1006" y="226">Ship</text>
+  <text x="1298" y="226">Measure</text>
+</g>
+
+<path d="M1376 144
+         C1420 160 1428 204 1428 258
+         C1428 394 1368 446 1278 446
+         L177 446
+         C84 446 23 397 23 291
+         C23 217 39 167 73 143"
+      fill="none"
+      stroke="#6F84FF"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      stroke-dasharray="6 7"
+      marker-end="url(#operate-arrow-tablet-dark)"/>
+
+<rect x="530" y="418" width="394" height="56" rx="28"
+      fill="#111214" stroke="#6F84FF" stroke-width="1.8"/>
+<text x="727" y="454"
+      fill="#6F84FF"
+      text-anchor="middle"
+      font-family="JetBrains Mono, Menlo, monospace"
+      font-size="20"
+      font-weight="600">Seek feedback &amp; iterate</text>
+</svg>

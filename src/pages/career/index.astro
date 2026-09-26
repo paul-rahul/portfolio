@@ -2,34 +2,12 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import { firms } from "../../data/career.ts";
-
-const operatingSteps = [
-	{
-		n: "01",
-		name: "Understand the system",
-		desc: "Build enough technical and customer context to see what's actually happening.",
-	},
-	{
-		n: "02",
-		name: "Find the constraint",
-		desc: "Identify the problem that matters most rather than optimizing everything at once.",
-	},
-	{
-		n: "03",
-		name: "Align the team",
-		desc: "Make the problem, trade-offs, and desired outcome clear across functions.",
-	},
-	{
-		n: "04",
-		name: "Ship",
-		desc: "Move from analysis to a concrete product decision and get it into users' hands.",
-	},
-	{
-		n: "05",
-		name: "Measure",
-		desc: "Evaluate what changed, learn from the result, and sharpen the next decision.",
-	},
-];
+import desktopDarkSvg from "../../assets/how-i-operate/how-i-operate-desktop-dark.svg?raw";
+import desktopLightSvg from "../../assets/how-i-operate/how-i-operate-desktop-light.svg?raw";
+import tabletDarkSvg from "../../assets/how-i-operate/how-i-operate-tablet-dark.svg?raw";
+import tabletLightSvg from "../../assets/how-i-operate/how-i-operate-tablet-light.svg?raw";
+import mobileDarkSvg from "../../assets/how-i-operate/how-i-operate-mobile-dark.svg?raw";
+import mobileLightSvg from "../../assets/how-i-operate/how-i-operate-mobile-light.svg?raw";
 
 const defaultFirmId = firms[0].id;
 ---
@@ -37,22 +15,27 @@ const defaultFirmId = firms[0].id;
 <BaseLayout title="Career | Rahul Paul">
 	<main class="wrap">
 		<PageHero title="A career built at the intersection of models, markets and people." />
-		<section class="operating-model wrap" aria-label="How I operate">
+		<section class="operate-section wrap" aria-labelledby="operate-heading" data-operate-reveal>
 			<div class="section-heading">
 				<div>
-					<h2>How I operate.</h2>
+					<h2 id="operate-heading">How I operate.</h2>
 				</div>
 			</div>
-			<ol class="operating-steps" role="list" data-operating-steps>
-				{
-					operatingSteps.map((s) => (
-						<li class="operating-step">
-							<span class="operating-number">{s.n}</span>
-							<h3>{s.name}</h3>
-							<p>{s.desc}</p>
-						</li>
-					))
-				}
+
+			<div class="how-i-operate-asset how-i-operate--desktop-dark" aria-hidden="true" set:html={desktopDarkSvg} />
+			<div class="how-i-operate-asset how-i-operate--desktop-light" aria-hidden="true" set:html={desktopLightSvg} />
+			<div class="how-i-operate-asset how-i-operate--tablet-dark" aria-hidden="true" set:html={tabletDarkSvg} />
+			<div class="how-i-operate-asset how-i-operate--tablet-light" aria-hidden="true" set:html={tabletLightSvg} />
+			<div class="how-i-operate-asset how-i-operate--mobile-dark" aria-hidden="true" set:html={mobileDarkSvg} />
+			<div class="how-i-operate-asset how-i-operate--mobile-light" aria-hidden="true" set:html={mobileLightSvg} />
+
+			<ol class="visually-hidden">
+				<li>Understand the system</li>
+				<li>Find the constraint</li>
+				<li>Align the team</li>
+				<li>Ship</li>
+				<li>Measure</li>
+				<li>Seek feedback and iterate back to understanding the system.</li>
 			</ol>
 		</section>
 
@@ -397,6 +380,6 @@ const defaultFirmId = firms[0].id;
 		});
 	}
 
-	revealOnce("[data-operating-steps]");
+	revealOnce("[data-operate-reveal]", { asUnit: true });
 	revealOnce("[data-career-explorer]");
 </script>
