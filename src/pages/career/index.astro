@@ -201,7 +201,7 @@ const defaultFirmId = firms[0].id;
 
 		const firmDetailPane = explorer.querySelector<HTMLElement>(".firm-detail-pane");
 		const firmPanelOrder = firmPanels.map((p) => p.dataset.firmId);
-		const compactQuery = window.matchMedia("(max-width: 680px)");
+		const compactQuery = window.matchMedia("(max-width: 980px)");
 		const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 		const getFirmLi = (firmId: string) => {
