@@ -1400,9 +1400,7 @@ img {
 }
 
 .project-detail {
-	margin-top: 28px;
-	padding-top: 24px;
-	border-top: 1px solid var(--border);
+	margin-top: 32px;
 }
 
 .project-detail-head h3 {
