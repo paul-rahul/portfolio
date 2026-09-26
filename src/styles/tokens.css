@@ -2050,6 +2050,9 @@ img {
 	.firm-detail-pane {
 		display: none;
 	}
+	.firm-detail-head {
+		display: none;
+	}
 	.firm-list li > .firm-detail {
 		margin-top: 14px;
 		padding-top: 14px;
