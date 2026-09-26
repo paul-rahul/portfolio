@@ -470,19 +470,22 @@ img {
 	mix-blend-mode: normal;
 }
 
+/* Intentionally shorter than --motion-slow (1800ms, shared with other
+   slow reveals elsewhere) — the ring converge is local to this diagram
+   and was making the whole hero intro sequence feel sluggish. */
 .venn-engineering {
-	animation: motion-converge-engineering var(--motion-slow) var(--ease-out) both;
-	animation-delay: 300ms;
+	animation: motion-converge-engineering 900ms var(--ease-out) both;
+	animation-delay: 150ms;
 }
 
 .venn-design {
-	animation: motion-converge-design var(--motion-slow) var(--ease-out) both;
-	animation-delay: 480ms;
+	animation: motion-converge-design 900ms var(--ease-out) both;
+	animation-delay: 240ms;
 }
 
 .venn-business {
-	animation: motion-converge-business var(--motion-slow) var(--ease-out) both;
-	animation-delay: 660ms;
+	animation: motion-converge-business 900ms var(--ease-out) both;
+	animation-delay: 330ms;
 }
 
 @keyframes motion-converge-engineering {
@@ -531,17 +534,17 @@ img {
 
 .venn-label-engineering {
 	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
-	animation-delay: 2100ms;
+	animation-delay: 1050ms;
 }
 
 .venn-label-design {
 	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
-	animation-delay: 2280ms;
+	animation-delay: 1140ms;
 }
 
 .venn-label-business {
 	animation: motion-fade-up-svg var(--motion-base) var(--ease-out) both;
-	animation-delay: 2460ms;
+	animation-delay: 1230ms;
 }
 
 @keyframes motion-fade-up-svg {
@@ -565,7 +568,7 @@ img {
 	stroke-dasharray: 200;
 	stroke-dashoffset: 200;
 	animation: motion-arrow-draw var(--motion-enter) var(--ease-out) both;
-	animation-delay: 2950ms;
+	animation-delay: 1450ms;
 }
 
 .intersection-arrowhead-fill {
@@ -588,7 +591,7 @@ img {
 	opacity: 0;
 	filter: drop-shadow(0 0 8px var(--accent));
 	animation: motion-dot-appear var(--motion-base) var(--ease-out) both;
-	animation-delay: 2700ms;
+	animation-delay: 1350ms;
 }
 
 @keyframes motion-dot-appear {
@@ -608,7 +611,7 @@ img {
 	fill: var(--accent);
 	opacity: 0;
 	animation: motion-fade-up-svg var(--motion-enter) var(--ease-out) both;
-	animation-delay: 3300ms;
+	animation-delay: 1650ms;
 }
 
 .fact-strip {
