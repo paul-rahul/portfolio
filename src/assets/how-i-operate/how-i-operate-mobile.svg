@@ -5,48 +5,47 @@
 <defs>
   <marker id="operate-arrow-mobile" markerWidth="8" markerHeight="8" refX="7" refY="4"
           orient="auto" markerUnits="userSpaceOnUse">
-    <path d="M0 0 L8 4 L0 8 Z" fill="var(--accent, #7f8cff)"/>
+    <path d="M0 0 L8 4 L0 8 Z" fill="var(--accent, #7285ff)"/>
   </marker>
 </defs>
-
 <rect width="480" height="820" fill="transparent"/>
-<text x="24" y="62" fill="var(--ink, #f2f2f2)" font-family="var(--font-heading, Inter, system-ui, sans-serif)" font-size="40" font-weight="700">How I operate.</text>
+<text x="24" y="62" fill="var(--ink, #f4f4f5)" font-family="var(--font-heading, Inter, system-ui, sans-serif)" font-size="40" font-weight="700">How I operate.</text>
 
-<!-- feedback loop: exactly one arrowhead at 01, no dots -->
-<path d="M185 735
+<!-- feedback loop: 05 -> 01, exactly one arrowhead at destination -->
+<path d="M190 735
          C115 735 82 705 82 655
          L82 185
          C82 145 105 128 145 128"
-      stroke="var(--accent, #7f8cff)" stroke-width="2" stroke-dasharray="4 8"
+      stroke="var(--accent, #7285ff)" stroke-width="2" stroke-dasharray="4 8"
       fill="none" marker-end="url(#operate-arrow-mobile)"/>
 
 <rect x="30" y="350" width="104" height="98" rx="22"
-      fill="var(--background, #111113)" stroke="var(--accent, #7f8cff)" stroke-width="1.5"/>
-<text x="82" y="373" text-anchor="middle" fill="var(--accent, #7f8cff)"
+      fill="var(--background, #111113)" stroke="var(--accent, #7285ff)" stroke-width="1.5"/>
+<text x="82" y="373" text-anchor="middle" fill="var(--accent, #7285ff)"
       font-family="var(--font-mono, ui-monospace, monospace)" font-size="13" font-weight="600">
   <tspan x="82">Seek</tspan><tspan x="82" dy="18">feedback</tspan><tspan x="82" dy="18">&amp;</tspan><tspan x="82" dy="18">iterate</tspan>
 </text>
 
-<g stroke="var(--accent, #7f8cff)" stroke-width="2" fill="none" marker-end="url(#operate-arrow-mobile)">
+<g stroke="var(--accent, #7285ff)" stroke-width="2" fill="none" marker-end="url(#operate-arrow-mobile)">
   <line x1="190" y1="215" x2="190" y2="255"/>
   <line x1="190" y1="335" x2="190" y2="375"/>
   <line x1="190" y1="455" x2="190" y2="495"/>
   <line x1="190" y1="575" x2="190" y2="615"/>
 </g>
 
-<g fill="none" stroke="var(--accent, #7f8cff)" stroke-width="2">
+<g fill="none" stroke="var(--accent, #7285ff)" stroke-width="2">
   <circle cx="190" cy="175" r="30"/><circle cx="190" cy="295" r="30"/><circle cx="190" cy="415" r="30"/><circle cx="190" cy="535" r="30"/><circle cx="190" cy="655" r="30"/>
 </g>
-<g transform="translate(175.92 160.92) scale(0.88)" stroke="var(--accent, #7f8cff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="18" r="5"/><circle cx="22" cy="18" r="5"/><path d="M9 13l3-7h4l2 7M23 13l-3-7h-4l-2 7M15 18h2"/></g>
-<g transform="translate(175.92 280.92) scale(0.88)" stroke="var(--accent, #7f8cff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="13" height="20" rx="2"/><line x1="11" y1="10" x2="18" y2="10"/><circle cx="22" cy="21" r="4"/><line x1="25" y1="24" x2="29" y2="28"/></g>
-<g transform="translate(176.56 401.56) scale(0.84)" stroke="var(--accent, #7f8cff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="12" r="4"/><circle cx="21" cy="12" r="4"/><path d="M4 26c0-5 3-8 7-8s7 3 7 8"/><path d="M14 26c0-5 3-8 7-8s7 3 7 8"/></g>
-<g transform="translate(176.56 521.56) scale(0.84)" stroke="var(--accent, #7f8cff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15L28 5 19 28 14 19 4 15Z"/><path d="M14 19L28 5"/></g>
-<g transform="translate(176.56 641.56) scale(0.84)" stroke="var(--accent, #7f8cff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="27" x2="29" y2="27"/><line x1="8" y1="27" x2="8" y2="18"/><line x1="15" y1="27" x2="15" y2="12"/><line x1="22" y1="27" x2="22" y2="7"/></g>
+<g transform="translate(175.92 160.92) scale(0.88)" stroke="var(--accent, #7285ff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="18" r="5"/><circle cx="22" cy="18" r="5"/><path d="M9 13l3-7h4l2 7M23 13l-3-7h-4l-2 7M15 18h2"/></g>
+<g transform="translate(175.92 280.92) scale(0.88)" stroke="var(--accent, #7285ff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="5" width="13" height="20" rx="2"/><line x1="11" y1="10" x2="18" y2="10"/><circle cx="22" cy="21" r="4"/><line x1="25" y1="24" x2="29" y2="28"/></g>
+<g transform="translate(176.56 401.56) scale(0.84)" stroke="var(--accent, #7285ff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="12" r="4"/><circle cx="21" cy="12" r="4"/><path d="M4 26c0-5 3-8 7-8s7 3 7 8"/><path d="M14 26c0-5 3-8 7-8s7 3 7 8"/></g>
+<g transform="translate(176.56 521.56) scale(0.84)" stroke="var(--accent, #7285ff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15L28 5 19 28 14 19 4 15Z"/><path d="M14 19L28 5"/></g>
+<g transform="translate(176.56 641.56) scale(0.84)" stroke="var(--accent, #7285ff)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="27" x2="29" y2="27"/><line x1="8" y1="27" x2="8" y2="18"/><line x1="15" y1="27" x2="15" y2="12"/><line x1="22" y1="27" x2="22" y2="7"/></g>
 
-<g font-family="var(--font-mono, ui-monospace, monospace)" font-size="13" font-weight="700" fill="var(--accent, #7f8cff)">
+<g font-family="var(--font-mono, ui-monospace, monospace)" font-size="13" font-weight="700" fill="var(--accent, #7285ff)">
   <text x="235" y="171">01</text><text x="235" y="291">02</text><text x="235" y="411">03</text><text x="235" y="531">04</text><text x="235" y="651">05</text>
 </g>
-<g font-family="var(--font-heading, Inter, system-ui, sans-serif)" font-size="20" font-weight="700" fill="var(--ink, #f2f2f2)">
+<g font-family="var(--font-heading, Inter, system-ui, sans-serif)" font-size="20" font-weight="700" fill="var(--ink, #f4f4f5)">
   <text x="280" y="178">Understand the system</text>
   <text x="280" y="298">Find the constraint</text>
   <text x="280" y="418">Align the team</text>
