@@ -1558,27 +1558,6 @@ img {
 	border: 0;
 }
 
-.operate-svg {
-	width: 100%;
-	min-width: 0;
-}
-
-.operate-svg svg {
-	display: block;
-	width: 100%;
-	max-width: 100%;
-	height: auto;
-}
-
-.operate-svg--desktop {
-	display: block;
-}
-
-.operate-svg--tablet,
-.operate-svg--mobile {
-	display: none;
-}
-
 .capability-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -1988,12 +1967,6 @@ img {
 		padding-left: 0;
 		border-left: none;
 	}
-	.operate-svg--desktop {
-		display: none;
-	}
-	.operate-svg--tablet {
-		display: block;
-	}
 	.career-explorer {
 		grid-template-columns: 1fr;
 		gap: 24px;
@@ -2170,13 +2143,6 @@ img {
 	.capability-item:first-child {
 		padding-left: 20px;
 		border-left: 1px solid var(--border);
-	}
-	.operate-svg--desktop,
-	.operate-svg--tablet {
-		display: none;
-	}
-	.operate-svg--mobile {
-		display: block;
 	}
 	.firm-card,
 	.project-chip {
